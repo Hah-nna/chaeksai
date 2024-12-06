@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/fragment_home"
+    android:id="@+id/navigation_graph">
+
+
+    <fragment
+        android:id="@+id/fragment_home"
+        android:name="com.jeong.sesac.sai.ui.HomeFragment"
+        tools:layout="@layout/fragment_home"
+        android:label="@string/home_fragment"
+        >
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_weeklyNotes"
+        android:name="com.jeong.sesac.sai.ui.WeeklyNotesFragment"
+        tools:layout="@layout/fragment_weeklynotes"
+        android:label="@string/weeklyNotes_fragment"
+        >
+    </fragment>
+
+<fragment
+    android:id="@+id/fragment_search_register"
+    android:name="com.jeong.sesac.sai.ui.MapSearchRegisterFragment"
+    tools:layout="@layout/fragment_search_register"
+    android:label="@string/fragment_search_register"
+    >
+</fragment>
+
+
+    <fragment
+        android:id="@+id/fragment_record"
+        android:name="com.jeong.sesac.sai.ui.RecordFragment"
+        tools:layout="@layout/fragment_record"
+        android:label="@string/fragment_record"
+        >
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_myPage"
+        android:name="com.jeong.sesac.sai.ui.MypageFragment"
+        tools:layout="@layout/fragment_mypage"
+        android:label="@string/fragment_myPage"
+        >
+    </fragment>
+
+
+
+
+
+
+</navigation>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">sai</string>
+    <string name="home_fragment">home_fragment</string>
+    <string name="weeklyNotes_fragment">weeklynotes_fragment</string>
+    <string name="fragment_search_register">fragment_search_register</string>
+    <string name="fragment_myPage">fragment_myPage</string>
+    <string name="fragment_record">fragment_record</string>
+</resources>

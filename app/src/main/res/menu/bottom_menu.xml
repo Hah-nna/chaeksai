@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single" >
+        <item
+            android:id="@+id/fragment_home"
+            android:title="Home"
+
+
+            />
+        <item
+            android:id="@+id/fragment_search_register"
+            android:title="찾기/등록"
+            />
+        <item
+            android:id="@+id/fragment_record"
+            android:title="기록"
+            />
+
+        <item
+            android:id="@+id/fragment_myPage"
+            android:title="마이페이지"
+            />
+    </group>
+</menu>
