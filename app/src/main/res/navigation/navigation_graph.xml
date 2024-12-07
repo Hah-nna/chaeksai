@@ -2,56 +2,117 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/fragment_home"
-    android:id="@+id/navigation_graph">
-
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/fragment_home">
 
     <fragment
         android:id="@+id/fragment_home"
         android:name="com.jeong.sesac.sai.ui.HomeFragment"
-        tools:layout="@layout/fragment_home"
         android:label="@string/home_fragment"
-        >
-
-
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_fragment_home_to_fragment_weeklyNotes"
+            app:destination="@id/fragment_weeklyNotes" />
     </fragment>
 
     <fragment
         android:id="@+id/fragment_weeklyNotes"
         android:name="com.jeong.sesac.sai.ui.WeeklyNotesFragment"
-        tools:layout="@layout/fragment_weeklynotes"
         android:label="@string/weeklyNotes_fragment"
-        >
-    </fragment>
+        tools:layout="@layout/fragment_weeklynotes"></fragment>
 
-<fragment
-    android:id="@+id/fragment_search_register"
-    android:name="com.jeong.sesac.sai.ui.MapSearchRegisterFragment"
-    tools:layout="@layout/fragment_search_register"
-    android:label="@string/fragment_search_register"
-    >
-</fragment>
-
+    <fragment
+        android:id="@+id/fragment_search_register"
+        android:name="com.jeong.sesac.sai.ui.MapSearchRegisterFragment"
+        android:label="@string/fragment_search_register"
+        tools:layout="@layout/fragment_search_register"></fragment>
 
     <fragment
         android:id="@+id/fragment_record"
         android:name="com.jeong.sesac.sai.ui.RecordFragment"
-        tools:layout="@layout/fragment_record"
         android:label="@string/fragment_record"
-        >
+        tools:layout="@layout/fragment_record">
+        <action
+            android:id="@+id/action_fragment_record_to_fragment_my_registered_notes"
+            app:destination="@id/fragment_my_registered_notes" />
+        <action
+            android:id="@+id/action_fragment_record_to_fragment_completed_finds"
+            app:destination="@id/fragment_completed_finds" />
+        <action
+            android:id="@+id/action_fragment_record_to_fragment_bookmarkedNotes"
+            app:destination="@id/fragment_bookmarkedNotes" />
     </fragment>
+
+    <fragment
+        android:id="@+id/fragment_my_registered_notes"
+        android:name="com.jeong.sesac.sai.ui.MyRegisteredNotesFragment"
+        android:label="@string/my_registered_notes_fragment"
+        tools:layout="@layout/fragment_my_registered_notes"></fragment>
+
+    <fragment
+        android:id="@+id/fragment_completed_finds"
+        android:name="com.jeong.sesac.sai.ui.CompletedFindsFragment"
+        android:label="@string/completed_finds_fragment"
+        tools:layout="@layout/fragment_completed_finds"></fragment>
+
+    <fragment
+        android:id="@+id/fragment_bookmarkedNotes"
+        android:name="com.jeong.sesac.sai.ui.BookmarkedNotesFragment"
+        android:label="@string/fragment_bookmarkedNotes"
+        tools:layout="@layout/fragment_bookmarked_notes"></fragment>
 
     <fragment
         android:id="@+id/fragment_myPage"
         android:name="com.jeong.sesac.sai.ui.MypageFragment"
-        tools:layout="@layout/fragment_mypage"
         android:label="@string/fragment_myPage"
-        >
+        tools:layout="@layout/fragment_mypage">
+        <action
+            android:id="@+id/action_fragment_myPage_to_fragment_settings"
+            app:destination="@id/fragment_settings" />
     </fragment>
 
+    <fragment
+        android:id="@+id/fragment_settings"
+        android:name="com.jeong.sesac.sai.ui.SettingsFragment"
+        android:label="@string/settings_fragment"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_fragment_settings_to_fragment_privacy_management"
+            app:destination="@id/fragment_privacy_management" />
+        <action
+            android:id="@+id/action_fragment_settings_to_fragment_app_settings"
+            app:destination="@id/fragment_app_settings" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/fragment_privacy_management"
+        android:name="com.jeong.sesac.sai.ui.PrivacyManagementFragment"
+        android:label="@string/privacy_management_fragment"
+        tools:layout="@layout/fragment_privacy_management">
+        <action
+            android:id="@+id/action_fragment_privacy_management_to_fragment_followers"
+            app:destination="@id/fragment_followers" />
+        <action
+            android:id="@+id/action_fragment_privacy_management_to_fragment_login_management"
+            app:destination="@id/fragment_login_management" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/fragment_followers"
+        android:name="com.jeong.sesac.sai.ui.FollowersFragment"
+        android:label="@string/followers_fragment"
+        tools:layout="@layout/fragment_followers"></fragment>
 
+    <fragment
+        android:id="@+id/fragment_login_management"
+        android:name="com.jeong.sesac.sai.ui.LoginManagementFragment"
+        android:label="@string/login_management_fragment"
+        tools:layout="@layout/fragment_login_management"></fragment>
 
+    <fragment
+        android:id="@+id/fragment_app_settings"
+        android:name="com.jeong.sesac.sai.ui.AppSettingsFragment"
+        android:label="@string/app_settings_fragment"
+        tools:layout="@layout/fragment_app_settings"></fragment>
 
 </navigation>

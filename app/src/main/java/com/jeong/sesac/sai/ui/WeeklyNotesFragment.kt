@@ -8,7 +8,8 @@ import com.jeong.sesac.sai.databinding.FragmentHomeBinding
 import com.jeong.sesac.sai.databinding.FragmentWeeklynotesBinding
 import com.jeong.sesac.sai.util.BaseFragment
 
-class WeeklyNotesFragment : BaseFragment<FragmentWeeklynotesBinding>(FragmentWeeklynotesBinding::inflate) {
+class WeeklyNotesFragment :
+    BaseFragment<FragmentWeeklynotesBinding>(FragmentWeeklynotesBinding::inflate) {
 
     companion object {
         fun getInstance() = WeeklyNotesFragment()
@@ -18,7 +19,7 @@ class WeeklyNotesFragment : BaseFragment<FragmentWeeklynotesBinding>(FragmentWee
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentWeeklynotesBinding.inflate(layoutInflater, container, false)
         return binding.root
     }

@@ -8,6 +8,7 @@ import com.jeong.sesac.sai.databinding.FragmentMypageBinding
 import com.jeong.sesac.sai.util.BaseFragment
 
 class MypageFragment : BaseFragment<FragmentMypageBinding>(FragmentMypageBinding::inflate) {
+
     companion object {
         fun getInstance() = MapSearchRegisterFragment()
     }

@@ -1,21 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--writer: 정지영-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.MyRegisteredNotesFragment">
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/fragment_record"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/fragment_my_registered_notes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/fragment_record"
+        android:text="@string/my_registered_notes_fragment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/record_to_next_btn"
+        android:id="@+id/my_registered_notes_to_next_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/next"

@@ -5,4 +5,14 @@
     <string name="fragment_search_register">fragment_search_register</string>
     <string name="fragment_myPage">fragment_myPage</string>
     <string name="fragment_record">fragment_record</string>
+    <string name="mainfragment">MainFragment</string>
+    <string name="next">next</string>
+    <string name="app_settings_fragment">app settings fragment</string>
+    <string name="fragment_bookmarkedNotes">bookmarked notes fragment</string>
+    <string name="completed_finds_fragment">completed_finds_fragment</string>
+    <string name="followers_fragment">followers_fragment</string>
+    <string name="login_management_fragment">login_management_fragment</string>
+    <string name="my_registered_notes_fragment">my_registered_notes_fragment</string>
+    <string name="privacy_management_fragment">privacy_management_fragment</string>
+    <string name="settings_fragment">settings_fragment</string>
 </resources>

@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import com.jeong.sesac.sai.databinding.FragmentSearchRegisterBinding
 import com.jeong.sesac.sai.util.BaseFragment
 
-class MapSearchRegisterFragment : BaseFragment<FragmentSearchRegisterBinding>(FragmentSearchRegisterBinding::inflate) {
+class MapSearchRegisterFragment :
+    BaseFragment<FragmentSearchRegisterBinding>(FragmentSearchRegisterBinding::inflate) {
 
     companion object {
         fun getInstance() = MapSearchRegisterFragment()
@@ -18,7 +19,8 @@ class MapSearchRegisterFragment : BaseFragment<FragmentSearchRegisterBinding>(Fr
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSearchRegisterBinding.inflate(layoutInflater, container, false)
+        _binding =
+            FragmentSearchRegisterBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 }

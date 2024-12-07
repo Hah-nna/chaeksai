@@ -9,6 +9,7 @@ import com.jeong.sesac.sai.databinding.FragmentRecordBinding
 import com.jeong.sesac.sai.util.BaseFragment
 
 class RecordFragment : BaseFragment<FragmentRecordBinding>(FragmentRecordBinding::inflate) {
+
     companion object {
         fun getInstance() = MapSearchRegisterFragment()
     }
@@ -17,7 +18,7 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>(FragmentRecordBinding
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRecordBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
