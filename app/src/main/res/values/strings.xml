@@ -7,4 +7,6 @@
     <string name="fragment_record">fragment_record</string>
     <string name="recently_Found_notes_fragment">recentlyFoundNotesFragment</string>
     <string name="recently_found_notes_fragment_detail">recently_Found_notes_fragment_detail</string>
+    <string name="register_detail_fragment">RegisterDetailFragment</string>
+    <string name="register_confirmation_fragment">registerConfirmationFragment</string>
 </resources>
