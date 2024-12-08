@@ -19,6 +19,8 @@ androidx-lifecycle-livedata-ktx = "2.8.7"
 androidx-lifecycle-viewmodel-ktx = "2.8.7"
 ru-ldralighieri-corbind = "1.11.0"
 ru-ldralighieri-corbind-material = "1.11.0"
+navigationRuntimeKtx = "2.8.4"
+legacySupportV4 = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -39,9 +41,10 @@ androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation
 
 ru-ldralighieri-corbind = { module = "ru.ldralighieri.corbind:corbind", version.ref = "ru-ldralighieri-corbind" }
 ru-ldralighieri-corbind-material = { module = "ru.ldralighieri.corbind:corbind-material", version.ref = "ru-ldralighieri-corbind-material" }
+androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
+androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-
