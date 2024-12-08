@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.jeong.sesac.sai.R
-import com.jeong.sesac.sai.databinding.FragmentSearchListBinding
 import com.jeong.sesac.sai.databinding.FragmentSearchNoteDetailBinding
 import com.jeong.sesac.sai.util.BaseFragment
 
@@ -16,7 +15,7 @@ class SearchNoteDetailFragment : BaseFragment<FragmentSearchNoteDetailBinding>(F
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSearchNoteDetailBinding.inflate(layoutInflater, container, false)
         return binding.root
     }

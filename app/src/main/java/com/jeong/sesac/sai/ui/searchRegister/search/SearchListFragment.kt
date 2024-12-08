@@ -15,7 +15,7 @@ class SearchListFragment : BaseFragment<FragmentSearchListBinding> (FragmentSear
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSearchListBinding.inflate(layoutInflater, container, false)
         return binding.root
     }

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.jeong.sesac.sai.R
-import com.jeong.sesac.sai.databinding.FragmentHomeBinding
 import com.jeong.sesac.sai.databinding.FragmentRegisterDetailBinding
 import com.jeong.sesac.sai.util.BaseFragment
 
@@ -17,7 +16,7 @@ class RegisterDetailFragment : BaseFragment<FragmentRegisterDetailBinding>(Fragm
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRegisterDetailBinding.inflate(layoutInflater, container, false)
         return binding.root
     }

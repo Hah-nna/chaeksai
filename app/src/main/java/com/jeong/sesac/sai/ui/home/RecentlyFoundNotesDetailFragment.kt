@@ -13,7 +13,7 @@ class RecentlyFoundNotesDetailFragment : BaseFragment<FragmentRecentlyFoundNotes
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRecentlyFoundNotesDetailBinding.inflate(layoutInflater, container, false)
         return binding.root
     }

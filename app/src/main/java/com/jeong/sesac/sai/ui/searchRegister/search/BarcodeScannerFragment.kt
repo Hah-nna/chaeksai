@@ -15,7 +15,7 @@ class BarcodeScannerFragment : BaseFragment<FragmentBarcodeScannerBinding>(Fragm
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentBarcodeScannerBinding.inflate(layoutInflater, container, false)
         return binding.root
     }

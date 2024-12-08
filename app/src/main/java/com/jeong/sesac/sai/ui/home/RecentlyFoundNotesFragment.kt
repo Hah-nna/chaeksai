@@ -15,7 +15,7 @@ class RecentlyFoundNotesFragment : BaseFragment<FragmentRecentlyFoundNotesBindin
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRecentlyFoundNotesBinding.inflate(layoutInflater, container, false)
         return binding.root
     }

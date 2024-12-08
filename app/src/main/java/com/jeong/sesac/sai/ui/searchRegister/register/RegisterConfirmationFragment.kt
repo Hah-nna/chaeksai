@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentRegisterConfirmationBinding
-import com.jeong.sesac.sai.databinding.FragmentRegisterDetailBinding
 import com.jeong.sesac.sai.util.BaseFragment
 
 class RegisterConfirmationFragment : BaseFragment<FragmentRegisterConfirmationBinding>(FragmentRegisterConfirmationBinding::inflate) {
@@ -16,7 +15,7 @@ class RegisterConfirmationFragment : BaseFragment<FragmentRegisterConfirmationBi
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRegisterConfirmationBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
