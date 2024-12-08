@@ -17,12 +17,26 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/privacy_management_to_next_btn"
-        android:layout_width="wrap_content"
+        android:id="@+id/privacy_management_to_followers_btn"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/next"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Followers"
+        app:layout_constraintTop_toBottomOf="@id/fragment_privacy_management"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/privacy_management_to_login_management_btn"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="24dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/privacy_management_to_login_management_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="LoginManagement"
+        app:layout_constraintTop_toBottomOf="@id/fragment_privacy_management"
+        app:layout_constraintStart_toEndOf="@id/privacy_management_to_followers_btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
