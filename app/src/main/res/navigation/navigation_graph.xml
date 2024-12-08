@@ -7,7 +7,7 @@
 
     <!-- Home 시작-->
 
-    <!-- 홈프래그먼트 -->
+    <!-- 홈 프래그먼트 -->
     <fragment
         android:id="@+id/fragmentHome"
         android:name="com.jeong.sesac.sai.ui.HomeFragment"
