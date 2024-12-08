@@ -2,28 +2,68 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/fragment_home"
+    app:startDestination="@id/fragmentHome"
     android:id="@+id/navigation_graph">
 
+    <!-- Home 시작-->
 
+    <!-- 홈프래그먼트 -->
     <fragment
-        android:id="@+id/fragment_home"
+        android:id="@+id/fragmentHome"
         android:name="com.jeong.sesac.sai.ui.HomeFragment"
         tools:layout="@layout/fragment_home"
-        android:label="@string/home_fragment"
+        android:label="home_fragment"
         >
+        <!-- 홈프래그먼트 -> 사람들이 방금 찾은 쪽지 프래그먼트로 이동하는 설정 action -->
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentRecentlyFoundNotes"
+            app:destination="@+id/fragmentRecentlyFoundNotes"
+            />
 
-
+        <!-- 홈프래그먼트 -> 금주의 새로운 쪽지 프래그먼트로 이동하는 설정 action -->
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentWeeklyNotes"
+            app:destination="@+id/fragmentWeeklyNotes"
+            />
     </fragment>
 
+    <!-- 홈프래그먼트 -> 사람들이 방금 찾은 쪽지 프래그먼트 -->
     <fragment
-        android:id="@+id/fragment_weeklyNotes"
+        android:id="@+id/fragmentRecentlyFoundNotes"
+        android:name="com.jeong.sesac.sai.ui.home.RecentlyFoundNotesFragment"
+        tools:layout="@layout/fragment_recently_found_notes"
+        android:label="@string/recently_Found_notes_fragment"
+        >
+
+        <!-- 홈프래그먼트 -> 사람들이 방금 찾은 쪽지 디테일 프래그먼트-->
+        <action
+            android:id="@+id/action_fragmentRecentlyFoundNotes_to_detail"
+            app:destination="@+id/fragmentRecentlyFoundNotesDetail"
+            />
+    </fragment>
+
+
+    <!-- 홈프래그먼트 -> 사람들이 방금 찾은 쪽지 프래그먼트 -> 쪽지 디테일 -->
+    <fragment
+        android:id="@+id/fragmentRecentlyFoundNotesDetail"
+        android:name="com.jeong.sesac.sai.ui.home.RecentlyFoundNotesDetailFragment"
+        tools:layout="@layout/fragment_recently_found_notes_detail"
+        android:label="recently_found_notes_fragment_detail_fragment"
+        />
+
+    <!-- 홈프래그먼트 -> 금주의 새로운 쪽지 디테일 프래그먼트 -->
+    <fragment
+        android:id="@+id/fragmentWeeklyNotes"
         android:name="com.jeong.sesac.sai.ui.home.WeeklyNotesFragment"
         tools:layout="@layout/fragment_weeklynotes"
         android:label="@string/weeklyNotes_fragment"
         >
     </fragment>
+    <!-- Home 끝-->
 
+
+
+    <!-- 찾기/등록(맵) 프래그먼트 시작 -->
 <fragment
     android:id="@+id/fragment_search_register"
     android:name="com.jeong.sesac.sai.ui.MapSearchRegisterFragment"
@@ -31,6 +71,7 @@
     android:label="@string/fragment_search_register"
     >
 </fragment>
+
 
 
     <fragment
@@ -49,7 +90,7 @@
         >
     </fragment>
 
-
+    <!-- 찾기/등록(맵) 프래그먼트 끝 -->
 
 
 
