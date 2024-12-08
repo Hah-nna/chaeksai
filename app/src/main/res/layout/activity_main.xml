@@ -12,7 +12,4 @@
         android:id="@+id/included"
         layout="@layout/include_main" />
 
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
