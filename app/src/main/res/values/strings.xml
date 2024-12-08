@@ -16,5 +16,8 @@
     <string name="privacy_management_fragment">privacy_management_fragment</string>
     <string name="settings_fragment">settings_fragment</string>
     <string name="recently_Found_notes_fragment">recently_Found_notes_fragment</string>
+    <string name="register_confirmation_fragment">register_confirmation_fragment</string>
+    <string name="register_detail_fragment">register_detail_fragment</string>
+    <string name="recently_found_notes_fragment_detail">recently_found_notes_fragment_detail</string>
 
 </resources>

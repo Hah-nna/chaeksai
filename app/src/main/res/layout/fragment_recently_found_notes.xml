@@ -9,11 +9,11 @@
         android:id="@+id/fragment_recently_found_notes_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/recently_Found_notes_fragment"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/recently_Found_notes_fragment"
         />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -23,6 +23,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="next"
+        android:text="@string/next"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
