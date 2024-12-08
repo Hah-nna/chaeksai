@@ -64,13 +64,61 @@
 
 
     <!-- 찾기/등록(맵) 프래그먼트 시작 -->
+
+    <!-- 찾기/등록(맵) -->
 <fragment
-    android:id="@+id/fragment_search_register"
+    android:id="@+id/fragmentSearchRegister"
     android:name="com.jeong.sesac.sai.ui.MapSearchRegisterFragment"
     tools:layout="@layout/fragment_search_register"
     android:label="@string/fragment_search_register"
     >
+
+    <action
+        android:id="@+id/action_fragmentSearchRegister_to_fragmentRegisterDetail"
+        app:destination="@+id/fragmentRegisterDetail"
+        />
+
+    <action
+        android:id="@+id/action_fragmentSearchRegister_to_fragmentSearchList"
+        app:destination="@+id/fragmentSearchList"
+        />
+
 </fragment>
+
+
+    <fragment
+        android:id="@+id/fragmentRegisterDetail"
+        android:name="com.jeong.sesac.sai.ui.searchRegister.register.RegisterDetailFragment"
+        tools:layout="@layout/fragment_register_detail"
+        android:label="fragment_register_detail"
+        >
+        <action
+            android:id="@+id/action_fragmentRegisterDetail_to_fragmentRegisterConfirmation"
+            app:destination="@id/fragmentRegisterConfirmation" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentRegisterConfirmation"
+        android:name="com.jeong.sesac.sai.ui.searchRegister.register.RegisterConfirmationFragment"
+        tools:layout="@layout/fragment_register_confirmation"
+        android:label="fragment_register_confirmation">
+
+    <action
+        android:id="@+id/action_fragmentRegisterConfirmation_to_fragmentHome"
+        app:destination="@id/fragmentHome" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/fragmentSearchList"
+        android:name="com.jeong.sesac.sai.ui.searchRegister.search.SearchListFragment"
+        tools:layout="@layout/fragment_search_list"
+        android:label="fragment_search_list"
+        >
+
+    </fragment>
+
+    <!-- 찾기/등록(맵) 프래그먼트 끝 -->
 
 
 
@@ -90,7 +138,6 @@
         >
     </fragment>
 
-    <!-- 찾기/등록(맵) 프래그먼트 끝 -->
 
 
 
