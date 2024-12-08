@@ -5,8 +5,8 @@
     android:layout_height="match_parent">
 
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/fragment_search_register"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/fragment_search_register_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/fragment_search_register"

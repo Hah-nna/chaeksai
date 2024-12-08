@@ -10,7 +10,7 @@
 
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_home"
+        android:id="@+id/fragment_home_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/home_fragment"
