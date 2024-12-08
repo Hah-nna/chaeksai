@@ -5,4 +5,6 @@
     <string name="fragment_search_register">fragment_search_register</string>
     <string name="fragment_myPage">fragment_myPage</string>
     <string name="fragment_record">fragment_record</string>
+    <string name="recently_Found_notes_fragment">recentlyFoundNotesFragment</string>
+    <string name="recently_found_notes_fragment_detail">recently_Found_notes_fragment_detail</string>
 </resources>
