@@ -1,23 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--writer: 정지영-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.WeeklyNotesFragment">
+    tools:context=".ui.LoginManagementFragment">
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/fragment_weekly_notes"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/fragment_login_management"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/weeklyNotes_fragment"
+        android:text="@string/login_management_fragment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/weeklynotes_to_next_btn"
+        android:id="@+id/login_management_to_next_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/next"
