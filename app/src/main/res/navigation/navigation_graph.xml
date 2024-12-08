@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/fragment_weeklyNotes"
-        android:name="com.jeong.sesac.sai.ui.WeeklyNotesFragment"
+        android:name="com.jeong.sesac.sai.ui.home.WeeklyNotesFragment"
         tools:layout="@layout/fragment_weeklynotes"
         android:label="@string/weeklyNotes_fragment"
         >
