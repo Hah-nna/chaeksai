@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single" >
         <item
-            android:id="@+id/fragment_home"
+            android:id="@+id/fragmentHome"
             android:title="Home"
 
 
             />
         <item
-            android:id="@+id/fragment_search_register"
+            android:id="@+id/fragmentSearchRegister"
             android:title="찾기/등록"
             />
         <item
