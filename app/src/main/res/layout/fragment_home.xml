@@ -7,7 +7,7 @@
     tools:context=".ui.HomeFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_home"
+        android:id="@+id/fragment_home_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/home_fragment"
@@ -18,12 +18,22 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/home_to_next_btn"
+        android:id="@+id/home_to_weelyNotes_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/home_to_recentlyFound_btn"
+        android:text="weekly"
+        />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/home_to_recentlyFound_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/home_to_weelyNotes_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="recentlyFoundNote"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

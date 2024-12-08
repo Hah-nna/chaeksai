@@ -2,30 +2,217 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation_graph"
-    app:startDestination="@id/fragment_home">
+    app:startDestination="@id/fragmentHome"
+    android:id="@+id/navigation_graph">
 
+    <!-- Home 시작-->
+
+    <!-- 홈 프래그먼트 -->
     <fragment
-        android:id="@+id/fragment_home"
+        android:id="@+id/fragmentHome"
         android:name="com.jeong.sesac.sai.ui.HomeFragment"
-        android:label="@string/home_fragment"
-        tools:layout="@layout/fragment_home">
+        tools:layout="@layout/fragment_home"
+        android:label="home_fragment"
+        >
+        <!-- 홈프래그먼트 -> 사람들이 방금 찾은 쪽지 프래그먼트로 이동하는 설정 action -->
         <action
-            android:id="@+id/action_fragment_home_to_fragment_weeklyNotes"
-            app:destination="@id/fragment_weeklyNotes" />
+            android:id="@+id/action_fragmentHome_to_fragmentRecentlyFoundNotes"
+            app:destination="@+id/fragmentRecentlyFoundNotes"
+            />
+
+        <!-- 홈프래그먼트 -> 금주의 새로운 쪽지 프래그먼트로 이동하는 설정 action -->
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentWeeklyNotes"
+            app:destination="@+id/fragmentWeeklyNotes"
+            />
     </fragment>
 
+    <!-- 홈프래그먼트 -> 사람들이 방금 찾은 쪽지 프래그먼트 -->
     <fragment
-        android:id="@+id/fragment_weeklyNotes"
-        android:name="com.jeong.sesac.sai.ui.WeeklyNotesFragment"
-        android:label="@string/weeklyNotes_fragment"
-        tools:layout="@layout/fragment_weeklynotes"></fragment>
+        android:id="@+id/fragmentRecentlyFoundNotes"
+        android:name="com.jeong.sesac.sai.ui.home.RecentlyFoundNotesFragment"
+        tools:layout="@layout/fragment_recently_found_notes"
+        android:label="@string/recently_Found_notes_fragment"
+        >
 
+        <!-- 홈프래그먼트 -> 사람들이 방금 찾은 쪽지 디테일 프래그먼트-->
+        <action
+            android:id="@+id/action_fragmentRecentlyFoundNotes_to_detail"
+            app:destination="@+id/fragmentRecentlyFoundNotesDetail"
+            />
+    </fragment>
+
+
+    <!-- 홈프래그먼트 -> 사람들이 방금 찾은 쪽지 프래그먼트 -> 쪽지 디테일 -->
     <fragment
-        android:id="@+id/fragment_search_register"
-        android:name="com.jeong.sesac.sai.ui.MapSearchRegisterFragment"
-        android:label="@string/fragment_search_register"
-        tools:layout="@layout/fragment_search_register"></fragment>
+        android:id="@+id/fragmentRecentlyFoundNotesDetail"
+        android:name="com.jeong.sesac.sai.ui.home.RecentlyFoundNotesDetailFragment"
+        tools:layout="@layout/fragment_recently_found_notes_detail"
+        android:label="recently_found_notes_fragment_detail_fragment"
+        />
+
+    <!-- 홈프래그먼트 -> 금주의 새로운 쪽지 디테일 프래그먼트 -->
+    <fragment
+        android:id="@+id/fragmentWeeklyNotes"
+        android:name="com.jeong.sesac.sai.ui.home.WeeklyNotesFragment"
+        tools:layout="@layout/fragment_weeklynotes"
+        android:label="@string/weeklyNotes_fragment"
+        >
+    </fragment>
+    <!-- Home 끝-->
+
+
+
+    <!-- 찾기/등록(맵) 프래그먼트 시작 -->
+    <!-- 찾기/등록(맵) 프래그먼트-->
+<fragment
+    android:id="@+id/fragmentSearchRegister"
+    android:name="com.jeong.sesac.sai.ui.MapSearchRegisterFragment"
+    tools:layout="@layout/fragment_search_register"
+    android:label="@string/fragment_search_register"
+    >
+
+    <!-- 찾기/등록(맵) -> 쪽지 등록 액션 -->
+    <action
+        android:id="@+id/action_fragmentSearchRegister_to_fragmentRegisterDetail"
+        app:destination="@+id/fragmentRegisterDetail"
+        />
+
+    <!-- 찾기/등록(맵) -> 쪽지 찾기 액션 -->
+    <action
+        android:id="@+id/action_fragmentSearchRegister_to_fragmentSearchList"
+        app:destination="@+id/fragmentSearchList"
+        />
+
+</fragment>
+
+    <!-- 찾기/등록(맵) 프래그먼트 ->  등록 디테일 프래그먼트 -->
+    <fragment
+        android:id="@+id/fragmentRegisterDetail"
+        android:name="com.jeong.sesac.sai.ui.searchRegister.register.RegisterDetailFragment"
+        tools:layout="@layout/fragment_register_detail"
+        android:label="fragment_register_detail"
+        >
+
+        <!-- 쪽지 등록 디테일 확인 프래그먼트로 이동 액션 -->
+        <action
+            android:id="@+id/action_fragmentRegisterDetail_to_fragmentRegisterConfirmation"
+            app:destination="@id/fragmentRegisterConfirmation" />
+    </fragment>
+
+    <!-- 찾기/등록(맵) 프래그먼트 ->  등록 디테일 프래그먼트 -> 등록 디테일 확인 프래그먼트 -->
+    <fragment
+        android:id="@+id/fragmentRegisterConfirmation"
+        android:name="com.jeong.sesac.sai.ui.searchRegister.register.RegisterConfirmationFragment"
+        tools:layout="@layout/fragment_register_confirmation"
+        android:label="fragment_register_confirmation">
+
+        <!-- 찾기/등록(맵) 프래그먼트 ->  등록 디테일 프래그먼트 -> 등록 디테일 확인 프래그먼트 -> 홈으로 이동 액션 -->
+    <action
+        android:id="@+id/action_fragmentRegisterConfirmation_to_fragmentHome"
+        app:destination="@id/fragmentHome" />
+    </fragment>
+
+
+    <!-- 찾기/등록(맵) -> 쪽지 찾기 프래그먼트 -->
+    <fragment
+        android:id="@+id/fragmentSearchList"
+        android:name="com.jeong.sesac.sai.ui.searchRegister.search.SearchListFragment"
+        tools:layout="@layout/fragment_search_list"
+        android:label="fragment_search_list"
+        >
+
+        <!-- 쪽지 찾기 프래그먼트에서 쪽지디테일 프래그먼트로 이동 액션 -->
+        <action
+            android:id="@+id/action_fragmentSearchList_to_fragmentSearchNoteDetail"
+            app:destination="@+id/fragmentSearchNoteDetail"
+            />
+    </fragment>
+
+    <!-- 찾기/등록(맵) -> 쪽지 찾기 프래그먼트 -> 선택한 쪽지 디테일 프래그먼트 -->
+    <fragment
+        android:id="@+id/fragmentSearchNoteDetail"
+        android:name="com.jeong.sesac.sai.ui.searchRegister.search.SearchNoteDetailFragment"
+        tools:layout="@layout/fragment_search_note_detail"
+        android:label="fragment_search_note_detail"
+        >
+
+        <!-- 쪽지디테일 프래그먼에서 바코드스캔 프래그먼트로 이동 액션 -->
+        <action
+            android:id="@+id/action_fragmentSearchNoteDetail_to_fragmentBarcodeScanner"
+            app:destination="@+id/fragmentBarcodeScanner"
+            />
+    </fragment>
+
+    <!-- 찾기/등록(맵) -> 쪽지 찾기 프래그먼트 -> 선택한 쪽지 디테일 프래그먼트 -> 바코드 스캔 프래그먼트 -->
+    <fragment
+        android:id="@+id/fragmentBarcodeScanner"
+        android:name="com.jeong.sesac.sai.ui.searchRegister.search.BarcodeScannerFragment"
+        tools:layout="@layout/fragment_barcode_scanner"
+        android:label="fragment_barcode_scanner"
+        >
+
+        <!-- 바코드스캔 프래그먼트에서 찾은 쪽지 디테일 프래그먼트 이동 액션 -->
+        <action
+            android:id="@+id/action_fragmentBarcodeScanner_to_fragmentFoundNoteDetail"
+            app:destination="@+id/fragmentFoundNoteDetail"
+            />
+    </fragment>
+
+    <!-- 찾기/등록(맵) -> 쪽지 찾기 프래그먼트 -> 선택한 쪽지 디테일 프래그먼트 -> 바코드 스캔 프래그먼트 -> 찾은 쪽지 디테일 프래그먼트-->
+    <fragment
+        android:id="@+id/fragmentFoundNoteDetail"
+        android:name="com.jeong.sesac.sai.ui.found.FoundNoteDetailFragment"
+        tools:layout="@layout/fragment_found_note_detail"
+        android:label="fragment_found_note_detail"
+        >
+
+        <!-- 찾은 쪽지 디테일 프래그먼트에서 리뷰쓰기 프래그먼트로 이동 액션  -->
+        <action
+            android:id="@+id/action_fragmentFoundNoteDetail_to_fragmentWriteReview"
+            app:destination="@+id/fragmentWriteReview"
+            />
+
+    </fragment>
+
+    <!-- 찾기/등록(맵) -> 쪽지 찾기 프래그먼트 -> 선택한 쪽지 디테일 프래그먼트 -> 바코드 스캔 프래그먼트 -> 찾은 쪽지 디테일 프래그먼트 -> 리뷰쓰기 프래그먼트-->
+    <fragment
+        android:id="@+id/fragmentWriteReview"
+        android:name="com.jeong.sesac.sai.ui.found.WriteReviewFragment"
+        tools:layout="@layout/fragment_write_review"
+        android:label="fragment_write_review"
+        >
+
+        <!-- 리뷰쓰기 프래그먼트에서 리뷰완료 프래그먼트로 이동 액션  -->
+        <action
+            android:id="@+id/action_fragmentWriteReview_to_fragmentReviewCompleted"
+            app:destination="@+id/fragmentReviewCompleted"
+            />
+    </fragment>
+
+    <!-- 찾기/등록(맵) -> 쪽지 찾기 프래그먼트 -> 선택한 쪽지 디테일 프래그먼트 -> 바코드 스캔 프래그먼트 -> 찾은 쪽지 디테일 프래그먼트 -> 리뷰쓰기 프래그먼트 -> 리뷰완료 프래그먼트
+    (해당 프래그먼트로 이동 후 홈으로 가거나 혹은 새로운 쪽지 등록을 할 수 있음)-->
+    <fragment
+        android:id="@+id/fragmentReviewCompleted"
+        android:name="com.jeong.sesac.sai.ui.found.ReviewCompletedFragment"
+        tools:layout="@layout/fragment_review_completed"
+        android:label="fragment_review_completed"
+        >
+
+        <!-- 리뷰완료 프래그먼트에서 홈이나 혹은 새로운 쪽지 등록 프래그먼트 이동 액션  -->
+        <action
+            android:id="@+id/action_fragmentReviewCompleted_to_fragmentHome"
+            app:destination="@+id/fragmentHome"
+            />
+
+        <action
+            android:id="@+id/action_fragmentReviewCompleted_to_fragmentSearchRegister"
+            app:destination="@+id/fragmentSearchRegister"
+            />
+    </fragment>
+    <!-- 찾기/등록(맵) 프래그먼트 끝 -->
+
+
 
     <fragment
         android:id="@+id/fragment_record"

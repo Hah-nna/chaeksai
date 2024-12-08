@@ -1,5 +1,5 @@
 [versions]
-agp = "8.7.3"
+agp = "8.7.2"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -14,6 +14,7 @@ lifecycleViewmodelKtx = "2.8.7"
 fragmentKtx = "1.8.5"
 navigationFragmentKtx = "2.8.4"
 navigationUiKtx = "2.8.4"
+navigationSafeArgs = "2.8.4"
 
 androidx-lifecycle-livedata-ktx = "2.8.7"
 androidx-lifecycle-viewmodel-ktx = "2.8.7"
@@ -44,4 +45,5 @@ ru-ldralighieri-corbind-material = { module = "ru.ldralighieri.corbind:corbind-m
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+navigation-safe-args = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigationSafeArgs" }
 
