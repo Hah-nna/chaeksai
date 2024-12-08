@@ -27,6 +27,10 @@ class MapSearchRegisterFragment : BaseFragment<FragmentSearchRegisterBinding>(Fr
             registerBtn.setOnClickListener {
                 findNavController().navigate(R.id.action_fragmentSearchRegister_to_fragmentRegisterDetail)
             }
+
+            searchBtn.setOnClickListener {
+                findNavController().navigate(R.id.action_fragmentSearchRegister_to_fragmentSearchList)
+            }
         }
     }
 }
