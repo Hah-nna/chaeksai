@@ -9,9 +9,6 @@ import com.jeong.sesac.sai.util.BaseFragment
 
 class MapSearchRegisterFragment : BaseFragment<FragmentSearchRegisterBinding>(FragmentSearchRegisterBinding::inflate) {
 
-    companion object {
-        fun getInstance() = MapSearchRegisterFragment()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
