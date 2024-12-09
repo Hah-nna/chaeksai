@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.PrivacyManagementFragment">
+    tools:context=".ui.myPage.PrivacyManagementFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/fragment_privacy_management"

@@ -1,4 +1,4 @@
-package com.jeong.sesac.sai.ui
+package com.jeong.sesac.sai.ui.myPage
 
 import android.os.Bundle
 import android.view.LayoutInflater

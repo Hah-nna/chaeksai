@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.AppSettingsFragment">
+    tools:context=".ui.myPage.AppSettingsFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/fragment_app_settings"

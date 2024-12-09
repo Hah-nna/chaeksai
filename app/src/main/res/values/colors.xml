@@ -2,4 +2,16 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="primary">#BFA1FF</color>
+    <color name="secondary">#FFFFFF</color>
+    <color name="tertiary">#BEF0CD</color>
+    <color name="error">#FF5449</color>
+    <color name="neutral">#FEF9EF</color>
+    <color name="neutral_variant">#FFD787</color>
+
+    <!-- icon, text colors-->
+    <color name="icon">#FFFFFF</color>
+    <color name="primary_text">#3D3D3D</color>
+    <color name="secondary_text">#676767</color>
+    <color name="accent_text">#000000</color>
 </resources>
