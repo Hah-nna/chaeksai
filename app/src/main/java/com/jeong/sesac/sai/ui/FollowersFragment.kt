@@ -1,15 +1,11 @@
 package com.jeong.sesac.sai.ui
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentFollowersBinding
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.viewmodel.FollowersViewModel
 
 /** writer: 정지영
  *
@@ -21,9 +17,6 @@ import com.jeong.sesac.sai.viewmodel.FollowersViewModel
 class FollowersFragment :
     BaseFragment<FragmentFollowersBinding>(FragmentFollowersBinding::inflate) {
 
-    companion object {
-        fun getInstance() = FollowersFragment()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
