@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.jeong.sesac.sai"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -34,14 +34,13 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-    
+
     viewBinding {
         enable = true
     }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -52,15 +51,10 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.ru.ldralighieri.corbind)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-//    implementation(libs.corbind.bom)
     implementation(libs.corbind)
-    implementation(libs.corbind.lifecycle)
-
     implementation(libs.ru.ldralighieri.corbind.material)
-    implementation(platform("ru.ldralighieri.corbind:corbind-bom:2024.01.00"))
-    implementation("ru.ldralighieri.corbind:corbind")
-    implementation("ru.ldralighieri.corbind:corbind-lifecycle")
 }
