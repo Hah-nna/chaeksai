@@ -17,7 +17,6 @@ import com.jeong.sesac.sai.util.BaseFragment
 class FollowersFragment :
     BaseFragment<FragmentFollowersBinding>(FragmentFollowersBinding::inflate) {
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
