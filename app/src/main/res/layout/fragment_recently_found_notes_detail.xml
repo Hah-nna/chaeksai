@@ -4,15 +4,22 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_recently_found_notes_detail_TV"
+    <include
+        android:id="@+id/included_note_cv"
+        layout="@layout/note_cardview"
+        />
+
+
+    <androidx.appcompat.widget.AppCompatImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/recently_found_notes_fragment_detail"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.6"
+        app:layout_constraintTop_toBottomOf="@+id/included_note_cv"
+        android:src="@drawable/find_note_btn"
+        android:background="@color/neutral"
         />
 
 
