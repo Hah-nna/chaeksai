@@ -50,7 +50,13 @@
         android:id="@+id/fragmentWeeklyNotes"
         android:name="com.jeong.sesac.sai.ui.home.WeeklyNotesFragment"
         android:label="@string/weeklyNotes_fragment"
-        tools:layout="@layout/fragment_weeklynotes" />
+        tools:layout="@layout/fragment_weeklynotes">
+
+        <argument
+            android:name="weeklyNote"
+            app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
+            />
+    </fragment>
     <!-- Home 끝-->
 
 
