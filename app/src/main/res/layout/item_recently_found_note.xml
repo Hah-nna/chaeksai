@@ -26,7 +26,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:src="@drawable/note01"
             android:scaleType="fitXY"
-
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
