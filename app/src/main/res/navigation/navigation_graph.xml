@@ -43,7 +43,15 @@
         android:id="@+id/fragmentRecentlyFoundNotesDetail"
         android:name="com.jeong.sesac.sai.ui.home.RecentlyFoundNotesDetailFragment"
         android:label="recently_found_notes_fragment_detail_fragment"
-        tools:layout="@layout/fragment_recently_found_notes_detail" />
+        tools:layout="@layout/fragment_recently_found_notes_detail" >
+
+        <!-- 임시 mock data -->
+        <argument
+            android:name="weeklyNote"
+            app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
+            />
+
+    </fragment>
 
     <!-- 홈프래그먼트 -> 금주의 새로운 쪽지 디테일 프래그먼트 -->
     <fragment
