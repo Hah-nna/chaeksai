@@ -5,11 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.jeong.sesac.sai.R
+import androidx.recyclerview.widget.GridLayoutManager
 import com.jeong.sesac.sai.databinding.FragmentRecentlyFoundNotesBinding
+import com.jeong.sesac.sai.recycler.recentlyFoundNotesRecycler.RecentlyFoundNotesAdapter
+import com.jeong.sesac.sai.recycler.recentlyFoundNotesRecycler.RecyclerDecoration
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.WeeklyNoteMockData
 
 class RecentlyFoundNotesFragment : BaseFragment<FragmentRecentlyFoundNotesBinding>(FragmentRecentlyFoundNotesBinding::inflate) {
+    private lateinit var recentlyFoundAdapter : RecentlyFoundNotesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,11 +26,20 @@ class RecentlyFoundNotesFragment : BaseFragment<FragmentRecentlyFoundNotesBindin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        recentlyFoundAdapter = RecentlyFoundNotesAdapter { foundNote ->
+            val action = RecentlyFoundNotesFragmentDirections.actionFragmentRecentlyFoundNotesToDetail(foundNote)
+            findNavController().navigate(action)
+        }
+
         with(binding) {
-            recentlyFoundNotesToNextBtn.setOnClickListener {
-                findNavController().navigate(R.id.action_fragmentRecentlyFoundNotes_to_detail)
+            rvRecentlyFoundNotesList.apply {
+                layoutManager = GridLayoutManager(requireContext(), 2)
+                addItemDecoration(RecyclerDecoration(2, 96))
+                adapter = this@RecentlyFoundNotesFragment.recentlyFoundAdapter
             }
         }
+        recentlyFoundAdapter.submitList(WeeklyNoteMockData.notesList)
     }
 
 
