@@ -19,5 +19,5 @@
     <string name="register_confirmation_fragment">register_confirmation_fragment</string>
     <string name="register_detail_fragment">register_detail_fragment</string>
     <string name="recently_found_notes_fragment_detail">recently_found_notes_fragment_detail</string>
-
+    <string name="weeklyNotes_detail_fragment">weeklyNotes_detail_fragment</string>
 </resources>
