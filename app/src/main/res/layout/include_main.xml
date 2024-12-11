@@ -18,6 +18,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/navigation_graph" />
+    <View
+        android:id="@+id/bottom_nav_border"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/secondary_text"
+        app:layout_constraintBottom_toTopOf="@id/bottom_bar"/>
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_bar"
@@ -27,6 +34,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/neutral"
         app:menu="@menu/bottom_menu"
         />
 
