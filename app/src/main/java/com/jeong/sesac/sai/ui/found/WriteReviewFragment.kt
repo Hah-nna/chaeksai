@@ -23,7 +23,7 @@ class WriteReviewFragment : BaseFragment<FragmentWriteReviewBinding> (FragmentWr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            writeReviewBtn.setOnClickListener {
+            btnCompletedReview.setOnClickListener {
                 findNavController().navigate(R.id.action_fragmentWriteReview_to_fragmentReviewCompleted)
             }
 
