@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeong.sesac.sai.databinding.FragmentHomeBinding
-import com.jeong.sesac.sai.recycler.recentlyFoundNotesRecycler.RecentlyFoundNotesAdapter
-import com.jeong.sesac.sai.recycler.weeklynotes.WeeklyNotesAdapter
+import com.jeong.sesac.sai.recycler.gridRecycler.GridNotesAdapter
+import com.jeong.sesac.sai.recycler.horizontalRecycler.HorizontalNotesAdapter
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.WeeklyNoteMockData
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
-    private lateinit var weeklyNoteAdapter: WeeklyNotesAdapter
-    private lateinit var recentlyFoundAdapter : RecentlyFoundNotesAdapter
+    private lateinit var weeklyNoteAdapter: HorizontalNotesAdapter
+    private lateinit var recentlyFoundAdapter : GridNotesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,17 +28,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        weeklyNoteAdapter = WeeklyNotesAdapter { weeklyNote ->
-            val action = HomeFragmentDirections.actionFragmentHomeToFragmentWeeklyNotes(weeklyNote)
+        weeklyNoteAdapter = HorizontalNotesAdapter { weeklyNote ->
+            val action = HomeFragmentDirections.actionFragmentHomeToFragmentWeeklyNoteDetail(weeklyNote)
+            findNavController().navigate(action)
+        }
+
+        recentlyFoundAdapter = GridNotesAdapter { foundNote ->
+            val action = HomeFragmentDirections.actionFragmentHomeToFragmentRecentlyFoundNotesDetail(foundNote)
             findNavController().navigate(action)
 
         }
 
-        recentlyFoundAdapter = RecentlyFoundNotesAdapter { foundNote ->
-            val action = HomeFragmentDirections.actionFragmentHomeToFragmentRecentlyFoundNotes()
-            findNavController().navigate(action)
-
-        }
 
         with(binding) {
             rvWeeklyNotes.apply {
@@ -49,6 +49,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             rvRecentlyFoundNotes.apply {
                 layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 adapter = this@HomeFragment.recentlyFoundAdapter
+            }
+
+            tvWeeklyNotesMore.setOnClickListener {
+                val action = HomeFragmentDirections.actionFragmentHomeToFragmentWeeklyNotes(WeeklyNoteMockData.notesList.first()
+                )
+                findNavController().navigate(action)
+            }
+
+            tvRecentlyFoundNotesMore.setOnClickListener {
+                val action = HomeFragmentDirections.actionFragmentHomeToFragmentRecentlyFoundNotes()
+                findNavController().navigate(action)
             }
         }
         weeklyNoteAdapter.submitList(WeeklyNoteMockData.notesList)
