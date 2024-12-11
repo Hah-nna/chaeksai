@@ -24,7 +24,7 @@ class FoundNoteDetailFragment: BaseFragment<FragmentFoundNoteDetailBinding>(Frag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            foundNoteDetailBtn.setOnClickListener {
+            btnWriteReview.setOnClickListener {
                 findNavController().navigate(R.id.action_fragmentFoundNoteDetail_to_fragmentWriteReview)
             }
 
