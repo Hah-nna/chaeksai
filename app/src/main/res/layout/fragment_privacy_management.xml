@@ -4,39 +4,150 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/neutral"
+    android:padding="@dimen/guideline_padding"
     tools:context=".ui.myPage.PrivacyManagementFragment">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_privacy_management"
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="@drawable/icon_back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/dunggeunmo"
+            android:text="@string/privacy_management"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textColor="@android:color/black" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/profileImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/privacy_management_fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/neutral"
+        android:contentDescription="@string/randomDescription"
+        android:src="@drawable/ic_profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/nicknameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_between_image"
+        android:fontFamily="@font/dunggeunmo"
+        android:text="@string/nickname_text"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        app:layout_constraintEnd_toEndOf="@id/profileImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/profileImage"
+        app:layout_constraintTop_toBottomOf="@id/profileImage" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/nicknameEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_between_image"
+        android:fontFamily="@font/dunggeunmo"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/profileImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/profileImage"
+        app:layout_constraintTop_toBottomOf="@id/profileImage" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/nicknameEditBtn"
+        android:layout_width="@dimen/icon_size_small"
+        android:layout_height="@dimen/icon_size_small"
+        android:background="@color/neutral"
+        android:contentDescription="@string/randomDescription"
+        android:scaleType="fitXY"
+        android:src="@drawable/edittext"
+        app:layout_constraintStart_toEndOf="@id/nicknameText"
+        app:layout_constraintTop_toTopOf="@id/nicknameText" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/saveNicknameBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/nicknameEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/privacy_management_to_followers_btn"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Followers"
-        app:layout_constraintTop_toBottomOf="@id/fragment_privacy_management"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/privacy_management_to_login_management_btn"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="24dp" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/privacy_management_to_login_management_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="LoginManagement"
-        app:layout_constraintTop_toBottomOf="@id/fragment_privacy_management"
-        app:layout_constraintStart_toEndOf="@id/privacy_management_to_followers_btn"
+        android:layout_marginTop="@dimen/guideline_padding"
+        android:backgroundTint="@color/primary"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="@dimen/cardCornerRadius"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nicknameText"
+        app:strokeColor="@color/black"
+        app:strokeWidth="@dimen/cardviewStrokeWidth">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/dunggeunmo"
+                android:gravity="center"
+                android:padding="@dimen/guideline_padding"
+                android:text="@string/follow_management"
+                android:textAlignment="center"
+                android:textAppearance="?attr/textAppearanceBody1" />
+        </FrameLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/privacy_management_to_login_management_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/guideline_padding"
+        android:backgroundTint="@color/primary"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="@dimen/cardCornerRadius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/privacy_management_to_followers_btn"
+        app:strokeColor="@color/black"
+        app:strokeWidth="@dimen/cardviewStrokeWidth">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/dunggeunmo"
+                android:gravity="center"
+                android:padding="@dimen/guideline_padding"
+                android:text="@string/login_management"
+                android:textAlignment="center"
+                android:textAppearance="?attr/textAppearanceBody1" />
+        </FrameLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

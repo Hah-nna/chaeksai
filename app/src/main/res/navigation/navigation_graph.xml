@@ -259,11 +259,9 @@
             app:destination="@+id/fragmentSearchRegister" />
     </fragment>
     <!-- 찾기/등록(맵) 프래그먼트 끝 -->
-
-
     <fragment
         android:id="@+id/fragment_record"
-        android:name="com.jeong.sesac.sai.ui.RecordFragment"
+        android:name="RecordFragment"
         android:label="@string/fragment_record"
         tools:layout="@layout/fragment_record">
         <action
@@ -281,19 +279,51 @@
         android:id="@+id/fragment_my_registered_notes"
         android:name="com.jeong.sesac.sai.ui.record.MyRegisteredNotesFragment"
         android:label="@string/my_registered_notes_fragment"
-        tools:layout="@layout/fragment_my_registered_notes" />
+        tools:layout="@layout/fragment_my_registered_notes">
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="description"
+            app:argType="string" />
+        <argument
+            android:name="imageResId"
+            app:argType="integer" />
+    </fragment>
+
 
     <fragment
         android:id="@+id/fragment_completed_finds"
         android:name="com.jeong.sesac.sai.ui.record.CompletedFindsFragment"
         android:label="@string/completed_finds_fragment"
-        tools:layout="@layout/fragment_completed_finds" />
+        tools:layout="@layout/fragment_completed_finds">
+    <argument
+        android:name="title"
+        app:argType="string" />
+    <argument
+        android:name="description"
+        app:argType="string" />
+    <argument
+        android:name="imageResId"
+        app:argType="integer" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_bookmarkedNotes"
         android:name="com.jeong.sesac.sai.ui.record.BookmarkedNotesFragment"
         android:label="@string/fragment_bookmarkedNotes"
-        tools:layout="@layout/fragment_bookmarked_notes" />
+        tools:layout="@layout/fragment_bookmarked_notes">
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="description"
+            app:argType="string" />
+        <argument
+            android:name="imageResId"
+            app:argType="integer" />
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_myPage"
@@ -303,7 +333,22 @@
         <action
             android:id="@+id/action_fragment_myPage_to_fragment_settings"
             app:destination="@id/fragment_settings" />
+        <action
+            android:id="@+id/action_fragment_myPage_to_fragmentReceivedReviews"
+            app:destination="@id/fragmentReceivedReviews" />
     </fragment>
+    <fragment
+        android:id="@+id/fragmentReceivedReviews"
+        android:name="com.jeong.sesac.sai.ui.myPage.ReceivedReviewsFragment"
+        android:label="Received Reviews"
+        tools:layout="@layout/fragment_received_reviews">
+    </fragment>
+
+    <action
+        android:id="@+id/action_fragment_myPage_to_fragmentReceivedReviews"
+        app:destination="@id/fragmentReceivedReviews" />
+
+
 
     <fragment
         android:id="@+id/fragment_settings"
