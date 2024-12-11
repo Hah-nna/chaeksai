@@ -8,7 +8,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
