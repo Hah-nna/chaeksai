@@ -4,7 +4,7 @@ import com.jeong.sesac.sai.R
 
 class WeeklyNoteMockData {
     companion object {
-        val notesList = listOf(
+        val notesList = mutableListOf(
             WeeklyNotesInfo(
                 hint_img = R.drawable.note01,
                 date = "2024-12-10",
