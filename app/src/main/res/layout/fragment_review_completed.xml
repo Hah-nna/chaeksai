@@ -4,36 +4,61 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_review_completed_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="fragment_review_completed"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/cv_completed_review"
+        android:text="리뷰를 보냈어요!"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        />
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_completed_review"
+        android:layout_width="260dp"
+        android:layout_height="340dp"
+        app:strokeWidth="3dp"
+        app:strokeColor="@color/black"
+        app:cardCornerRadius="12dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/goToHomeBtn"
+            />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="14sp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:text="아 쪽지 너무 찾기 어려웠는데\n막상 찾고 보니 너무 감동적인 말이었어요 시인이세요?"
+            android:lines="10"android:layout_marginHorizontal="14dp"
+            />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_completed_review"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/registerNoteBtn"
-        android:text="home"
-        />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/registerNoteBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:src="@drawable/find_note_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/goToHomeBtn"
-        android:text="register_Note"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9"
+        app:cornerRadius="12dp"
+        android:text="리뷰남기기"
+        android:textColor="@color/accent_text"
+        app:backgroundTint="@color/primary"
+        app:strokeWidth="2dp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
