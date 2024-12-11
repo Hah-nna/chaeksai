@@ -39,7 +39,8 @@
             android:textAlignment="center"
             android:gravity="center"
             android:text="아 쪽지 너무 찾기 어려웠는데\n막상 찾고 보니 너무 감동적인 말이었어요 시인이세요?"
-            android:lines="10"android:layout_marginHorizontal="14dp"
+            android:lines="10"
+            android:layout_marginHorizontal="14dp"
             />
 
     </com.google.android.material.card.MaterialCardView>
