@@ -1,7 +1,7 @@
 package com.jeong.sesac.sai.util
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class WeeklyNotesInfo(
