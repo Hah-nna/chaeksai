@@ -1,7 +1,9 @@
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.navigation.safe.args)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -38,6 +40,7 @@ android {
     viewBinding {
         enable = true
     }
+
 }
 
 dependencies {
@@ -57,4 +60,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.corbind)
     implementation(libs.ru.ldralighieri.corbind.material)
+
+    implementation("com.kakao.maps.open:android:2.9.5")
 }

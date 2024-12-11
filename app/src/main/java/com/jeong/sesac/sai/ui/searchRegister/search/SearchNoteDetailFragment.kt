@@ -22,10 +22,6 @@ class SearchNoteDetailFragment : BaseFragment<FragmentSearchNoteDetailBinding>(F
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding) {
-            BarcodeScannerBtn.setOnClickListener {
-                findNavController().navigate(R.id.action_fragmentSearchNoteDetail_to_fragmentBarcodeScanner)
-            }
-        }
+
     }
 }

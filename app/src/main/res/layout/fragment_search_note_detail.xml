@@ -2,24 +2,45 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_search_note_detail_TV"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/icon_back"
+         />
+
+    <include
+        android:id="@+id/included_note_cv"
+        layout="@layout/note_cardview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:layout_marginTop="12dp"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_barcode_scan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="searchNoteDetailFragment"
+        android:src="@drawable/find_note_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/included_note_cv"
+        app:layout_constraintVertical_bias="0.6"
+        app:cornerRadius="12dp"
+        android:text="쪽지 찾으러가기"
+        android:textColor="@color/accent_text"
+        app:backgroundTint="@color/primary"
+        app:strokeWidth="2dp"
+        />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/BarcodeScannerBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="BarcodeScanner"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

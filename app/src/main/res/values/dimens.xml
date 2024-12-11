@@ -17,4 +17,17 @@
     <dimen name="item_margin_top">16dp</dimen>
     <dimen name="cardContentPadding">16dp</dimen>
     <dimen name="card_spacing">8dp</dimen>
+    <dimen name="basic_padding">16dp</dimen>
+    <dimen name="card_view_stroke_width">3dp</dimen>
+    <dimen name="main_title_text">28sp</dimen>
+    <dimen name="main_second_title_text">20sp</dimen>
+    <dimen name="main_small_title_text">18sp</dimen>
+    <dimen name="main_margin_top">28dp</dimen>
+    <dimen name="main_separate_margin_top">96dp</dimen>
+    <dimen name="recycler_view_margin_top">30dp</dimen>
+    <dimen name="margin_top_small">12dp</dimen>
+    <dimen name="basic_border_radius">12dp</dimen>
+
+
+
 </resources>

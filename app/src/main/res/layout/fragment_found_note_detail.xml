@@ -1,29 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:fitsSystemWindows="true">
 
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_found_note_detail_TV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="found_note_detail_fragment"
-       app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/icon_back"
         />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/foundNoteDetailBtn"
+    <include
+        android:id="@+id/included_note_cv"
+        layout="@layout/note_cardview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:layout_marginTop="@dimen/margin_top_small"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_write_review"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/find_note_btn"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="WriteReview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/included_note_cv"
+        app:layout_constraintVertical_bias="0.6"
+        app:cornerRadius="@dimen/basic_border_radius"
+        android:text="@string/text_review"
+        android:textColor="@color/accent_text"
+        app:backgroundTint="@color/primary"
+        app:strokeWidth="2dp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/dunggeunmo"
-            android:text="@string/privacy_management_fragment"
+            android:text="@string/privacy_management"
             android:textAppearance="?attr/textAppearanceHeadline6"
             android:textColor="@android:color/black" />
     </androidx.appcompat.widget.Toolbar>

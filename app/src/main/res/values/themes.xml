@@ -1,8 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- 기본 전역 테마 설정 -->
     <style name="Base.Theme.Sai" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:colorBackground">@color/neutral</item>
+        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
+        <item name="android:buttonStyle">@style/customBtnViewFontStyle</item>
+        <item name="android:editTextStyle">@style/customEditTextViewFontStyle</item>
+        <item name="android:imageButtonStyle">@style/customImgBtnViewFontStyle</item>
     </style>
 
     <style name="Theme.Sai" parent="Base.Theme.Sai" />

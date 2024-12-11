@@ -1,29 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.WeeklyNotesFragment"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_weekly_notes_TV"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="@drawable/icon_back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/chip_group"
+        />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/weeklyNotes_fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/weeklynotes_to_next_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/next"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:chipSpacingHorizontal="34dp"
+        app:singleLine="true"
+        app:singleSelection="true"
+
+        >
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_recent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="최신순"
+            />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_heartUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="하트높은순"
+            />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_heartDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="하트낮은순"
+            />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_grid_notes_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/chip_group"
+        android:layout_marginTop="32dp"
+        app:flow_horizontalGap="24dp"
+        app:flow_verticalGap="24dp"
+        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
