@@ -18,10 +18,28 @@
             android:id="@+id/action_fragmentHome_to_fragmentRecentlyFoundNotes"
             app:destination="@+id/fragmentRecentlyFoundNotes" />
 
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentRecentlyFoundNotesDetail"
+            app:destination="@+id/fragmentRecentlyFoundNotesDetail">
+        <argument
+            android:name="recently_found_note_detail"
+            app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"/>
+
+        </action>
+
         <!-- 홈프래그먼트 -> 금주의 새로운 쪽지 프래그먼트로 이동하는 설정 action -->
         <action
             android:id="@+id/action_fragmentHome_to_fragmentWeeklyNotes"
             app:destination="@+id/fragmentWeeklyNotes" />
+
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentWeeklyNoteDetail"
+            app:destination="@+id/fragmentWeeklyNotesDetail">
+            <argument
+                android:name="weeklyNoteDetail"
+                app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
+                />
+        </action>
     </fragment>
 
     <!-- 홈프래그먼트 -> 사람들이 방금 찾은 쪽지 프래그먼트 -->
@@ -47,24 +65,44 @@
 
         <!-- 임시 mock data -->
         <argument
-            android:name="weeklyNote"
-            app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
-            />
+            android:name="recently_found_note_detail"
+            app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"/>
 
     </fragment>
 
-    <!-- 홈프래그먼트 -> 금주의 새로운 쪽지 디테일 프래그먼트 -->
+    <!-- 홈프래그먼트 -> 금주의 새로운 쪽지 리스트 프래그먼트 -->
     <fragment
         android:id="@+id/fragmentWeeklyNotes"
         android:name="com.jeong.sesac.sai.ui.home.WeeklyNotesFragment"
         android:label="@string/weeklyNotes_fragment"
         tools:layout="@layout/fragment_weeklynotes">
+        <action
+            android:id="@+id/action_fragmentWeeklyNotes_to_detail"
+            app:destination="@+id/fragmentRecentlyFoundNotesDetail" />
 
         <argument
             android:name="weeklyNote"
             app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
             />
     </fragment>
+
+    <fragment
+        android:id="@+id/fragmentWeeklyNotesDetail"
+        android:name="com.jeong.sesac.sai.ui.home.WeeklyNotesDetailFragment"
+        android:label="@string/weeklyNotes_detail_fragment"
+        tools:layout="@layout/fragment_weekly_note_detail">
+
+        <!-- 홈프래그먼트가 아니라 바코드 인식 화면으로 이동해야함(수정 필요) -->
+        <action
+            android:id="@+id/action_fragmentWeeklyDetailNotes_to_findNote"
+            app:destination="@+id/fragmentHome" />
+
+        <argument
+            android:name="weeklyNoteDetail"
+            app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
+            />
+    </fragment>
+
     <!-- Home 끝-->
 
 
@@ -79,12 +117,23 @@
         <!-- 찾기/등록(맵) -> 쪽지 등록 액션 -->
         <action
             android:id="@+id/action_fragmentSearchRegister_to_fragmentRegisterDetail"
-            app:destination="@+id/fragmentRegisterDetail" />
+            app:destination="@+id/fragmentRegisterDetail">
+            <argument
+                android:name="libraryName"
+                app:argType="string"
+                app:nullable="false" />
+        </action>
 
         <!-- 찾기/등록(맵) -> 쪽지 찾기 액션 -->
         <action
             android:id="@+id/action_fragmentSearchRegister_to_fragmentSearchList"
-            app:destination="@+id/fragmentSearchList" />
+            app:destination="@+id/fragmentSearchList">
+
+            <argument
+                android:name="findNoteDetail"
+                app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo[]"
+                />
+        </action>
 
     </fragment>
 
@@ -93,12 +142,14 @@
         android:id="@+id/fragmentRegisterDetail"
         android:name="com.jeong.sesac.sai.ui.searchRegister.register.RegisterDetailFragment"
         android:label="fragment_register_detail"
-        tools:layout="@layout/fragment_register_detail">
+        tools:layout="@layout/fragment_register_detail"
+        >
 
         <!-- 쪽지 등록 디테일 확인 프래그먼트로 이동 액션 -->
         <action
             android:id="@+id/action_fragmentRegisterDetail_to_fragmentRegisterConfirmation"
-            app:destination="@id/fragmentRegisterConfirmation" />
+            app:destination="@id/fragmentRegisterConfirmation"
+            />
     </fragment>
 
     <!-- 찾기/등록(맵) 프래그먼트 ->  등록 디테일 프래그먼트 -> 등록 디테일 확인 프래그먼트 -->
@@ -125,8 +176,16 @@
         <!-- 쪽지 찾기 프래그먼트에서 쪽지디테일 프래그먼트로 이동 액션 -->
         <action
             android:id="@+id/action_fragmentSearchList_to_fragmentSearchNoteDetail"
-            app:destination="@+id/fragmentSearchNoteDetail" />
+            app:destination="@+id/fragmentSearchNoteDetail"
+            >
+        <argument
+            android:name="findNoteDetail"
+            app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo[]"
+            />
+        </action>
     </fragment>
+
+
 
     <!-- 찾기/등록(맵) -> 쪽지 찾기 프래그먼트 -> 선택한 쪽지 디테일 프래그먼트 -->
     <fragment
@@ -180,6 +239,7 @@
             android:id="@+id/action_fragmentWriteReview_to_fragmentReviewCompleted"
             app:destination="@+id/fragmentReviewCompleted" />
     </fragment>
+
 
     <!-- 찾기/등록(맵) -> 쪽지 찾기 프래그먼트 -> 선택한 쪽지 디테일 프래그먼트 -> 바코드 스캔 프래그먼트 -> 찾은 쪽지 디테일 프래그먼트 -> 리뷰쓰기 프래그먼트 -> 리뷰완료 프래그먼트
     (해당 프래그먼트로 이동 후 홈으로 가거나 혹은 새로운 쪽지 등록을 할 수 있음)-->
