@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.databinding.FragmentBookmarkedNotesBinding
 import com.jeong.sesac.sai.util.BaseFragment
 
@@ -17,16 +20,21 @@ import com.jeong.sesac.sai.util.BaseFragment
 class BookmarkedNotesFragment :
     BaseFragment<FragmentBookmarkedNotesBinding>(FragmentBookmarkedNotesBinding::inflate) {
 
-    companion object {
-        fun getInstance() = BookmarkedNotesFragment()
-    }
+    private val args: BookmarkedNotesFragmentArgs by navArgs()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding =
-            FragmentBookmarkedNotesBinding.inflate(layoutInflater, container, false)
-        return binding.root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().navigateUp()
+        }
+        with(binding) {
+            // Set selected image and texts
+            selectedImage.setImageResource(args.imageResId)
+            selectedTitle.text = args.title
+            selectedDescription.text = args.description
+        }
     }
 }

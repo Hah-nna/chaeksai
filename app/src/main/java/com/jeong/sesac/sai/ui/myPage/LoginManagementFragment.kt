@@ -4,7 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.jeong.sesac.sai.data.LoginInfo
 import com.jeong.sesac.sai.databinding.FragmentLoginManagementBinding
+import com.jeong.sesac.sai.ui.adapter.LoginInfoAdapter
 import com.jeong.sesac.sai.util.BaseFragment
 
 /** writer: 정지영
@@ -28,5 +33,25 @@ class LoginManagementFragment :
         _binding =
             FragmentLoginManagementBinding.inflate(layoutInflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().navigateUp()
+        }
+        // 더미 데이터 생성
+        val loginInfoList = listOf(
+            LoginInfo("Google", "2024-12-10", true),
+            LoginInfo("Naver", "2024-12-08", false),
+            LoginInfo("Kakao", "2024-12-01", true)
+        )
+
+        // RecyclerView 설정
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = LoginInfoAdapter(loginInfoList)
     }
 }

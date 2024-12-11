@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
 import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentSettingsBinding
@@ -18,10 +19,6 @@ import com.jeong.sesac.sai.util.BaseFragment
  */
 class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsBinding::inflate) {
 
-    companion object {
-        fun getInstance() = SettingsFragment()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,12 +30,16 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().navigateUp()
+        }
         with(binding) {
-
             settingsToPrivacyManagementBtn.setOnClickListener {
                 findNavController().navigate(R.id.action_fragment_settings_to_fragment_privacy_management)
             }
-
             settingsToAppSettingsBtn.setOnClickListener {
                 findNavController().navigate(R.id.action_fragment_settings_to_fragment_app_settings)
             }
