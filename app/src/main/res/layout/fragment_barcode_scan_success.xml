@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.1"
-        app:strokeWidth="3dp"
+        app:strokeWidth="@dimen/card_view_stroke_width"
         app:strokeColor="@color/accent_text"
         android:layout_marginTop="175dp"
         >

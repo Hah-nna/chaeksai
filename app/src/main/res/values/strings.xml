@@ -20,4 +20,10 @@
     <string name="register_detail_fragment">register_detail_fragment</string>
     <string name="recently_found_notes_fragment_detail">recently_found_notes_fragment_detail</string>
     <string name="weeklyNotes_detail_fragment">weeklyNotes_detail_fragment</string>
+    <string name="weeklyNotes">weeklyNotes_detail_fragment</string>
+    <string name="main_head_title">안녕하세요\n김철수님👋🏻</string>
+    <string name="main_head_second_title">금주의 새로운 쪽지</string>
+    <string name="main_head_third_title">사람들이 방금 찾은 쪽지</string>
+    <string name="text_more">더보기 ></string>
+    <string name="text_review">리뷰남기기</string>
 </resources>

@@ -10,35 +10,35 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="안녕하세요\n김철수님 👋🏻"
+        android:text="@string/main_head_title"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="0"
         android:textStyle="bold"
-        android:textSize="28sp"
-        android:layout_marginTop="28dp"
+        android:textSize="@dimen/main_title_text"
+        android:layout_marginTop="@dimen/main_margin_top"
         />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_weeklyNotes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="금주의 새로운 쪽지"
+        android:text="@string/main_head_second_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_title"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="28dp"
-        android:textSize="20sp"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:textSize="@dimen/main_second_title_text"
         />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_weeklyNotes_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="더보기 >"
+        android:text="@string/text_more"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_weeklyNotes"
-        android:layout_marginTop="28dp"
-        android:textSize="18sp"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:textSize="@dimen/main_second_title_text"
         />
 
 
@@ -51,29 +51,29 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_weeklyNotes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/recycler_view_margin_top"
         />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_recentlyFoundNotes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="사람들이 방금 찾은 쪽지"
+        android:text="@string/main_head_third_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rv_weekly_notes"
-        android:layout_marginTop="96dp"
-        android:textSize="20sp"
+        android:layout_marginTop="@dimen/main_separate_margin_top"
+        android:textSize="@dimen/main_second_title_text"
         />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_recentlyFoundNotes_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="더보기 >"
+        android:text="@string/text_more"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_recentlyFoundNotes"
-        android:layout_marginTop="28dp"
-        android:textSize="18sp"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:textSize="@dimen/main_small_title_text"
         />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -82,7 +82,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         tools:listitem="@layout/item_weekly_notes"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/recycler_view_margin_top"
         app:layout_constraintTop_toBottomOf="@+id/tv_recentlyFoundNotes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
