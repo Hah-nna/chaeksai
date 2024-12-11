@@ -1,10 +1,10 @@
-package com.jeong.sesac.sai.recycler.recentlyFoundNotesRecycler
+package com.jeong.sesac.sai.recycler.gridRecycler
 
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerDecoration(
+class GridRecyclerDecoration(
     private val spanCount : Int,
     private val spacing: Int
 ) : RecyclerView.ItemDecoration() {
