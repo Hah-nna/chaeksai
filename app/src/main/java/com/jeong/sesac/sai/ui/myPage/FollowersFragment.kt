@@ -4,7 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.jeong.sesac.sai.R
+import com.jeong.sesac.sai.data.Follower
 import com.jeong.sesac.sai.databinding.FragmentFollowersBinding
+import com.jeong.sesac.sai.ui.adapter.FollowerAdapter
 import com.jeong.sesac.sai.util.BaseFragment
 
 /** writer: 정지영
@@ -24,5 +30,29 @@ class FollowersFragment :
         _binding =
             FragmentFollowersBinding.inflate(layoutInflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Toolbar 뒤로가기
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().navigateUp()
+        }
+
+        // 더미 데이터 생성
+        val followers = listOf(
+            Follower(R.drawable.unfollow, "John Doe"),
+            Follower(R.drawable.unfollow, "Jane Smith"),
+            Follower(R.drawable.unfollow, "Alice Brown")
+        )
+
+        // RecyclerView 설정
+        val adapter = FollowerAdapter(followers)
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = adapter
     }
 }

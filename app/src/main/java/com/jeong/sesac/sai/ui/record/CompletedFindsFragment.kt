@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.databinding.FragmentCompletedFindsBinding
 import com.jeong.sesac.sai.util.BaseFragment
 
@@ -17,16 +20,20 @@ import com.jeong.sesac.sai.util.BaseFragment
 class CompletedFindsFragment :
     BaseFragment<FragmentCompletedFindsBinding>(FragmentCompletedFindsBinding::inflate) {
 
-    companion object {
-        fun getInstance() = CompletedFindsFragment()
-    }
+    private val args: CompletedFindsFragmentArgs by navArgs()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding =
-            FragmentCompletedFindsBinding.inflate(layoutInflater, container, false)
-        return binding.root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().navigateUp()
+        }
+        with(binding) {
+            selectedImage.setImageResource(args.imageResId)
+            selectedTitle.text = args.title
+            selectedDescription.text = args.description
+        }
     }
 }
