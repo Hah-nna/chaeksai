@@ -44,6 +44,7 @@ class AppSettingsFragment :
             findNavController().navigateUp()
         }
         // 캐시 데이터 삭제 버튼 클릭 이벤트
+
         binding.deleteCashData.setOnClickListener {
             showDeleteCashDataDialog()
         }
