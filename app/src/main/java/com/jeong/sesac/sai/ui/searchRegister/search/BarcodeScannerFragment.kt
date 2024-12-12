@@ -27,14 +27,12 @@ class BarcodeScannerFragment : BaseFragment<FragmentBarcodeScannerBinding>(Fragm
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
             btnBarcodeScanSuccess.setOnClickListener {
-                val action = SearchNoteDetailFragmentDirections
-                    .actionFragmentSearchNoteDetailToFragmentBarcodeScanner(noteInfo)
+                val action = BarcodeScannerFragmentDirections.actionFragmentBarcodeScannerToFragmentBarcodeScannerSuccess(noteInfo)
                 findNavController().navigate(action)
             }
 
             btnBarcodeScanFail.setOnClickListener {
-                val action = SearchNoteDetailFragmentDirections
-                    .actionFragmentSearchNoteDetailToFragmentBarcodeScanner(noteInfo)
+                val action = BarcodeScannerFragmentDirections.actionFragmentBarcodeScannerToFragmentBarcodeScannerFail(noteInfo)
                 findNavController().navigate(action)
             }
         }
