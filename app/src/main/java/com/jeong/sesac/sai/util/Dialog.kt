@@ -68,11 +68,17 @@ class Dialog(
      * */
     private fun setupClickListeners() {
         binding.btnLeft.setOnClickListener {
+            /**
+             * 사용하려는 프랙르먼트에서 dialogInterface를 상속받아 onClickLeftBtn()안에 원한느 것을 구현하면 됨
+             * */
             dialogInterface.onClickLeftBtn()
             dismiss()
         }
 
         binding.btnRight.setOnClickListener {
+            /**
+             * 사용하려는 프랙르먼트에서 dialogInterface를 상속받아 onClickRightBtn()안에 원한느 것을 구현하면 됨
+             * */
             dialogInterface.onClickRightBtn()
             dismiss()
         }
