@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.databinding.FragmentBarcodeScanFailBinding
-import com.jeong.sesac.sai.databinding.FragmentBarcodeScannerBinding
 import com.jeong.sesac.sai.util.BaseFragment
 
 class BarcodeScanFailFragment :
