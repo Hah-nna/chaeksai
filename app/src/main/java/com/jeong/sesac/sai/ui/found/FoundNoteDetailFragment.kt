@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.databinding.FragmentFoundNoteDetailBinding
 import com.jeong.sesac.sai.util.BaseFragment
@@ -25,9 +26,9 @@ class FoundNoteDetailFragment: BaseFragment<FragmentFoundNoteDetailBinding>(Frag
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
            btnWriteReview.setOnClickListener {
-               FoundNoteDetailFragmentDirections.actionFragmentFoundNoteDetailToFragmentWriteReview("1234", "1")
+             val action = FoundNoteDetailFragmentDirections.actionFragmentFoundNoteDetailToFragmentWriteReview("1234", "1")
+            findNavController().navigate(action)
            }
-
 
         }
     }
