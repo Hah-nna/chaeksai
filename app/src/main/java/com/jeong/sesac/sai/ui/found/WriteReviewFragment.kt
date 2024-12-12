@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
-import com.jeong.sesac.sai.R
+import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.databinding.FragmentWriteReviewBinding
 import com.jeong.sesac.sai.util.BaseFragment
 
 class WriteReviewFragment : BaseFragment<FragmentWriteReviewBinding> (FragmentWriteReviewBinding::inflate) {
+    private val args : WriteReviewFragmentArgs by navArgs()
 
      override fun onCreateView(
         inflater: LayoutInflater,
@@ -20,13 +20,17 @@ class WriteReviewFragment : BaseFragment<FragmentWriteReviewBinding> (FragmentWr
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        var content = "ddsadsadsadsdsasa"
+
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            btnCompletedReview.setOnClickListener {
-                findNavController().navigate(R.id.action_fragmentWriteReview_to_fragmentReviewCompleted)
+            with(binding) {
+                btnCompletedReview.setOnClickListener {
+                    WriteReviewFragmentDirections.actionFragmentWriteReviewToFragmentReviewCompleted("1234", "1", content)
+                }
             }
-
         }
     }
 }
