@@ -63,10 +63,14 @@
         android:label="recently_found_notes_fragment_detail_fragment"
         tools:layout="@layout/fragment_recently_found_notes_detail" >
 
-        <!-- 임시 mock data -->
         <argument
             android:name="recently_found_note_detail"
             app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"/>
+
+        <action
+            android:id="@+id/action_fragmentRecentlyFoundNotesDetail_to_fragmentHome"
+            app:destination="@+id/fragmentHome">
+        </action>
 
     </fragment>
 
@@ -86,27 +90,33 @@
             />
     </fragment>
 
+    <!-- 금주의 새로운 쪽지 -> 쪽지 디테일 -->
     <fragment
         android:id="@+id/fragmentWeeklyNotesDetail"
         android:name="com.jeong.sesac.sai.ui.home.WeeklyNotesDetailFragment"
         android:label="@string/weeklyNotes_detail_fragment"
         tools:layout="@layout/fragment_weekly_note_detail">
 
-        <!-- 홈프래그먼트가 아니라 바코드 인식 화면으로 이동해야함(수정 필요) -->
-        <action
-            android:id="@+id/action_fragmentWeeklyDetailNotes_to_findNote"
-            app:destination="@+id/fragmentHome" />
+        <argument
+            android:name="weeklyNoteDetail"
+            app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"/>
 
+        <!-- 바코드 인식 화면으로 이동 -->
+        <action
+            android:id="@+id/action_fragmentWeeklyDetailNotes_to_fragmentBarcodeScanner"
+            app:destination="@+id/fragmentBarcodeScanner">
         <argument
             android:name="weeklyNoteDetail"
             app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
             />
+        </action>
     </fragment>
 
     <!-- Home 끝-->
 
 
     <!-- 찾기/등록(맵) 프래그먼트 시작 -->
+
     <!-- 찾기/등록(맵) 프래그먼트-->
     <fragment
         android:id="@+id/fragmentSearchRegister"
@@ -114,10 +124,15 @@
         android:label="@string/fragment_search_register"
         tools:layout="@layout/fragment_search_register">
 
-        <!-- 찾기/등록(맵) -> 쪽지 등록 액션 -->
+        <argument
+            android:name="libraryName"
+            app:argType="string"
+            app:nullable="false" />
+
+        <!-- 찾기/등록(맵) -> 쪽지 등록 이동 액션 -->
         <action
-            android:id="@+id/action_fragmentSearchRegister_to_fragmentRegisterDetail"
-            app:destination="@+id/fragmentRegisterDetail">
+            android:id="@+id/action_fragmentSearchRegister_to_fragmentRegisterNote"
+            app:destination="@+id/fragmentRegisterNote">
             <argument
                 android:name="libraryName"
                 app:argType="string"
@@ -134,25 +149,75 @@
                 app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo[]"
                 />
         </action>
-
     </fragment>
 
-    <!-- 찾기/등록(맵) 프래그먼트 ->  등록 디테일 프래그먼트 -->
+    <!-- 찾기/등록(맵) 프래그먼트 ->  쪽지내용 등록 -->
+    <fragment
+        android:id="@+id/fragmentRegisterNote"
+        android:name="com.jeong.sesac.sai.ui.searchRegister.register.RegisterNoteFragment"
+        android:label="fragment_register_note"
+        tools:layout="@layout/fragment_register_note"
+        >
+
+        <argument
+            android:name="libraryName"
+            app:argType="string"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/action_fragmentRegisterNote_to_fragmentRegisterDetail"
+            app:destination="@+id/fragmentRegisterDetail">
+
+            <argument
+                android:name="libraryName"
+                app:argType="string"
+                app:nullable="false" />
+            <argument
+                android:name="noteContent"
+                app:argType="string"
+                app:nullable="false" />
+        </action>
+    </fragment>
+
+
+    <!-- 찾기/등록(맵) 프래그먼트 ->  쪽지내용 등록 -> 등록 디테일 프래그먼트 -->
     <fragment
         android:id="@+id/fragmentRegisterDetail"
         android:name="com.jeong.sesac.sai.ui.searchRegister.register.RegisterDetailFragment"
         android:label="fragment_register_detail"
         tools:layout="@layout/fragment_register_detail"
         >
+        <argument
+            android:name="libraryName"
+            app:argType="string"
+            app:nullable="false" />
+        <argument
+            android:name="noteContent"
+            app:argType="string"
+            app:nullable="false" />
 
         <!-- 쪽지 등록 디테일 확인 프래그먼트로 이동 액션 -->
         <action
             android:id="@+id/action_fragmentRegisterDetail_to_fragmentRegisterConfirmation"
             app:destination="@id/fragmentRegisterConfirmation"
-            />
+            >
+            <argument
+                android:name="libraryName"
+                app:argType="string"
+                app:nullable="false" />
+            <argument
+                android:name="noteContent"
+                app:argType="string"
+                app:nullable="false" />
+            <argument
+                android:name="book"
+                app:argType="string"
+                app:nullable="false" />
+
+        </action>
     </fragment>
 
-    <!-- 찾기/등록(맵) 프래그먼트 ->  등록 디테일 프래그먼트 -> 등록 디테일 확인 프래그먼트 -->
+    <!-- 찾기/등록(맵) 프래그먼트 ->  쪽지내용 등록 -> 등록 디테일 프래그먼트 -> 등록 디테일 확인 프래그먼트 -->
     <fragment
         android:id="@+id/fragmentRegisterConfirmation"
         android:name="com.jeong.sesac.sai.ui.searchRegister.register.RegisterConfirmationFragment"
@@ -161,7 +226,20 @@
 
         <!-- 찾기/등록(맵) 프래그먼트 ->  등록 디테일 프래그먼트 -> 등록 디테일 확인 프래그먼트 -> 홈으로 이동 액션 -->
         <action
-            android:id="@+id/action_fragmentRegisterConfirmation_to_fragmentHome"
+            android:id="@+id/action_fragmentRegisterConfirmation_to_fragmentRegisteredNote"
+            app:destination="@id/fragmentRegisteredNote" />
+    </fragment>
+
+    <!-- 찾기/등록(맵) 프래그먼트 ->  쪽지내용 등록 -> 등록 디테일 프래그먼트 -> 등록 디테일 확인 프래그먼트 -->
+    <fragment
+        android:id="@+id/fragmentRegisteredNote"
+        android:name="com.jeong.sesac.sai.ui.searchRegister.register.RegisteredNoteFragment"
+        android:label="fragment_registered_note"
+        tools:layout="@layout/fragment_registered_note">
+
+        <!-- 찾기/등록(맵) 프래그먼트 ->  등록 디테일 프래그먼트 -> 등록 디테일 확인 프래그먼트 -> 홈으로 이동 액션 -->
+        <action
+            android:id="@+id/action_fragmentRegisteredNote_to_fragmentHome"
             app:destination="@id/fragmentHome" />
     </fragment>
 
