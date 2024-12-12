@@ -23,17 +23,24 @@
         />
 
 
-    <androidx.appcompat.widget.AppCompatImageButton
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_barcodeScanner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.6"
-        app:layout_constraintTop_toBottomOf="@+id/included_note_cv"
         android:src="@drawable/find_note_btn"
-        android:background="@color/neutral"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9"
+        app:cornerRadius="12dp"
+        android:text="쪽지찾으러가기"
+        android:textColor="@color/accent_text"
+        app:backgroundTint="@color/primary"
+        app:strokeWidth="2dp"
         />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
