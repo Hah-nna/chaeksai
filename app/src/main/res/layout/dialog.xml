@@ -1,6 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/dialog_background"
+    android:orientation="vertical"
+    android:paddingHorizontal="12dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textAlignment="center"
+        android:text="쪽지를 남기고 등록하면\n추가 힌트 교환권 증정 !"
+        android:paddingHorizontal="48dp"
+        android:paddingTop="58dp"
+        android:paddingBottom="58dp"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        />
+
+    <View
+        android:id="@+id/horizontal_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/secondary_text"
+        app:layout_constraintTop_toBottomOf="@+id/tv_dialog"
+        />
+
+    <View
+        android:id="@+id/vertical_line"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/secondary_text"
+        app:layout_constraintTop_toBottomOf="@+id/tv_dialog"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_left"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_dialog"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_right"
+        android:background="@null"
+        android:text="나중에"
+        app:layout_constraintHorizontal_weight="1"
+        android:textColor="@color/secondary_text"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:padding="30dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_right"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_dialog"
+        app:layout_constraintStart_toEndOf="@+id/btn_left"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@null"
+        android:text="쪽지쓰러가기"
+        app:layout_constraintHorizontal_weight="1"
+        android:textColor="@color/primary_text"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:padding="30dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
