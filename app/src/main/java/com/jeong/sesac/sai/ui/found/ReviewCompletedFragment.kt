@@ -68,7 +68,7 @@ class ReviewCompletedFragment : BaseFragment<FragmentReviewCompletedBinding>(Fra
     }
 
     override fun onClickRightBtn() {
-        val rightAction =  ReviewCompletedFragmentDirections.actionFragmentReviewCompletedToFragmentSearchRegister()
+        val rightAction =  ReviewCompletedFragmentDirections.actionFragmentReviewCompletedToFragmentSearchRegister("")
         findNavController().navigate(rightAction)
     }
 }
