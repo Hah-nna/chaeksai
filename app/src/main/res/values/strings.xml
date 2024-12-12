@@ -69,5 +69,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="received_reviews_title">받은 리뷰</string>
     <string name="received_reviews_fragment">내가 받은 리뷰</string>
+    <string name="registered_note">등록한쪽지</string>
+    <string name="found_complete_note">찾기완료한쪽지</string>
+    <string name="saved_note">찜한쪽지</string>
 
 </resources>

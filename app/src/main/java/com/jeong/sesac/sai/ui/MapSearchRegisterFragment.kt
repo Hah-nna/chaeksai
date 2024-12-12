@@ -52,7 +52,7 @@ class MapSearchRegisterFragment :
         })
 
         registerNotedAdapter = GridNotesAdapter { registerNote ->
-            val action = MapSearchRegisterFragmentDirections.actionFragmentSearchRegisterToFragmentRegisterDetail("새싹도서관")
+            val action = MapSearchRegisterFragmentDirections.actionFragmentSearchRegisterToFragmentRegisterNote("새싹도서관")
             findNavController().navigate(action)
 
         }
@@ -66,7 +66,7 @@ class MapSearchRegisterFragment :
 
         with(binding) {
             btnRegister.setOnClickListener {
-                val registerAction = MapSearchRegisterFragmentDirections.actionFragmentSearchRegisterToFragmentRegisterDetail("새싹도서관")
+                val registerAction = MapSearchRegisterFragmentDirections.actionFragmentSearchRegisterToFragmentRegisterNote("새싹도서관")
                 findNavController().navigate(registerAction)
             }
             btnFind.setOnClickListener {

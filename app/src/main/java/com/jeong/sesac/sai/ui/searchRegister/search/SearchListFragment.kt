@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.jeong.sesac.sai.databinding.FragmentSearchListBinding
 import com.jeong.sesac.sai.recycler.gridRecycler.GridNotesAdapter
@@ -16,6 +17,7 @@ import com.jeong.sesac.sai.util.WeeklyNoteMockData
 
 class SearchListFragment : BaseFragment<FragmentSearchListBinding> (FragmentSearchListBinding::inflate) {
     private lateinit var searchListAdapter : GridNotesAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,11 +37,9 @@ class SearchListFragment : BaseFragment<FragmentSearchListBinding> (FragmentSear
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             findNavController().navigateUp()
         }
-        searchListAdapter = GridNotesAdapter { foundNote ->
+        searchListAdapter = GridNotesAdapter { findNoteInfo ->
             val action =
-                RecentlyFoundNotesFragmentDirections.actionFragmentRecentlyFoundNotesToDetail(
-                    foundNote
-                )
+                SearchListFragmentDirections.actionFragmentSearchListToFragmentSearchNoteDetail(findNoteInfo)
             findNavController().navigate(action)
         }
 

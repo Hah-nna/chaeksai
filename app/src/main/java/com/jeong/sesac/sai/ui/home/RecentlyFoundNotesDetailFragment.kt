@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.navigation.NavArgs
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.databinding.FragmentRecentlyFoundNotesDetailBinding
@@ -31,9 +30,16 @@ class RecentlyFoundNotesDetailFragment : BaseFragment<FragmentRecentlyFoundNotes
         super.onViewCreated(view, savedInstanceState)
 
 
-        with(binding.includedNoteCv){
-            cvNoteDetailImg.setImageResource(noteDetail.hint_img)
+        with(binding){
+            includedNoteCv.cvNoteDetailImg.setImageResource(noteDetail.hint_img)
+            includedNoteCv.iconBook.visibility = View.GONE
+            btnGoToHome.setOnClickListener {
+                val action = RecentlyFoundNotesDetailFragmentDirections.actionFragmentRecentlyFoundNotesDetailToFragmentHome()
+                findNavController().navigate(action)
+            }
         }
+
+
 
         binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()

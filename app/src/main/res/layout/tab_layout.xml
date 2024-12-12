@@ -16,21 +16,21 @@
             android:id="@+id/wrote_notes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="등록한 쪽지"
+            android:text="@string/registered_note"
             />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/completed_notes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="찾기완료한쪽지"
+            android:text="@string/found_complete_note"
             />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/saved_notes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="찜한쪽지"
+            android:text="@string/saved_note"
             />
 
         <androidx.recyclerview.widget.RecyclerView

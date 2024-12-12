@@ -6,41 +6,34 @@
 
     <include
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
         layout="@layout/included_toolbar"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <include
-        android:id="@+id/included_note_cv"
-        layout="@layout/note_cardview"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toTopOf="parent"
         />
 
-
+    <include
+        android:id="@+id/include_cv"
+        layout="@layout/note_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_barcodeScanner"
+        android:id="@+id/btn_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/find_note_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintVertical_bias="0.95"
         app:cornerRadius="12dp"
-        android:text="쪽지찾으러가기"
+        android:text="홈으로"
         android:textColor="@color/accent_text"
         app:backgroundTint="@color/primary"
         app:strokeWidth="2dp"
         />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

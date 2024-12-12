@@ -28,8 +28,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         >
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="12dp"
 
             />
         <androidx.appcompat.widget.AppCompatTextView
@@ -39,10 +40,26 @@
             android:textAlignment="center"
             android:gravity="center"
             android:text="아 쪽지 너무 찾기 어려웠는데\n막상 찾고 보니 너무 감동적인 말이었어요 시인이세요?"
-            android:lines="10"
-            android:layout_marginHorizontal="14dp"
+            android:maxLines="10"
+            android:layout_marginHorizontal="12dp"
+
             />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:text="by 땡땡"
+            android:layout_marginHorizontal="12dp"
+            android:layout_gravity="end|right|bottom"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
+            android:maxLines="1"
+            android:lineBreakStyle="normal"
+
+            />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.button.MaterialButton

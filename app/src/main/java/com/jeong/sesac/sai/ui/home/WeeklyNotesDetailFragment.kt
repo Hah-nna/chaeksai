@@ -27,8 +27,16 @@ class WeeklyNotesDetailFragment : BaseFragment<FragmentWeeklyNoteDetailBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding.includedNoteCv) {
-            cvNoteDetailImg.setImageResource(noteDetail.hint_img)
+        with(binding) {
+            includedNoteCv.iconBook.visibility = View.GONE
+            includedNoteCv.cvNoteDetailImg.setImageResource(noteDetail.hint_img)
+            btnBarcodeScanner.setOnClickListener {
+                val action = WeeklyNotesDetailFragmentDirections.actionFragmentWeeklyDetailNotesToFragmentBarcodeScanner(
+                    weeklyNoteDetail = noteDetail,
+                    findNoteInfo = noteDetail
+                )
+                findNavController().navigate(action)
+            }
         }
         binding.toolbar.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
