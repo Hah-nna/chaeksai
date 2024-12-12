@@ -130,7 +130,7 @@
             app:destination="@+id/fragmentSearchList">
 
             <argument
-                android:name="findNoteDetail"
+                android:name="findNoteList"
                 app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo[]"
                 />
         </action>
@@ -173,19 +173,22 @@
         android:label="fragment_search_list"
         tools:layout="@layout/fragment_search_list">
 
+        <argument
+            android:name="findNoteList"
+            app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo[]"
+            />
+
         <!-- 쪽지 찾기 프래그먼트에서 쪽지디테일 프래그먼트로 이동 액션 -->
         <action
             android:id="@+id/action_fragmentSearchList_to_fragmentSearchNoteDetail"
             app:destination="@+id/fragmentSearchNoteDetail"
             >
         <argument
-            android:name="findNoteDetail"
-            app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo[]"
+            android:name="findNoteInfo"
+            app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
             />
         </action>
     </fragment>
-
-
 
     <!-- 찾기/등록(맵) -> 쪽지 찾기 프래그먼트 -> 선택한 쪽지 디테일 프래그먼트 -->
     <fragment
@@ -194,10 +197,21 @@
         android:label="fragment_search_note_detail"
         tools:layout="@layout/fragment_search_note_detail">
 
+        <argument
+            android:name="findNoteInfo"
+            app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
+            />
+
         <!-- 쪽지디테일 프래그먼에서 바코드스캔 프래그먼트로 이동 액션 -->
         <action
             android:id="@+id/action_fragmentSearchNoteDetail_to_fragmentBarcodeScanner"
-            app:destination="@+id/fragmentBarcodeScanner" />
+            app:destination="@+id/fragmentBarcodeScanner">
+
+            <argument
+                android:name="findNoteInfo"
+                app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
+                />
+        </action>
     </fragment>
 
     <!-- 찾기/등록(맵) -> 쪽지 찾기 프래그먼트 -> 선택한 쪽지 디테일 프래그먼트 -> 바코드 스캔 프래그먼트 -->
@@ -207,23 +221,109 @@
         android:label="fragment_barcode_scanner"
         tools:layout="@layout/fragment_barcode_scanner">
 
-        <!-- 바코드스캔 프래그먼트에서 찾은 쪽지 디테일 프래그먼트 이동 액션 -->
+        <argument
+            android:name="findNoteInfo"
+            app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
+            />
+
+        <!-- 바코드스캔 프래그먼트에서 바코드 스캔 후 결과에 따라 이동 액션 -->
+
+        <!-- 바코드스캔 프래그먼트에서 바코드 스캔 성공하면 성공 프래그먼트로 이동 액션 -->
         <action
-            android:id="@+id/action_fragmentBarcodeScanner_to_fragmentFoundNoteDetail"
-            app:destination="@+id/fragmentFoundNoteDetail" />
+            android:id="@+id/action_fragmentBarcodeScanner_to_fragmentBarcodeScannerSuccess"
+            app:destination="@+id/fragmentBarcodeScannerSuccess">
+
+            <argument
+                android:name="findNoteInfo"
+                app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
+                />
+        </action>
+
+        <!-- 바코드스캔 프래그먼트에서 바코드 스캔 실패하면 실패 프래그먼트로 이동 액션 -->
+        <action
+            android:id="@+id/action_fragmentBarcodeScanner_to_fragmentBarcodeScannerFail"
+            app:destination="@+id/fragmentBarcodeScannerFail">
+
+            <argument
+                android:name="findNoteInfo"
+                app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
+                />
+        </action>
     </fragment>
 
-    <!-- 찾기/등록(맵) -> 쪽지 찾기 프래그먼트 -> 선택한 쪽지 디테일 프래그먼트 -> 바코드 스캔 프래그먼트 -> 찾은 쪽지 디테일 프래그먼트-->
+    <!-- 찾기/등록(맵) -> 쪽지 찾기 프래그먼트 -> 선택한 쪽지 디테일 프래그먼트 -> 바코드스캔 -> 바코드 스캔 성공 프래그먼트 -->
+    <fragment
+        android:id="@+id/fragmentBarcodeScannerSuccess"
+        android:name="com.jeong.sesac.sai.ui.searchRegister.search.BarcodeScanSuccessFragment"
+        android:label="fragment_barcode_scanner_success"
+        tools:layout="@layout/fragment_barcode_scan_success">
+
+        <argument
+            android:name="findNoteInfo"
+            app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
+            />
+
+        <!-- 바코드스캔 프래그먼트에서 찾은 쪽지 디테일 프래그먼트 이동 액션 -->
+        <action
+            android:id="@+id/action_fragmentBarcodeScannerSuccess_to_fragmentFoundNoteDetail"
+            app:destination="@+id/fragmentFoundNoteDetail">
+
+            <argument
+                android:name="findNoteInfo"
+                app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
+                />
+        </action>
+    </fragment>
+
+    <!-- 찾기/등록(맵) -> 쪽지 찾기 프래그먼트 -> 선택한 쪽지 디테일 프래그먼트 -> 바코드 스캔 -> 바코드 스캔 실패 프래그먼트 -->
+    <fragment
+        android:id="@+id/fragmentBarcodeScannerFail"
+        android:name="com.jeong.sesac.sai.ui.searchRegister.search.BarcodeScanFailFragment"
+        android:label="fragment_barcode_scanner_fail"
+        tools:layout="@layout/fragment_barcode_scan_fail">
+
+        <argument
+            android:name="findNoteInfo"
+            app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
+            />
+
+        <!-- 바코드스캔 실패 프래그먼트에서 다시 바코드 스캔 프래그먼트 이동 액션 -->
+        <action
+            android:id="@+id/action_fragmentBarcodeScannerFail_to_fragmentBarcodeScanner"
+            app:destination="@+id/fragmentBarcodeScanner">
+
+            <argument
+                android:name="findNoteInfo"
+                app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
+                />
+        </action>
+    </fragment>
+
+    <!-- 찾기/등록(맵) -> 쪽지 찾기 프래그먼트 -> 선택한 쪽지 디테일 프래그먼트 -> 바코드 스캔 프래그먼트 -> 성공 -> 찾은 쪽지 디테일 프래그먼트-->
     <fragment
         android:id="@+id/fragmentFoundNoteDetail"
         android:name="com.jeong.sesac.sai.ui.found.FoundNoteDetailFragment"
         android:label="fragment_found_note_detail"
         tools:layout="@layout/fragment_found_note_detail">
 
+        <argument
+            android:name="findNoteInfo"
+            app:argType="com.jeong.sesac.sai.util.WeeklyNotesInfo"
+            />
+
         <!-- 찾은 쪽지 디테일 프래그먼트에서 리뷰쓰기 프래그먼트로 이동 액션  -->
         <action
             android:id="@+id/action_fragmentFoundNoteDetail_to_fragmentWriteReview"
-            app:destination="@+id/fragmentWriteReview" />
+            app:destination="@+id/fragmentWriteReview">
+            <argument
+                android:name="user_id"
+                app:argType="string"
+                />
+            <argument
+                android:name="note_id"
+                app:argType="string"
+                />
+        </action>
 
     </fragment>
 
@@ -234,10 +334,33 @@
         android:label="fragment_write_review"
         tools:layout="@layout/fragment_write_review">
 
+        <argument
+            android:name="user_id"
+            app:argType="string"
+            />
+        <argument
+            android:name="note_id"
+            app:argType="string"
+            />
+
         <!-- 리뷰쓰기 프래그먼트에서 리뷰완료 프래그먼트로 이동 액션  -->
         <action
             android:id="@+id/action_fragmentWriteReview_to_fragmentReviewCompleted"
-            app:destination="@+id/fragmentReviewCompleted" />
+            app:destination="@+id/fragmentReviewCompleted" >
+
+            <argument
+                android:name="user_id"
+                app:argType="string"
+                />
+            <argument
+                android:name="note_id"
+                app:argType="string"
+                />
+            <argument
+                android:name="note_content"
+                app:argType="string"
+                />
+        </action>
     </fragment>
 
 
@@ -248,6 +371,17 @@
         android:name="com.jeong.sesac.sai.ui.found.ReviewCompletedFragment"
         android:label="fragment_review_completed"
         tools:layout="@layout/fragment_review_completed">
+
+        <argument
+            android:name="user_id"
+            app:argType="string"/>
+        <argument
+            android:name="note_id"
+            app:argType="string"/>
+        <argument
+            android:name="note_content"
+            app:argType="string"/>
+
 
         <!-- 리뷰완료 프래그먼트에서 홈이나 혹은 새로운 쪽지 등록 프래그먼트 이동 액션  -->
         <action
