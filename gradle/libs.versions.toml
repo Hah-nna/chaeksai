@@ -19,6 +19,9 @@ androidx-lifecycle-livedata-ktx = "2.8.7"
 androidx-lifecycle-viewmodel-ktx = "2.8.7"
 ru-ldralighieri-corbind = "1.11.0"
 ru-ldralighieri-corbind-material = "1.11.0"
+firebaseFirestore = "25.1.1"
+firebaseMessaging = "24.1.0"
+identityAndroidLegacy = "202411.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -37,6 +40,9 @@ androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navi
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 ru-ldralighieri-corbind = { module = "ru.ldralighieri.corbind:corbind", version.ref = "ru-ldralighieri-corbind" }
 ru-ldralighieri-corbind-material = { module = "ru.ldralighieri.corbind:corbind-material", version.ref = "ru-ldralighieri-corbind-material" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
+identity-android-legacy = { group = "com.android.identity", name = "identity-android-legacy", version.ref = "identityAndroidLegacy" }
 
 
 [plugins]
