@@ -518,6 +518,9 @@
     <argument
         android:name="imageResId"
         app:argType="integer" />
+        <action
+            android:id="@+id/action_fragment_completed_finds_to_fragmentWriteReview"
+            app:destination="@id/fragmentWriteReview" />
 
     </fragment>
 

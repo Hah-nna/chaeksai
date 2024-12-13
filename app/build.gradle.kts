@@ -1,4 +1,3 @@
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -18,6 +17,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        
     }
 
     buildTypes {
@@ -60,6 +60,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.corbind)
     implementation(libs.ru.ldralighieri.corbind.material)
-
-    implementation("com.kakao.maps.open:android:2.9.5")
+    implementation(libs.android)
+    implementation ("com.kakao.sdk:v2-all:2.20.6")
 }
