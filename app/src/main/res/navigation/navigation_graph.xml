@@ -523,8 +523,6 @@
             android:id="@+id/action_fragment_completed_finds_to_fragmentWriteReview"
             app:destination="@id/fragmentWriteReview" />
 
-        <action android:id="@+id/action_fragment_completed_finds_to_fragment_write_review"
-            app:destination="@+id/fragmentWriteReview"/>
 
     </fragment>
 
