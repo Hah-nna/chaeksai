@@ -14,6 +14,7 @@
         android:label="home_fragment"
         tools:layout="@layout/fragment_home">
         <!-- 홈프래그먼트 -> 사람들이 방금 찾은 쪽지 프래그먼트로 이동하는 설정 action -->
+
         <action
             android:id="@+id/action_fragmentHome_to_fragmentRecentlyFoundNotes"
             app:destination="@+id/fragmentRecentlyFoundNotes" />
@@ -522,6 +523,9 @@
             android:id="@+id/action_fragment_completed_finds_to_fragmentWriteReview"
             app:destination="@id/fragmentWriteReview" />
 
+        <action android:id="@+id/action_fragment_completed_finds_to_fragment_write_review"
+            app:destination="@+id/fragmentWriteReview"/>
+
     </fragment>
 
     <fragment
@@ -538,6 +542,11 @@
         <argument
             android:name="imageResId"
             app:argType="integer" />
+
+        <action
+            android:id="@+id/action_fragment_bookmarkedNotes_to_fragment_map_search_register"
+            app:destination="@+id/fragmentSearchRegister"
+            />
     </fragment>
 
     <fragment

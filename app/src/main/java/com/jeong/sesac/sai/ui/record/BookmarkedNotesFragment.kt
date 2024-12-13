@@ -35,6 +35,10 @@ class BookmarkedNotesFragment :
             selectedImage.setImageResource(args.imageResId)
             selectedTitle.text = args.title
             selectedDescription.text = args.description
+            button.setOnClickListener {
+                val action = BookmarkedNotesFragmentDirections.actionFragmentBookmarkedNotesToFragmentMapSearchRegister("새싹도서관")
+                findNavController().navigate(action)
+            }
         }
     }
 }
