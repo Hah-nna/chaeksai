@@ -62,4 +62,8 @@ dependencies {
     implementation(libs.ru.ldralighieri.corbind.material)
 
     implementation("com.kakao.maps.open:android:2.9.5")
+    implementation("com.kakao.sdk:v2-all:2.20.6")
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-analytics")
+
 }
