@@ -51,6 +51,7 @@ class WeeklyNotesFragment :
             }
         }
 
+
     weeklyNoteAdapter.submitList(WeeklyNoteMockData.notesList)
     }
 }
