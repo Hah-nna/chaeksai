@@ -34,6 +34,10 @@ class CompletedFindsFragment :
             selectedImage.setImageResource(args.imageResId)
             selectedTitle.text = args.title
             selectedDescription.text = args.description
+            button.setOnClickListener {
+                val action = CompletedFindsFragmentDirections.actionFragmentCompletedFindsToFragmentWriteReview("1", "dsds")
+                findNavController().navigate(action)
+            }
         }
     }
 }
