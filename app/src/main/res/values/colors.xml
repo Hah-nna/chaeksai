@@ -11,6 +11,7 @@
 
     <!-- icon, text colors-->
     <color name="icon">#FFFFFF</color>
+    <color name="bottom_nav_icon">#aaaaa3</color>
     <color name="primary_text">#3D3D3D</color>
     <color name="secondary_text">#676767</color>
     <color name="accent_text">#000000</color>
