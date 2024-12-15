@@ -17,12 +17,7 @@
         <item name="android:fontFamily">@font/font_family</item>
     </style>
 
-    <!-- Toolbar 글자 스타일 -->
-    <style name="ToolbarTitleStyle">
-        <item name="fontFamily">@font/font_family</item>
-    </style>
-
-    <!-- 툴바 스타일 -->
+    <!-- 툴바 및 툴바 글자 스타일 -->
     <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
         <item name="android:titleTextColor">@color/primary_text</item>
         <item name="navigationIcon">?homeAsUpIndicator</item>
@@ -31,6 +26,12 @@
         <item name="layout_constraintEnd_toEndOf">parent</item>
         <item name="layout_constraintStart_toStartOf">parent</item>
         <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="titleTextAppearance">@style/ToolbarTitleTextStyle</item>
+    </style>
+
+    <style name="ToolbarTitleTextStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:fontFamily">@font/font_family</item>
+        <item name="android:textColor">@color/primary_text</item>
     </style>
 
     <style name="chipText" parent="TextAppearance.MaterialComponents.Chip">
