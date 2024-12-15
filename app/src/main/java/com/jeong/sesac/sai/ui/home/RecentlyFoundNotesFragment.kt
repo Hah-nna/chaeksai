@@ -11,6 +11,7 @@ import com.jeong.sesac.sai.databinding.FragmentRecentlyFoundNotesBinding
 import com.jeong.sesac.sai.recycler.gridRecycler.GridNotesAdapter
 import com.jeong.sesac.sai.recycler.gridRecycler.GridRecyclerDecoration
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.RECENTLY_FOUND_NOTES_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.WeeklyNoteMockData
 
 class RecentlyFoundNotesFragment : BaseFragment<FragmentRecentlyFoundNotesBinding>(FragmentRecentlyFoundNotesBinding::inflate) {
@@ -27,8 +28,9 @@ class RecentlyFoundNotesFragment : BaseFragment<FragmentRecentlyFoundNotesBindin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.toolbar.toolbarView.title = RECENTLY_FOUND_NOTES_TOOLBAR_TITLE
 
-        binding.toolbar.toolbar.setNavigationOnClickListener {
+        binding.toolbar.toolbarView.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
 

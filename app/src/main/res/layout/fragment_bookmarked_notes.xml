@@ -6,24 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.record.BookmarkedNotesFragment">
 
-    <!-- Toolbar -->
-    <androidx.appcompat.widget.Toolbar
+    <include
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        layout="@layout/included_toolbar"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:id="@+id/toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/dunggeunmo"
-            android:text="@string/bookmarkednotes"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textColor="@android:color/black" />
-    </androidx.appcompat.widget.Toolbar>
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/selectedImage"
         android:layout_width="0dp"
         android:layout_height="0dp"

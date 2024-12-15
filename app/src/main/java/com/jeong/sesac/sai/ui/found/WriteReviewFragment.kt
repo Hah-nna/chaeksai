@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.databinding.FragmentWriteReviewBinding
+import com.jeong.sesac.sai.util.BACK_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.BaseFragment
 
 class WriteReviewFragment : BaseFragment<FragmentWriteReviewBinding> (FragmentWriteReviewBinding::inflate) {
@@ -26,11 +27,12 @@ class WriteReviewFragment : BaseFragment<FragmentWriteReviewBinding> (FragmentWr
         var content = "ddsadsadsadsdsasa"
 
         super.onViewCreated(view, savedInstanceState)
-            with(binding) {
-                btnCompletedReview.setOnClickListener {
-                   val action = WriteReviewFragmentDirections.actionFragmentWriteReviewToFragmentReviewCompleted("1234", "1", content)
-                    findNavController().navigate(action)
-                }
+        with(binding) {
+            toolbar.toolbarView.title = BACK_TOOLBAR_TITLE
+            btnCompletedReview.setOnClickListener {
+                val action = WriteReviewFragmentDirections.actionFragmentWriteReviewToFragmentReviewCompleted("1234", "1", content)
+                findNavController().navigate(action)
             }
+        }
     }
 }

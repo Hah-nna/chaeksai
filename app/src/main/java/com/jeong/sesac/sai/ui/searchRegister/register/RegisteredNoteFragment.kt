@@ -22,6 +22,7 @@ class RegisteredNoteFragment : BaseFragment<FragmentRegisteredNoteBinding>(Fragm
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
+
             includeCv.iconBook.visibility = View.VISIBLE
             includeCv.tvBookTitle.visibility = View.VISIBLE
 

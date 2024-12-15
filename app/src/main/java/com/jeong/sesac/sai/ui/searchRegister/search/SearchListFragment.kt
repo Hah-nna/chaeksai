@@ -13,6 +13,7 @@ import com.jeong.sesac.sai.recycler.gridRecycler.GridNotesAdapter
 import com.jeong.sesac.sai.recycler.gridRecycler.GridRecyclerDecoration
 import com.jeong.sesac.sai.ui.home.RecentlyFoundNotesFragmentDirections
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.SEARCH_NOTES_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.WeeklyNoteMockData
 
 class SearchListFragment : BaseFragment<FragmentSearchListBinding> (FragmentSearchListBinding::inflate) {
@@ -30,8 +31,11 @@ class SearchListFragment : BaseFragment<FragmentSearchListBinding> (FragmentSear
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
+        with(binding.toolbar.toolbarView) {
+            title = SEARCH_NOTES_TOOLBAR_TITLE
+            setNavigationOnClickListener {
+                findNavController().navigateUp()
+            }
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {

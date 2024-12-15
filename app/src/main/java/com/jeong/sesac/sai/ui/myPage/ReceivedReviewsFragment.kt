@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.data.Review
 import com.jeong.sesac.sai.databinding.FragmentReceivedReviewsBinding
+import com.jeong.sesac.sai.util.RECEIVED_REVIEW_TOOLBAR_TITLE
 
 class ReceivedReviewsFragment : Fragment() {
 
@@ -28,8 +29,11 @@ class ReceivedReviewsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
+        with(binding.toolbar.toolbarView){
+            title = RECEIVED_REVIEW_TOOLBAR_TITLE
+            setNavigationOnClickListener {
+                findNavController().navigateUp()
+            }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             findNavController().navigateUp()
