@@ -99,4 +99,8 @@
     </style>
 
 
+    <style name="customBottomNavigationViewIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:fontFamily">@font/font_family</item>
+        <item name="android:color">@color/neutral_variant</item>
+    </style>
 </resources>
