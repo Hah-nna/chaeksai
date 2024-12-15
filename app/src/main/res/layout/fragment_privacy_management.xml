@@ -8,26 +8,10 @@
     android:padding="@dimen/guideline_padding"
     tools:context=".ui.myPage.PrivacyManagementFragment">
 
-    <!-- Toolbar -->
-    <androidx.appcompat.widget.Toolbar
+    <include
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:navigationIcon="@drawable/icon_back"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <TextView
-            android:id="@+id/toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/dunggeunmo"
-            android:text="@string/privacy_management"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textColor="@android:color/black" />
-    </androidx.appcompat.widget.Toolbar>
+        layout="@layout/included_toolbar"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/profileImage"
