@@ -15,7 +15,11 @@
 
         <!--TODO: materialbutton style인데 적용이 안 되고 있음-->
         <item name="android:buttonStyle">@style/CustomMaterialButtonStyle</item>
+
+        <!-- 카드뷰 아웃라인 전체 적용 -->
+        <item name="materialCardViewStyle">@style/CustomMaterialCardView</item>
+
     </style>
 
-    <style name="Theme.Sai" parent="Base.Theme.Sai" />
+
 </resources>
