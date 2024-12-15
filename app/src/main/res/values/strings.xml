@@ -1,31 +1,15 @@
 <resources>
     <string name="app_name">sai</string>
-    <string name="home_fragment">home_fragment</string>
-    <string name="weeklyNotes_fragment">weeklynotes_fragment</string>
-    <string name="fragment_search_register">fragment_search_register</string>
     <string name="fragment_myPage">마이페이지</string>
     <string name="fragment_record">기록</string>
-    <string name="mainfragment">MainFragment</string>
-    <string name="next">next</string>
     <string name="app_settings_fragment">앱설정</string>
-    <string name="fragment_bookmarkedNotes">bookmarked notes fragment</string>
-    <string name="completed_finds_fragment">completed_finds_fragment</string>
     <string name="followers_fragment">팔로워</string>
     <string name="login_management_fragment">로그인 관리</string>
-    <string name="my_registered_notes_fragment">my_registered_notes_fragment</string>
-    <string name="privacy_management_fragment">privacy_management_fragment</string>
     <string name="settings_fragment">설정</string>
-    <string name="recently_Found_notes_fragment">recently_Found_notes_fragment</string>
-    <string name="register_confirmation_fragment">register_confirmation_fragment</string>
-    <string name="register_detail_fragment">register_detail_fragment</string>
-    <string name="recently_found_notes_fragment_detail">recently_found_notes_fragment_detail</string>
-    <string name="weeklyNotes_detail_fragment">weeklyNotes_detail_fragment</string>
-    <string name="weeklyNotes">weeklyNotes_detail_fragment</string>
     <string name="main_head_title">안녕하세요\n김철수님👋🏻</string>
     <string name="main_head_second_title">금주의 새로운 쪽지</string>
     <string name="main_head_third_title">사람들이 방금 찾은 쪽지</string>
     <string name="text_more">더보기 ></string>
-    <string name="text_review">리뷰남기기</string>
     <string name="settings_btn">설정 버튼</string>
     <string name="profile_image">프로필 사진</string>
     <string name="nickname_text">닉네임</string>
@@ -63,7 +47,7 @@
     <string name="save">저장</string>
     <string name="selected_image">선택된 이미지</string>
     <string name="reviewToOwner">쪽지 주인에게 리뷰하기</string>
-    <string name="goFindNote">쪽지 찾으러 가기</string>
+    <string name="mainfragment">메인프래그먼트</string>
 
     <!-- Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -72,5 +56,26 @@
     <string name="registered_note">등록한쪽지</string>
     <string name="found_complete_note">찾기완료한쪽지</string>
     <string name="saved_note">찜한쪽지</string>
+
+    <!-- 버튼 텍스트-->
+    <string name="register">등록</string>
+    <string name="confirm">확인</string>
+    <string name="goToHome">홈으로</string>
+    <string name="write_hints">힌트남기기</string>
+    <string name="scanBarcode">책바코드스캔</string>
+    <string name="scanBarcode_again">다시스캔하기</string>
+    <string name="goFindNote">쪽지 찾으러 가기</string>
+    <string name="write_review">리뷰남기기</string>
+
+<!-- 네비게이션 라벨-->
+
+    <string name="my_registered_notes_fragment">my_registered_notes_fragment</string>
+    <string name="weeklyNotes_fragment">weeklyNotes_fragment</string>
+    <string name="weeklyNotes_detail_fragment">weeklyNotes_detail_fragment</string>
+    <string name="fragment_search_register">fragment_search_register</string>
+    <string name="completed_finds_fragment">completed_finds_fragment</string>
+    <string name="fragment_bookmarkedNotes">fragment_bookmarkedNotes</string>
+    <string name="privacy_management_fragment">privacy_management_fragment</string>
+
 
 </resources>
