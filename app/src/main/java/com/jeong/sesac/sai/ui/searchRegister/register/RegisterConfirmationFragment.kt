@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentRegisterConfirmationBinding
-import com.jeong.sesac.sai.util.BACK_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.BaseFragment
 
 class RegisterConfirmationFragment : BaseFragment<FragmentRegisterConfirmationBinding>(FragmentRegisterConfirmationBinding::inflate) {
@@ -24,7 +23,6 @@ class RegisterConfirmationFragment : BaseFragment<FragmentRegisterConfirmationBi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            toolbar.toolbarView.title = BACK_TOOLBAR_TITLE
             includeCv.iconBook.visibility = View.VISIBLE
             includeCv.tvBookTitle.visibility = View.VISIBLE
 

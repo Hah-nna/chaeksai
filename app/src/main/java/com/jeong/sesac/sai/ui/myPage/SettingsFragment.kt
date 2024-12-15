@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentSettingsBinding
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.SETTING_MANAGEMENT_TOOLBAR_TITLE
 
 /** writer: 정지영
  *
@@ -31,11 +30,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding.toolbar.toolbarView) {
-            title = SETTING_MANAGEMENT_TOOLBAR_TITLE
-            setNavigationOnClickListener {
-                findNavController().navigateUp()
-            }
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             findNavController().navigateUp()

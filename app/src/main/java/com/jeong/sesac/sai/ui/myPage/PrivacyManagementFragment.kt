@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentPrivacyManagementBinding
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.PRIVACY_MANAGEMENT_TOOLBAR_TITLE
 
 /** writer: 정지영
  *
@@ -34,12 +33,8 @@ class PrivacyManagementFragment :
         super.onViewCreated(view, savedInstanceState)
 
         // Toolbar 뒤로가기
-        with(binding.toolbar.toolbarView) {
-         title = PRIVACY_MANAGEMENT_TOOLBAR_TITLE
-            setNavigationOnClickListener {
+        binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
-        }
-
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             findNavController().navigateUp()

@@ -5,12 +5,15 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <include
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        layout="@layout/included_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/icon_back"
+         />
 
     <include
         android:id="@+id/included_note_cv"
@@ -34,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@+id/included_note_cv"
         app:layout_constraintVertical_bias="0.6"
         app:cornerRadius="12dp"
-        android:text="@string/goFindNote"
+        android:text="쪽지 찾으러가기"
         android:textColor="@color/accent_text"
         app:backgroundTint="@color/primary"
         app:strokeWidth="2dp"
