@@ -5,24 +5,23 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <androidx.appcompat.widget.Toolbar
+    <include
         android:id="@+id/toolbar"
+        layout="@layout/included_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/icon_back" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <include
         android:id="@+id/included_note_cv"
         layout="@layout/note_cardview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:layout_marginTop="12dp"
+        />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_barcode_scan"

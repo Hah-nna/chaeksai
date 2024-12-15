@@ -11,6 +11,7 @@ import com.jeong.sesac.sai.data.LoginInfo
 import com.jeong.sesac.sai.databinding.FragmentLoginManagementBinding
 import com.jeong.sesac.sai.ui.adapter.LoginInfoAdapter
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.LOGIN_MANAGEMENT_TOOLBAR_TITLE
 
 /** writer: 정지영
  *
@@ -37,8 +38,11 @@ class LoginManagementFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
+        with(binding.toolbar.toolbarView) {
+            title = LOGIN_MANAGEMENT_TOOLBAR_TITLE
+            setNavigationOnClickListener {
+                findNavController().navigateUp()
+            }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             findNavController().navigateUp()

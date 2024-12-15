@@ -8,6 +8,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.fragment.findNavController
 import com.jeong.sesac.sai.databinding.FragmentSearchNoteDetailBinding
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.SEARCH_NOTES_TOOLBAR_TITLE
 
 class SearchNoteDetailFragment : BaseFragment<FragmentSearchNoteDetailBinding>(FragmentSearchNoteDetailBinding::inflate){
 
@@ -27,6 +28,7 @@ class SearchNoteDetailFragment : BaseFragment<FragmentSearchNoteDetailBinding>(F
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
+            toolbar.toolbarView.title = SEARCH_NOTES_TOOLBAR_TITLE
             btnBarcodeScan.setOnClickListener {
                 val action = SearchNoteDetailFragmentDirections
                     .actionFragmentSearchNoteDetailToFragmentBarcodeScanner(noteInfo)

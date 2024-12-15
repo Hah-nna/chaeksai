@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.databinding.FragmentFoundNoteDetailBinding
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.GO_HOME_TOOLBAR_TITLE
 
 class FoundNoteDetailFragment: BaseFragment<FragmentFoundNoteDetailBinding>(FragmentFoundNoteDetailBinding::inflate) {
 
@@ -25,10 +26,11 @@ class FoundNoteDetailFragment: BaseFragment<FragmentFoundNoteDetailBinding>(Frag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-           btnWriteReview.setOnClickListener {
-             val action = FoundNoteDetailFragmentDirections.actionFragmentFoundNoteDetailToFragmentWriteReview("1234", "1")
-            findNavController().navigate(action)
-           }
+            toolbar.toolbarView.title = GO_HOME_TOOLBAR_TITLE
+            btnWriteReview.setOnClickListener {
+                val action = FoundNoteDetailFragmentDirections.actionFragmentFoundNoteDetailToFragmentWriteReview("1234", "1")
+                findNavController().navigate(action)
+            }
 
         }
     }

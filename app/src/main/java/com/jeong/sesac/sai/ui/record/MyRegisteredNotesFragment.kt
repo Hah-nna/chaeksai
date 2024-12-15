@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.databinding.FragmentMyRegisteredNotesBinding
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.MY_REGISTERED_NOTES_TOOLBAR_TITLE
 
 class MyRegisteredNotesFragment :
     BaseFragment<FragmentMyRegisteredNotesBinding>(FragmentMyRegisteredNotesBinding::inflate) {
@@ -15,8 +16,12 @@ class MyRegisteredNotesFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
+        with(binding.toolbar.toolbarView) {
+            title = MY_REGISTERED_NOTES_TOOLBAR_TITLE
+            setNavigationOnClickListener {
+                findNavController().navigateUp()
+            }
+
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             findNavController().navigateUp()

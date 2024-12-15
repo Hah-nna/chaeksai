@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.databinding.FragmentWeeklyNoteDetailBinding
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.WEEKLY_NOTES_TOOLBAR_TITLE
 
 class WeeklyNotesDetailFragment : BaseFragment<FragmentWeeklyNoteDetailBinding>(FragmentWeeklyNoteDetailBinding::inflate) {
 
@@ -28,6 +29,7 @@ class WeeklyNotesDetailFragment : BaseFragment<FragmentWeeklyNoteDetailBinding>(
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
+            toolbar.toolbarView.title = WEEKLY_NOTES_TOOLBAR_TITLE
             includedNoteCv.iconBook.visibility = View.GONE
             includedNoteCv.cvNoteDetailImg.setImageResource(noteDetail.hint_img)
             btnBarcodeScanner.setOnClickListener {
@@ -38,7 +40,7 @@ class WeeklyNotesDetailFragment : BaseFragment<FragmentWeeklyNoteDetailBinding>(
                 findNavController().navigate(action)
             }
         }
-        binding.toolbar.toolbar.setNavigationOnClickListener {
+        binding.toolbar.toolbarView.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
 

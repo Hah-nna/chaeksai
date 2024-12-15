@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.databinding.FragmentRecentlyFoundNotesDetailBinding
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.RECENTLY_FOUND_NOTES_TOOLBAR_TITLE
 
 class RecentlyFoundNotesDetailFragment : BaseFragment<FragmentRecentlyFoundNotesDetailBinding>(FragmentRecentlyFoundNotesDetailBinding::inflate){
 
@@ -31,6 +32,7 @@ class RecentlyFoundNotesDetailFragment : BaseFragment<FragmentRecentlyFoundNotes
 
 
         with(binding){
+            toolbar.toolbarView.title = RECENTLY_FOUND_NOTES_TOOLBAR_TITLE
             includedNoteCv.cvNoteDetailImg.setImageResource(noteDetail.hint_img)
             includedNoteCv.iconBook.visibility = View.GONE
             btnGoToHome.setOnClickListener {
@@ -41,7 +43,7 @@ class RecentlyFoundNotesDetailFragment : BaseFragment<FragmentRecentlyFoundNotes
 
 
 
-        binding.toolbar.setNavigationOnClickListener {
+        binding.toolbar.toolbarView.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
 

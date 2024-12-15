@@ -44,7 +44,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 프로필 이미지 -->
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/profileImage"
         android:layout_width="@dimen/profile_image_size"
         android:layout_height="@dimen/profile_image_size"
