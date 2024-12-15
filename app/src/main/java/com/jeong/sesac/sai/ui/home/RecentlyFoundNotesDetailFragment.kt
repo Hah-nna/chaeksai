@@ -5,11 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.databinding.FragmentRecentlyFoundNotesDetailBinding
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.RECENTLY_FOUND_NOTES_TOOLBAR_TITLE
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.appcompat.navigationClicks
+import ru.ldralighieri.corbind.view.clicks
 
 class RecentlyFoundNotesDetailFragment : BaseFragment<FragmentRecentlyFoundNotesDetailBinding>(FragmentRecentlyFoundNotesDetailBinding::inflate){
 
@@ -35,16 +41,16 @@ class RecentlyFoundNotesDetailFragment : BaseFragment<FragmentRecentlyFoundNotes
             toolbar.toolbarView.title = RECENTLY_FOUND_NOTES_TOOLBAR_TITLE
             includedNoteCv.cvNoteDetailImg.setImageResource(noteDetail.hint_img)
             includedNoteCv.iconBook.visibility = View.GONE
-            btnGoToHome.setOnClickListener {
+
+            btnGoToHome.clicks().onEach {
                 val action = RecentlyFoundNotesDetailFragmentDirections.actionFragmentRecentlyFoundNotesDetailToFragmentHome()
                 findNavController().navigate(action)
-            }
-        }
+            }.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+                .launchIn(viewLifecycleOwner.lifecycleScope)
 
-
-
-        binding.toolbar.toolbarView.setNavigationOnClickListener {
+            toolbar.toolbarView.navigationClicks().onEach {
             findNavController().navigateUp()
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {

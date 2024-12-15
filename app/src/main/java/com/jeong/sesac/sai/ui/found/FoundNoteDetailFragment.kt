@@ -4,11 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.databinding.FragmentFoundNoteDetailBinding
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.GO_HOME_TOOLBAR_TITLE
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.view.clicks
 
 class FoundNoteDetailFragment: BaseFragment<FragmentFoundNoteDetailBinding>(FragmentFoundNoteDetailBinding::inflate) {
 
@@ -27,11 +32,20 @@ class FoundNoteDetailFragment: BaseFragment<FragmentFoundNoteDetailBinding>(Frag
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
             toolbar.toolbarView.title = GO_HOME_TOOLBAR_TITLE
-            btnWriteReview.setOnClickListener {
+            btnWriteReview.clicks().onEach {
                 val action = FoundNoteDetailFragmentDirections.actionFragmentFoundNoteDetailToFragmentWriteReview("1234", "1")
                 findNavController().navigate(action)
-            }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
 
+            toolbar.toolbarView.clicks().onEach {
+                // 이 부분이야
+                val action = FoundNoteDetailFragmentDirections.actionFragmentFoundNoteDetailToFragmentHome()
+                findNavController().navigate(action)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().navigateUp()
         }
     }
 }

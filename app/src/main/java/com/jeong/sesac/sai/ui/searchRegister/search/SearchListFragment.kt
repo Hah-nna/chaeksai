@@ -5,16 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.jeong.sesac.sai.databinding.FragmentSearchListBinding
 import com.jeong.sesac.sai.recycler.gridRecycler.GridNotesAdapter
 import com.jeong.sesac.sai.recycler.gridRecycler.GridRecyclerDecoration
-import com.jeong.sesac.sai.ui.home.RecentlyFoundNotesFragmentDirections
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.SEARCH_NOTES_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.WeeklyNoteMockData
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.appcompat.navigationClicks
 
 class SearchListFragment : BaseFragment<FragmentSearchListBinding> (FragmentSearchListBinding::inflate) {
     private lateinit var searchListAdapter : GridNotesAdapter
@@ -33,9 +35,9 @@ class SearchListFragment : BaseFragment<FragmentSearchListBinding> (FragmentSear
 
         with(binding.toolbar.toolbarView) {
             title = SEARCH_NOTES_TOOLBAR_TITLE
-            setNavigationOnClickListener {
+            navigationClicks().onEach {
                 findNavController().navigateUp()
-            }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {

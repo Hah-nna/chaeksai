@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.jeong.sesac.sai.databinding.FragmentRecentlyFoundNotesBinding
@@ -13,6 +14,9 @@ import com.jeong.sesac.sai.recycler.gridRecycler.GridRecyclerDecoration
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.RECENTLY_FOUND_NOTES_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.WeeklyNoteMockData
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.appcompat.navigationClicks
 
 class RecentlyFoundNotesFragment : BaseFragment<FragmentRecentlyFoundNotesBinding>(FragmentRecentlyFoundNotesBinding::inflate) {
     private lateinit var recentlyFoundAdapter : GridNotesAdapter
@@ -28,12 +32,16 @@ class RecentlyFoundNotesFragment : BaseFragment<FragmentRecentlyFoundNotesBindin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.toolbarView.title = RECENTLY_FOUND_NOTES_TOOLBAR_TITLE
 
-        binding.toolbar.toolbarView.setNavigationOnClickListener {
+        with(binding.toolbar.toolbarView) {
+            title = RECENTLY_FOUND_NOTES_TOOLBAR_TITLE
+            // 툴바를 클릭했을 때 뒤로가기
+            navigationClicks().onEach {
             findNavController().navigateUp()
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
         }
 
+        // 물리적인 뒤로가기 키를 누르면 뒤로 가기
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             findNavController().navigateUp()
         }
