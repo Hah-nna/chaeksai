@@ -45,4 +45,5 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
             }
         }
     }
+
 }

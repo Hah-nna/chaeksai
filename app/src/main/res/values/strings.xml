@@ -63,14 +63,28 @@
     <string name="save">저장</string>
     <string name="selected_image">선택된 이미지</string>
     <string name="reviewToOwner">쪽지 주인에게 리뷰하기</string>
-    <string name="goFindNote">쪽지 찾으러 가기</string>
+    <string name="goFindNote">쪽지 찾기</string>
 
     <!-- Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="received_reviews_title">받은 리뷰</string>
     <string name="received_reviews_fragment">내가 받은 리뷰</string>
-    <string name="registered_note">등록한쪽지</string>
-    <string name="found_complete_note">찾기완료한쪽지</string>
-    <string name="saved_note">찜한쪽지</string>
+    <string name="registered_note">등록한 쪽지</string>
+    <string name="found_complete_note">찾은 쪽지</string>
+    <string name="saved_note">찜한 쪽지</string>
+    <string name="more">더 보기</string>
+    <string name="unfollow">팔로우 취소</string>
+    <string name="disable_connection">연동 해제</string>
+    <string name="enable_connection">연동 중</string>
+    <string name="scanTheBarCode">책 바코드 스캔</string>
+    <string name="leaveHints">힌트 남기기</string>
+    <string name="toHome">홈으로</string>
+    <string name="leaveReview">리뷰 남기기</string>
+    <string name="sort_recent">최신순</string>
+    <string name="sort_heart_up">찜 높은순</string>
+    <string name="sort_heart_down">찜 낮은순</string>
+    <string name="goFindNotes">쪽지 찾으러 가기</string>
+    <string name="goHideNotes">쪽지 숨기기</string>
+    <string name="pleaseMakeReview">쪽지를 숨긴 사람에게 리뷰를 남겨주세요</string>
 
 </resources>

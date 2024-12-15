@@ -1,45 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:strokeWidth="@dimen/cardviewStrokeWidth"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:strokeColor="@color/accent_text"
-        >
+        app:strokeWidth="@dimen/cardviewStrokeWidth">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/tv_note_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="등록할 쪽지 내용을 적어주세요"
             android:gravity="center"
-            android:maxLines="10"
-            />
+            android:hint="등록할 쪽지 내용을 적어주세요"
+            android:maxLines="10" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_register_hint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/find_note_btn"
+        style="@style/BaseButtonStyle"
+        android:text="@string/leaveHints"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
-        app:cornerRadius="12dp"
-        android:text="힌트남기기"
-        android:textColor="@color/accent_text"
-        app:backgroundTint="@color/primary"
-        app:strokeWidth="2dp"
-        />
+        app:layout_constraintVertical_bias="0.9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

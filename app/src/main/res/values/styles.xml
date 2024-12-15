@@ -37,23 +37,67 @@
         <item name="android:fontFamily">@font/font_family</item>
     </style>
 
-    <style name="CustomMaterialButtonStyle" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/primary</item>
-        <item name="android:textAppearance">@style/CustomButtonTextAppearance</item>
-        <item name="iconPadding">16dp</item>
-        <item name="shapeAppearanceOverlay">@style/CustomButtonShape</item>
+    <style name="CustomAppCompatButtonStyle" parent="Widget.AppCompat.Button">
+        <!-- 텍스트 관련 스타일 -->
+        <item name="android:fontFamily">@font/dunggeunmo</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:padding">@dimen/guideline_padding</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
 
+    <style name="CustomMaterialButtonStyle" parent="Widget.MaterialComponents.Button">
+        <!-- 텍스트 스타일 -->
+        <item name="android:textAppearance">@style/CustomButtonTextAppearance</item>
+    </style>
+
+    <!-- 텍스트 스타일 -->
     <style name="CustomButtonTextAppearance" parent="TextAppearance.MaterialComponents.Button">
-        <item name="fontFamily">@font/font_family</item>
-        <item name="android:textColor">@color/primary_text</item>
+        <item name="fontFamily">@font/dunggeunmo</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="CustomButtonShape" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerSize">12dp</item>
     </style>
+
+    <style name="ElevatedButton" parent="Widget.MaterialComponents.Button">
+        <!-- 기본 elevation -->
+        <item name="elevation">8dp</item>
+        <!-- 클릭 상태 elevation -->
+        <item name="pressedTranslationZ">0dp</item>
+    </style>
+
+    <!-- 기본 MaterialButton 스타일 -->
+    <style name="BaseButtonStyle" parent="Widget.MaterialComponents.Button">
+        <!-- 버튼 공통 속성 -->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/accent_text</item>
+        <item name="backgroundTint">@color/primary</item>
+        <item name="cornerRadius">18dp</item>
+        <item name="strokeColor">@color/black</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
+
+    <!-- 큰 버튼 스타일 -->
+    <style name="LargeButtonStyle" parent="BaseButtonStyle">
+        <item name="cornerRadius">24dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:padding">@dimen/guideline_padding</item>
+        <item name="android:fontFamily">@font/dunggeunmo</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    </style>
+
+    <!-- 작은 버튼 스타일 -->
+    <style name="SmallButtonStyle" parent="BaseButtonStyle">
+        <item name="android:paddingHorizontal">12dp</item>
+        <item name="android:paddingVertical">8dp</item>
+    </style>
+
 
     <style name="customBottomNavigationViewIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:fontFamily">@font/font_family</item>

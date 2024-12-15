@@ -1,61 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.MapSearchRegisterFragment"
-    >
+    tools:context=".ui.MapSearchRegisterFragment">
 
     <com.kakao.vectormap.MapView
         android:id="@+id/map_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btn_register"
         android:layout_width="190dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="54dp"
+        android:layout_weight="1"
+        android:text="@string/goHideNotes"
+        android:textSize="18dp"
+        app:backgroundTint="@color/fab_color"
+        app:cornerRadius="12dp"
         app:layout_constraintEnd_toStartOf="@+id/btn_find"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="54dp"
-        app:strokeWidth="2dp"
-        android:layout_weight="1"
         app:layout_constraintWidth_percent="0.7"
-        android:textSize="18dp"
-        app:cornerRadius="12dp"
-        app:backgroundTint="@color/fab_color"
-    android:text="쪽지숨기기"
- />
+        app:strokeWidth="2dp" />
+
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btn_find"
         android:layout_width="190dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_register"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="54dp"
-        app:strokeWidth="2dp"
+        android:text="@string/goFindNote"
         android:textSize="18dp"
-        app:cornerRadius="12dp"
-        android:text="쪽지찾기"
         app:backgroundTint="@color/fab_color"
-        />
+        app:cornerRadius="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_register"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeWidth="2dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="20dp"
         android:src="@drawable/icon_location"
         app:backgroundTint="@color/white"
-        android:layout_margin="20dp"
         app:fabCustomSize="38dp"
-        app:tint="@color/red"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
-        />
-
+        app:tint="@color/red" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

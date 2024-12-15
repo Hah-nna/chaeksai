@@ -16,7 +16,8 @@ class FollowerAdapter(private val followers: List<Follower>) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(follower: Follower) {
-            binding.followBtn.setImageResource(follower.profileImageResId)
+            // 버튼 텍스트 업데이트
+            binding.followBtn.text = "언팔로우" // XML에서 버튼에 텍스트 설정됨
             binding.followerNickname.text = follower.name
 
             // followBtn 클릭 이벤트 추가
@@ -24,13 +25,14 @@ class FollowerAdapter(private val followers: List<Follower>) :
                 showUnfollowDialog(binding.root.context, follower.name)
             }
         }
+
         private fun showUnfollowDialog(context: Context, followerName: String) {
             AlertDialog.Builder(context)
                 .setTitle("팔로우 취소")
                 .setMessage("팔로우를 취소하시겠습니까?")
                 .setPositiveButton("예") { _, _ ->
                     Toast.makeText(context, "$followerName 님의 팔로우를 취소했습니다.", Toast.LENGTH_SHORT).show()
-                    // 여기서 데이터 삭제 동작 추가 가능
+                    // 팔로우 취소에 대한 추가 동작 가능
                 }
                 .setNegativeButton("아니오", null)
                 .show()

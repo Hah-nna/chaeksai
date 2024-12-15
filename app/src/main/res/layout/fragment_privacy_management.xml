@@ -13,10 +13,10 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:navigationIcon="@drawable/icon_back"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/icon_back">
 
         <TextView
             android:id="@+id/toolbar_title"
@@ -38,7 +38,7 @@
         android:src="@drawable/ic_profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"/>
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/nicknameText"
@@ -82,72 +82,26 @@
         android:layout_height="wrap_content"
         android:text="@string/save"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/nicknameEditText"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/nicknameEditText" />
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/privacy_management_to_followers_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/LargeButtonStyle"
         android:layout_marginTop="@dimen/guideline_padding"
-        android:backgroundTint="@color/primary"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        app:cardCornerRadius="@dimen/cardCornerRadius"
+        android:text="@string/follow_management"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nicknameText"
-        app:strokeColor="@color/black"
-        app:strokeWidth="@dimen/cardviewStrokeWidth">
+        app:layout_constraintTop_toBottomOf="@id/nicknameText" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/dunggeunmo"
-                android:gravity="center"
-                android:padding="@dimen/guideline_padding"
-                android:text="@string/follow_management"
-                android:textAlignment="center"
-                android:textAppearance="?attr/textAppearanceBody1" />
-        </FrameLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/privacy_management_to_login_management_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/LargeButtonStyle"
         android:layout_marginTop="@dimen/guideline_padding"
-        android:backgroundTint="@color/primary"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        app:cardCornerRadius="@dimen/cardCornerRadius"
+        android:text="@string/login_management"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/privacy_management_to_followers_btn"
-        app:strokeColor="@color/black"
-        app:strokeWidth="@dimen/cardviewStrokeWidth">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/dunggeunmo"
-                android:gravity="center"
-                android:padding="@dimen/guideline_padding"
-                android:text="@string/login_management"
-                android:textAlignment="center"
-                android:textAppearance="?attr/textAppearanceBody1" />
-        </FrameLayout>
-    </com.google.android.material.card.MaterialCardView>
+        app:layout_constraintTop_toBottomOf="@id/privacy_management_to_followers_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

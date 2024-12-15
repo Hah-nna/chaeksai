@@ -1,5 +1,6 @@
 import android.os.Bundle
 import android.view.View
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentRecordBinding
@@ -10,19 +11,39 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>(FragmentRecordBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupTabLayoutWithViewPager()
+        setupViewPager()
+        setupButtonGroup()
     }
 
-    private fun setupTabLayoutWithViewPager() {
-        val tabTitles = listOf(
-            getString(R.string.my_registered_notes),
-            getString(R.string.completed_finds),
-            getString(R.string.bookmarkednotes)
+    private fun setupViewPager() {
+        binding.viewPager.adapter = RecordPagerAdapter(this)
+    }
+
+    private fun setupButtonGroup() {
+        val buttons = listOf(
+            binding.buttonRegisteredNotes,
+            binding.buttonCompletedFinds,
+            binding.buttonBookmarkedNotes
         )
 
-        binding.viewPager.adapter = RecordPagerAdapter(this)
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = tabTitles[position]
-        }.attach()
+        buttons.forEachIndexed { index, button ->
+            button.setOnClickListener {
+                binding.viewPager.currentItem = index
+            }
+        }
+
+        // ViewPager 페이지 변경에 따라 버튼 활성화 상태 업데이트
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                buttons.forEachIndexed { index, button ->
+                    button.isSelected = index == position
+                    button.setBackgroundColor(
+                        if (index == position) requireContext().getColor(R.color.primary)
+                        else requireContext().getColor(R.color.black)
+                    )
+                }
+            }
+        })
     }
 }
