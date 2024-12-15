@@ -14,7 +14,6 @@
         android:label="home_fragment"
         tools:layout="@layout/fragment_home">
         <!-- 홈프래그먼트 -> 사람들이 방금 찾은 쪽지 프래그먼트로 이동하는 설정 action -->
-
         <action
             android:id="@+id/action_fragmentHome_to_fragmentRecentlyFoundNotes"
             app:destination="@+id/fragmentRecentlyFoundNotes" />
@@ -83,7 +82,7 @@
         tools:layout="@layout/fragment_weeklynotes">
         <action
             android:id="@+id/action_fragmentWeeklyNotes_to_detail"
-            app:destination="@+id/fragmentRecentlyFoundNotesDetail" />
+            app:destination="@+id/fragmentWeeklyNotesDetail" />
 
         <argument
             android:name="weeklyNote"
@@ -404,6 +403,11 @@
                 />
         </action>
 
+        <action
+            android:id="@+id/action_fragmentFoundNoteDetail_to_fragmentHome"
+            app:destination="@+id/fragmentHome"
+            />
+
     </fragment>
 
     <!-- 찾기/등록(맵) -> 쪽지 찾기 프래그먼트 -> 선택한 쪽지 디테일 프래그먼트 -> 바코드 스캔 프래그먼트 -> 찾은 쪽지 디테일 프래그먼트 -> 리뷰쓰기 프래그먼트-->
@@ -552,24 +556,19 @@
         android:label="@string/fragment_myPage"
         tools:layout="@layout/fragment_mypage">
         <action
-            android:id="@+id/action_fragment_myPage_to_fragment_settings"
-            app:destination="@id/fragment_settings" />
-        <action
             android:id="@+id/action_fragment_myPage_to_fragmentReceivedReviews"
             app:destination="@id/fragmentReceivedReviews" />
+        <action
+            android:id="@+id/action_fragment_myPage_to_fragment_settings"
+            app:destination="@id/fragment_settings" />
     </fragment>
+
     <fragment
         android:id="@+id/fragmentReceivedReviews"
         android:name="com.jeong.sesac.sai.ui.myPage.ReceivedReviewsFragment"
         android:label="Received Reviews"
         tools:layout="@layout/fragment_received_reviews">
     </fragment>
-
-    <action
-        android:id="@+id/action_fragment_myPage_to_fragmentReceivedReviews"
-        app:destination="@id/fragmentReceivedReviews" />
-
-
 
     <fragment
         android:id="@+id/fragment_settings"
