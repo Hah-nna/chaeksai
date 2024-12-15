@@ -108,7 +108,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_scan_book"
         style="@style/BaseButtonStyle"
-        android:text="@string/scanTheBarCode"
+        android:text="@string/scanBarcode"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
