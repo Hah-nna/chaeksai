@@ -1,41 +1,71 @@
 package com.jeong.sesac.sai.ui.adapter
 
-import android.app.AlertDialog
-import android.content.Context
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.data.Follower
 import com.jeong.sesac.sai.databinding.ItemFollowerListBinding
+import com.jeong.sesac.sai.util.Dialog
+import com.jeong.sesac.sai.util.DialogInterface
+import kotlinx.coroutines.launch
+import ru.ldralighieri.corbind.view.clicks
 
-class FollowerAdapter(private val followers: List<Follower>) :
-    RecyclerView.Adapter<FollowerAdapter.FollowerViewHolder>() {
+class FollowerAdapter(
+    private val followers: MutableList<Follower>,
+    private val activity: FragmentActivity
+) : RecyclerView.Adapter<FollowerAdapter.FollowerViewHolder>() {
 
     inner class FollowerViewHolder(private val binding: ItemFollowerListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(follower: Follower) {
-            // 버튼 텍스트 업데이트
-            binding.followBtn.text = "언팔로우" // XML에서 버튼에 텍스트 설정됨
-            binding.followerNickname.text = follower.name
+            with(binding) {
+                followerNickname.text = follower.name
 
-            // followBtn 클릭 이벤트 추가
-            binding.followBtn.setOnClickListener {
-                showUnfollowDialog(binding.root.context, follower.name)
+                // 버튼 텍스트 상태 설정
+                followBtn.text = if (follower.isFollowing) {
+                    root.context.getString(R.string.unfollow)
+                } else {
+                    root.context.getString(R.string.follow)
+                }
+
+                // Corbind로 followBtn 클릭 이벤트 처리
+                activity.lifecycleScope.launch {
+                    followBtn.clicks().collect {
+                        if (follower.isFollowing) {
+                            showUnfollowDialog(follower)
+                        } else {
+                            follower.isFollowing = true
+                            notifyItemChanged(adapterPosition)
+                        }
+                    }
+                }
             }
         }
 
-        private fun showUnfollowDialog(context: Context, followerName: String) {
-            AlertDialog.Builder(context)
-                .setTitle("팔로우 취소")
-                .setMessage("팔로우를 취소하시겠습니까?")
-                .setPositiveButton("예") { _, _ ->
-                    Toast.makeText(context, "$followerName 님의 팔로우를 취소했습니다.", Toast.LENGTH_SHORT).show()
-                    // 팔로우 취소에 대한 추가 동작 가능
-                }
-                .setNegativeButton("아니오", null)
-                .show()
+        @SuppressLint("StringFormatInvalid")
+        private fun showUnfollowDialog(follower: Follower) {
+            val dialog = Dialog(
+                dialogInterface = object : DialogInterface {
+                    override fun onClickLeftBtn() {
+                        // '아니오' 선택 시 아무 동작 없음
+                    }
+
+                    override fun onClickRightBtn() {
+                        // '예' 선택 시 팔로우 취소 처리
+                        follower.isFollowing = false
+                        notifyItemChanged(adapterPosition)
+                    }
+                },
+                title = activity.getString(R.string.dialog_unfollow_title, follower.name),
+                leftBtnText = activity.getString(R.string.no),
+                rightBtnText = activity.getString(R.string.yes)
+            )
+            dialog.show(activity.supportFragmentManager, "UnfollowDialog")
         }
     }
 

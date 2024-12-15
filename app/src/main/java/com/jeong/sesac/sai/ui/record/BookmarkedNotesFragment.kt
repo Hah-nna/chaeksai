@@ -1,15 +1,19 @@
 package com.jeong.sesac.sai.ui.record
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.activity.addCallback
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.databinding.FragmentBookmarkedNotesBinding
 import com.jeong.sesac.sai.util.BOOKMARKED_NOTES_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.SESAC_LIBRARY
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import ru.ldralighieri.corbind.activity.backPresses
+import ru.ldralighieri.corbind.view.clicks
 
 /** writer: 정지영
  *
@@ -25,24 +29,33 @@ class BookmarkedNotesFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding.toolbar.toolbarView){
-            title = BOOKMARKED_NOTES_TOOLBAR_TITLE
-            setNavigationOnClickListener {
-                findNavController().navigateUp()
+
+        with(binding) {
+            // Toolbar 설정
+            toolbar.toolbarView.apply {
+                title = BOOKMARKED_NOTES_TOOLBAR_TITLE
+                lifecycleScope.launch {
+                    clicks().collect { findNavController().navigateUp() }
+                }
             }
 
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            findNavController().navigateUp()
-        }
-        with(binding) {
-            // Set selected image and texts
+            // 뒤로가기 버튼 처리
+            requireActivity().onBackPressedDispatcher.backPresses(viewLifecycleOwner)
+                .onEach { findNavController().navigateUp() }
+                .launchIn(lifecycleScope)
+
+            // 데이터 설정
             selectedImage.setImageResource(args.imageResId)
             selectedTitle.text = args.title
             selectedDescription.text = args.description
-            button.setOnClickListener {
-                val action = BookmarkedNotesFragmentDirections.actionFragmentBookmarkedNotesToFragmentMapSearchRegister("새싹도서관")
-                findNavController().navigate(action)
+
+            // 버튼 클릭 이벤트 처리
+            lifecycleScope.launch {
+                button.clicks().collect {
+                    val action = BookmarkedNotesFragmentDirections
+                        .actionFragmentBookmarkedNotesToFragmentMapSearchRegister(SESAC_LIBRARY)
+                    findNavController().navigate(action)
+                }
             }
         }
     }
