@@ -34,8 +34,16 @@
         <item name="android:textColor">@color/primary_text</item>
     </style>
 
-    <style name="chipText" parent="TextAppearance.MaterialComponents.Chip">
+    <style name="ChipTextStyle" parent="TextAppearance.MaterialComponents.Chip">
         <item name="android:fontFamily">@font/font_family</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textAppearance">@style/ChipTextStyle</item>
+        <item name="chipBackgroundColor">@color/primary</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipStrokeColor">@color/accent_text</item>
     </style>
 
     <style name="CustomAppCompatButtonStyle" parent="Widget.AppCompat.Button">
@@ -46,7 +54,6 @@
         <item name="android:padding">@dimen/guideline_padding</item>
         <item name="android:textAlignment">center</item>
     </style>
-
 
     <style name="CustomMaterialButtonStyle" parent="Widget.MaterialComponents.Button">
         <!-- 텍스트 스타일 -->
@@ -99,8 +106,7 @@
         <item name="android:paddingVertical">8dp</item>
     </style>
 
-    <style name="customBottomNavigationViewIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:fontFamily">@font/font_family</item>
+    <style name="CustomBottomNavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/neutral_variant</item>
     </style>
 
