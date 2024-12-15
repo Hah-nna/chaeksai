@@ -14,20 +14,37 @@ class LoginInfoAdapter(private val loginInfoList: List<LoginInfo>) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(loginInfo: LoginInfo) {
+            // 회사 이름 및 로그인 날짜 설정
             binding.loginCompany.text = loginInfo.companyName
             binding.signInDate.text = loginInfo.signInDate
-            binding.connectionBtn.setImageResource(
-                if (loginInfo.isConnected) R.drawable.enable_connection else R.drawable.disable_connection
-            )
+
+            // 연결 버튼 상태 설정
+            binding.connectionBtn.text = if (loginInfo.isConnected) {
+                binding.connectionBtn.setBackgroundResource(R.color.primary)
+                binding.connectionBtn.setStrokeColorResource(R.color.black)
+                binding.connectionBtn.setTextColor(binding.root.context.getColor(R.color.accent_text))
+                binding.root.context.getString(R.string.disable_connection)
+            } else {
+                binding.connectionBtn.setBackgroundResource(R.color.secondary)
+                binding.connectionBtn.setStrokeColorResource(R.color.black)
+                binding.connectionBtn.setTextColor(binding.root.context.getColor(R.color.accent_text))
+                binding.root.context.getString(R.string.enable_connection)
+            }
 
             // 연결 버튼 클릭 이벤트
             binding.connectionBtn.setOnClickListener {
                 if (loginInfo.isConnected) {
                     // 연결 해제 로직
-                    binding.connectionBtn.setImageResource(R.drawable.disable_connection)
+                    loginInfo.isConnected = false
+                    binding.connectionBtn.text =
+                        binding.root.context.getString(R.string.enable_connection)
+                    binding.connectionBtn.setBackgroundResource(R.color.secondary)
                 } else {
                     // 연결 활성화 로직
-                    binding.connectionBtn.setImageResource(R.drawable.enable_connection)
+                    loginInfo.isConnected = true
+                    binding.connectionBtn.text =
+                        binding.root.context.getString(R.string.disable_connection)
+                    binding.connectionBtn.setBackgroundResource(R.color.primary)
                 }
             }
         }

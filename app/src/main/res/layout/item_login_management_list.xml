@@ -5,12 +5,10 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/guideline_padding">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/connectionBtn"
-        android:layout_width="@dimen/icon_size_small_x10"
-        android:layout_height="@dimen/icon_size"
-        android:scaleType="fitXY"
-        android:src="@drawable/disable_connection"
+        style="@style/BaseButtonStyle"
+        android:text="@string/disable_connection"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,7 +20,7 @@
         android:text="@string/login_company"
         android:textAppearance="?attr/textAppearanceBody1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/connectionBtn"/>
+        app:layout_constraintTop_toTopOf="@id/connectionBtn" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/sign_in_date"
@@ -31,7 +29,7 @@
         android:fontFamily="@font/dunggeunmo"
         android:text="@string/sign_in_date"
         android:textAppearance="?attr/textAppearanceBody2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/connectionBtn"/>
+        app:layout_constraintBottom_toBottomOf="@id/connectionBtn"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

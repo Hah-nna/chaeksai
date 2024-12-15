@@ -45,9 +45,9 @@ class FollowersFragment :
 
         // 더미 데이터 생성
         val followers = listOf(
-            Follower(R.drawable.unfollow, "John Doe"),
-            Follower(R.drawable.unfollow, "Jane Smith"),
-            Follower(R.drawable.unfollow, "Alice Brown")
+            Follower(R.drawable.ic_profile, "John Doe"),
+            Follower(R.drawable.ic_profile, "Jane Smith"),
+            Follower(R.drawable.ic_profile, "Alice Brown")
         )
 
         // RecyclerView 설정

@@ -65,14 +65,10 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-    <!--MaterialButton-->
+    <!--쪽지 찾기 버튼-->
     <com.google.android.material.button.MaterialButton
-        style="@style/CustomMaterialButtonStyle"
-
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        style="@style/BaseButtonStyle"
         android:text="@string/goFindNote"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

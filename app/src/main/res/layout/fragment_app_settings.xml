@@ -12,12 +12,12 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         style="@style/ToolbarTitleStyle"
-        app:title="@string/app_settings_fragment"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/app_settings_fragment">
 
         <TextView
             android:id="@+id/toolbar_title"
@@ -27,8 +27,6 @@
             android:textAppearance="?attr/textAppearanceHeadline6"
             android:textColor="@android:color/black" />
     </androidx.appcompat.widget.Toolbar>
-
-    <!-- 앱 설정 제목 -->
 
     <!-- 알림 제목 -->
     <androidx.appcompat.widget.AppCompatTextView
@@ -66,7 +64,6 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/button_1"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/neutral"
@@ -78,7 +75,6 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/alert_item_2"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/item_margin_top"
@@ -101,7 +97,6 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/button_2"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/neutral"
@@ -135,7 +130,6 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/button_3"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/neutral"
@@ -169,7 +163,6 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/button_4"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/neutral"
@@ -182,7 +175,6 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/alert_item_5"
         android:layout_width="wrap_content"
-
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/item_margin_top"
         android:fontFamily="@font/dunggeunmo"
@@ -204,7 +196,6 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/button_5"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/neutral"
@@ -214,36 +205,13 @@
         app:layout_constraintBottom_toBottomOf="@+id/alert_item_5"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/delete_cash_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/LargeButtonStyle"
         android:layout_marginTop="@dimen/guideline_padding"
-        android:backgroundTint="@color/primary"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        app:cardCornerRadius="@dimen/cardCornerRadius"
+        android:text="@string/delete_cash_data"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/alert_item_5"
-        app:strokeColor="@color/black"
-        app:strokeWidth="@dimen/cardviewStrokeWidth">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/dunggeunmo"
-                android:gravity="center"
-                android:padding="@dimen/guideline_padding"
-                android:text="@string/delete_cash_data"
-                android:textAlignment="center"
-                android:textAppearance="?attr/textAppearanceBody1" />
-        </FrameLayout>
-    </com.google.android.material.card.MaterialCardView>
+        app:layout_constraintTop_toBottomOf="@+id/alert_item_5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
