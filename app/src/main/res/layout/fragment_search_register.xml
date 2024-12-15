@@ -13,8 +13,10 @@
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btn_register"
-        android:layout_width="190dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="0.45"
+        android:layout_marginHorizontal="10dp"
         android:layout_marginTop="54dp"
         android:layout_weight="1"
         android:text="@string/goHideNotes"
@@ -24,13 +26,15 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_find"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.7"
+        android:checkable="false"
         app:strokeWidth="2dp" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btn_find"
-        android:layout_width="190dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintHorizontal_weight="0.45"
         android:layout_marginTop="54dp"
         android:text="@string/goFindNote"
         android:textSize="18dp"
@@ -39,6 +43,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_register"
         app:layout_constraintTop_toTopOf="parent"
+        android:checkable="false"
         app:strokeWidth="2dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -51,6 +56,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
+        android:checkable="false"
         app:tint="@color/red" />
 
 
