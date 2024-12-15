@@ -30,7 +30,7 @@
     <string name="X_availableHintsPlaceHolder">X 0</string>
     <string name="placeholder_text">placeholder_text</string>
     <string name="receivedReviews">받은 리뷰</string>
-    <string name="review_placeholder_text">쪽지 내용이 너무 감동적이에요...ㅠ</string>
+    <string name="review_placeholder_text">쪽지 내용이 너무 감동적이에요…ㅠ</string>
     <string name="privacy_management">개인정보 관리</string>
     <string name="app_settings"> > 앱 설정</string>
     <string name="log_out">로그아웃</string>
@@ -77,6 +77,9 @@
     <string name="goFindNotes">쪽지 찾으러 가기</string>
     <string name="goHideNotes">쪽지 숨기기</string>
     <string name="pleaseMakeReview">쪽지를 숨긴 사람에게 리뷰를 남겨주세요</string>
+    <string name="no">아니요</string>
+    <string name="yes">네</string>
+    <string name="dialog_unfollow_title">팔로우를 취소하시겠습니까?</string>
 
     <!-- 버튼 텍스트-->
     <string name="register">등록</string>

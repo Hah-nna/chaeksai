@@ -4,15 +4,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jeong.sesac.sai.data.Review
 import com.jeong.sesac.sai.databinding.ItemReviewListBinding
 
-class ReviewAdapter(private val reviews: List<Review>) :
-    RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
+class ReviewAdapter(
+    private val reviews: List<Review>
+) : RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
 
     inner class ReviewViewHolder(private val binding: ItemReviewListBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(review: Review) {
-            binding.profileImage.setImageResource(review.profileImageResId)
-            binding.nicknameText.text = review.nickname
-            binding.content.text = review.content
+            with(binding) {
+
+                // 데이터 바인딩
+                profileImage.setImageResource(review.profileImageResId)
+                nicknameText.text = review.nickname
+                content.text = review.content
+            }
         }
     }
 

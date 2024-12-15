@@ -6,9 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentRegisterDetailBinding
-import com.jeong.sesac.sai.ui.found.ReviewCompletedFragmentDirections
 import com.jeong.sesac.sai.util.BACK_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.Dialog
@@ -20,7 +18,7 @@ class RegisterDetailFragment : BaseFragment<FragmentRegisterDetailBinding>(Fragm
     val args : RegisterDetailFragmentArgs by navArgs()
     var book : String = "물고기는 존재하지 않는다"
 
-        override fun onCreateView(
+    override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
