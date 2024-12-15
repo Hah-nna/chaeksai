@@ -76,6 +76,7 @@
     <string name="completed_finds_fragment">completed_finds_fragment</string>
     <string name="fragment_bookmarkedNotes">fragment_bookmarkedNotes</string>
     <string name="privacy_management_fragment">privacy_management_fragment</string>
+    <string name="recently_Found_notes_fragment">recently_Found_notes_fragment</string>
 
 
 </resources>
