@@ -10,6 +10,7 @@ import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
 import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentAppSettingsBinding
+import com.jeong.sesac.sai.util.APP_SETTING_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.BaseFragment
 
 /** writer: 정지영
@@ -37,8 +38,11 @@ class AppSettingsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setNavigationOnClickListener {
+        with(binding.toolbar.toolbarView) {
+            title = APP_SETTING_TOOLBAR_TITLE
+        setNavigationOnClickListener {
             findNavController().navigateUp()
+        }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             findNavController().navigateUp()

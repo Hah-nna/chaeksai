@@ -12,6 +12,7 @@ import com.jeong.sesac.sai.data.Follower
 import com.jeong.sesac.sai.databinding.FragmentFollowersBinding
 import com.jeong.sesac.sai.ui.adapter.FollowerAdapter
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.FOLLOWER_TOOLBAR_TITLE
 
 /** writer: 정지영
  *
@@ -35,9 +36,11 @@ class FollowersFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Toolbar 뒤로가기
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
+        with(binding.toolbar.toolbarView) {
+            title = FOLLOWER_TOOLBAR_TITLE
+            setNavigationOnClickListener {
+                findNavController().navigateUp()
+            }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             findNavController().navigateUp()

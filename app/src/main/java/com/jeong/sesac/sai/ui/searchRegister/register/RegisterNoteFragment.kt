@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.jeong.sesac.sai.databinding.FragmentRegisterNoteBinding
+import com.jeong.sesac.sai.util.BACK_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.BaseFragment
 
 class RegisterNoteFragment : BaseFragment<FragmentRegisterNoteBinding>(FragmentRegisterNoteBinding::inflate) {
@@ -24,6 +25,7 @@ class RegisterNoteFragment : BaseFragment<FragmentRegisterNoteBinding>(FragmentR
         super.onViewCreated(view, savedInstanceState)
         val content = "dasdsadasdsad"
         with(binding) {
+            toolbar.toolbarView.title = BACK_TOOLBAR_TITLE
             btnRegisterHint.setOnClickListener {
                 val action = RegisterNoteFragmentDirections.actionFragmentRegisterNoteToFragmentRegisterDetail("청량리도서관", content)
                 findNavController().navigate(action)
