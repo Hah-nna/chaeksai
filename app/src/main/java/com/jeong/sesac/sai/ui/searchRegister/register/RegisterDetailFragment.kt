@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.databinding.FragmentRegisterDetailBinding
@@ -11,12 +13,15 @@ import com.jeong.sesac.sai.util.BACK_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.Dialog
 import com.jeong.sesac.sai.util.DialogInterface
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.view.clicks
 
-class RegisterDetailFragment : BaseFragment<FragmentRegisterDetailBinding>(FragmentRegisterDetailBinding::inflate),
-    DialogInterface
-{
-    val args : RegisterDetailFragmentArgs by navArgs()
-    var book : String = "물고기는 존재하지 않는다"
+class RegisterDetailFragment :
+    BaseFragment<FragmentRegisterDetailBinding>(FragmentRegisterDetailBinding::inflate),
+    DialogInterface {
+    val args: RegisterDetailFragmentArgs by navArgs()
+    var book: String = "물고기는 존재하지 않는다"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,17 +36,24 @@ class RegisterDetailFragment : BaseFragment<FragmentRegisterDetailBinding>(Fragm
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
             toolbar.toolbarView.title = BACK_TOOLBAR_TITLE
-            btnScanBook.setOnClickListener {
+            btnScanBook.clicks().onEach {
                 showDialog()
-            }
-        }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
 
+            toolbar.toolbarView.clicks().onEach {
+                findNavController().navigateUp()
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().navigateUp()
+        }
     }
+
     private fun showDialog() {
         val dialog = Dialog(
             dialogInterface = this,
-            title = "$book\n" +
-                    "가(이) 맞나요?",
+            title = "$book\n가(이) 맞나요?",
             leftBtnText = "아니오",
             rightBtnText = "네"
         )
@@ -59,7 +71,12 @@ class RegisterDetailFragment : BaseFragment<FragmentRegisterDetailBinding>(Fragm
     }
 
     override fun onClickRightBtn() {
-        val rightAction =  RegisterDetailFragmentDirections.actionFragmentRegisterDetailToFragmentRegisterConfirmation(args.libraryName, book, args.noteContent)
+        val rightAction =
+            RegisterDetailFragmentDirections.actionFragmentRegisterDetailToFragmentRegisterConfirmation(
+                args.libraryName,
+                book,
+                args.noteContent
+            )
         findNavController().navigate(rightAction)
     }
 }

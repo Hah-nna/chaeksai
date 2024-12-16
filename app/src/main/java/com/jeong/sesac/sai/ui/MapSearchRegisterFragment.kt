@@ -1,9 +1,12 @@
 package com.jeong.sesac.sai.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.jeong.sesac.sai.databinding.FragmentSearchRegisterBinding
 import com.jeong.sesac.sai.recycler.gridRecycler.GridNotesAdapter
@@ -13,6 +16,10 @@ import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.material.checkedChanges
+import ru.ldralighieri.corbind.view.clicks
 import java.lang.Exception
 
 class MapSearchRegisterFragment :
@@ -65,18 +72,25 @@ class MapSearchRegisterFragment :
         }
 
         with(binding) {
-            btnRegister.setOnClickListener {
+            /**
+             *
+             * */
+            btnRegister.clicks().onEach {
                 val registerAction = MapSearchRegisterFragmentDirections.actionFragmentSearchRegisterToFragmentRegisterNote("새싹도서관")
                 findNavController().navigate(registerAction)
-            }
-            btnFind.setOnClickListener {
+            }.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+                .launchIn(viewLifecycleOwner.lifecycleScope)
+
+            btnFind.clicks().onEach {
                 val findAction = MapSearchRegisterFragmentDirections
                     .actionFragmentSearchRegisterToFragmentSearchList(
                         WeeklyNoteMockData.notesList.toTypedArray()
                     )
                 findNavController().navigate(findAction)
-            }
+            }.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+                .launchIn(viewLifecycleOwner.lifecycleScope)
         }
+
         registerNotedAdapter.submitList(WeeklyNoteMockData.notesList)
         findNotedAdapter.submitList(WeeklyNoteMockData.notesList)
 

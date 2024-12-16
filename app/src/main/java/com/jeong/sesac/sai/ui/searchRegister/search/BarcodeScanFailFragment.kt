@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.databinding.FragmentBarcodeScanFailBinding
 import com.jeong.sesac.sai.util.BaseFragment
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.view.clicks
 
 class BarcodeScanFailFragment :
     BaseFragment<FragmentBarcodeScanFailBinding>(FragmentBarcodeScanFailBinding::inflate) {
@@ -28,11 +32,11 @@ class BarcodeScanFailFragment :
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            btnGoToScan.setOnClickListener {
+            btnGoToScan.clicks().onEach {
                 val action = BarcodeScanFailFragmentDirections
                     .actionFragmentBarcodeScannerFailToFragmentBarcodeScanner(noteInfo)
                 findNavController().navigate(action)
-            }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
         }
     }
 }

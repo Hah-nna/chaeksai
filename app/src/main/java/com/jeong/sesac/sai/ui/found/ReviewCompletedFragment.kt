@@ -4,11 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.jeong.sesac.sai.databinding.FragmentReviewCompletedBinding
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.Dialog
 import com.jeong.sesac.sai.util.DialogInterface
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.view.clicks
 
 /**
  *  DialogInterface를 상속받아 다이얼로그 속 onClickLeftBtn, onClickRighttBtn을 구현함
@@ -29,9 +33,9 @@ class ReviewCompletedFragment : BaseFragment<FragmentReviewCompletedBinding>(Fra
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            btnCompletedReview.setOnClickListener {
+            btnCompletedReview.clicks().onEach {
                 showDialog()
-            }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         }
     }

@@ -65,8 +65,6 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation(libs.android)
-    implementation(platform("ru.ldralighieri.corbind:corbind-bom:2024.01.00"))
-    implementation("ru.ldralighieri.corbind:corbind")
     implementation("ru.ldralighieri.corbind:corbind-appcompat:1.11.0")
     implementation("ru.ldralighieri.corbind:corbind-activity:1.11.0")
     implementation("ru.ldralighieri.corbind:corbind-lifecycle:1.11.0")

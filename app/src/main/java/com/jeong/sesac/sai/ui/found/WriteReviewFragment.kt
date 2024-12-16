@@ -1,12 +1,15 @@
 package com.jeong.sesac.sai.ui.found
-
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.databinding.FragmentWriteReviewBinding
 import com.jeong.sesac.sai.util.BaseFragment
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import com.jeong.sesac.sai.util.DEFAULT_REVIEW_CONTENT
 import com.jeong.sesac.sai.util.NOTE_ID
 import com.jeong.sesac.sai.util.WRITE_REVIEW_TOOLBAR_TITLE
@@ -26,16 +29,18 @@ class WriteReviewFragment :
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            // Toolbar 설정
-            toolbar.toolbarView.apply {
-                title = WRITE_REVIEW_TOOLBAR_TITLE
+            toolbar.toolbarView.title = BACK_TOOLBAR_TITLE
+            btnCompletedReview.clicks().onEach {
+                val action = WriteReviewFragmentDirections.actionFragmentWriteReviewToFragmentReviewCompleted("1234", "1", content)
+                findNavController().navigate(action)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-                // Toolbar 뒤로가기 클릭 이벤트 처리
-                lifecycleScope.launch {
-                    clicks().collect { findNavController().navigateUp() }
-                }
-            }
+            toolbar.toolbarView.clicks().onEach {
+                findNavController().navigateUp()
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
 
+        }
+       
             // 뒤로가기 버튼 처리
             requireActivity().onBackPressedDispatcher.backPresses(viewLifecycleOwner)
                 .onEach { findNavController().navigateUp() }

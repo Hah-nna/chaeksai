@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.jeong.sesac.sai.databinding.FragmentRegisteredNoteBinding
 import com.jeong.sesac.sai.util.BaseFragment
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.view.clicks
 
 class RegisteredNoteFragment : BaseFragment<FragmentRegisteredNoteBinding>(FragmentRegisteredNoteBinding::inflate) {
 
@@ -26,10 +30,10 @@ class RegisteredNoteFragment : BaseFragment<FragmentRegisteredNoteBinding>(Fragm
             includeCv.iconBook.visibility = View.VISIBLE
             includeCv.tvBookTitle.visibility = View.VISIBLE
 
-            btnConfirm.setOnClickListener {
+            btnConfirm.clicks().onEach {
                 val action = RegisteredNoteFragmentDirections.actionFragmentRegisteredNoteToFragmentHome()
                 findNavController().navigate(action)
-            }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
         }
     }
 

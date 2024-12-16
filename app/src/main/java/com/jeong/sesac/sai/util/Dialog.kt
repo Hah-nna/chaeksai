@@ -7,8 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import com.jeong.sesac.sai.databinding.DialogBinding
-
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.view.clicks
 
 // 프래그먼트엫서 상속받아 구현해야할 이벤트들
 interface DialogInterface {
@@ -45,7 +48,7 @@ class Dialog(
 
         setupDialog()
         setupClickListeners()
-        return binding?.root
+        return binding.root
     }
 
     /**
@@ -67,21 +70,21 @@ class Dialog(
      * 각 클릭이벤트 후 dissmiss()를 해주어 다이얼르그를 뷰에서 삭제함
      * */
     private fun setupClickListeners() {
-        binding.btnLeft.setOnClickListener {
+        binding.btnLeft.clicks().onEach {
             /**
-             * 사용하려는 프랙르먼트에서 dialogInterface를 상속받아 onClickLeftBtn()안에 원한느 것을 구현하면 됨
+             * 사용하려는 프랙르먼트에서 dialogInterface를 상속받아 onClickLeftBtn()안에 원하는 것을 구현하면 됨
              * */
             dialogInterface.onClickLeftBtn()
             dismiss()
-        }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        binding.btnRight.setOnClickListener {
+        binding.btnRight.clicks().onEach {
             /**
-             * 사용하려는 프랙르먼트에서 dialogInterface를 상속받아 onClickRightBtn()안에 원한느 것을 구현하면 됨
+             * 사용하려는 프랙르먼트에서 dialogInterface를 상속받아 onClickRightBtn()안에 원하는 것을 구현하면 됨
              * */
             dialogInterface.onClickRightBtn()
             dismiss()
-        }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     /**
