@@ -1,10 +1,8 @@
 package com.jeong.sesac.sai.ui.myPage
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.activity.addCallback
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeong.sesac.sai.R
@@ -13,6 +11,9 @@ import com.jeong.sesac.sai.databinding.FragmentFollowersBinding
 import com.jeong.sesac.sai.ui.adapter.FollowerAdapter
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.FOLLOWER_TOOLBAR_TITLE
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.activity.backPresses
 
 /** writer: 정지영
  *
@@ -24,38 +25,30 @@ import com.jeong.sesac.sai.util.FOLLOWER_TOOLBAR_TITLE
 class FollowersFragment :
     BaseFragment<FragmentFollowersBinding>(FragmentFollowersBinding::inflate) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding =
-            FragmentFollowersBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Toolbar 설정
         with(binding.toolbar.toolbarView) {
             title = FOLLOWER_TOOLBAR_TITLE
-            setNavigationOnClickListener {
-                findNavController().navigateUp()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            findNavController().navigateUp()
+
+            // 뒤로가기 버튼 동작
+            requireActivity().onBackPressedDispatcher.backPresses(viewLifecycleOwner)
+                .onEach { findNavController().navigateUp() }
+                .launchIn(lifecycleScope)
         }
 
         // 더미 데이터 생성
-        val followers = listOf(
-            Follower(R.drawable.ic_profile, "John Doe"),
-            Follower(R.drawable.ic_profile, "Jane Smith"),
-            Follower(R.drawable.ic_profile, "Alice Brown")
+        val followers = mutableListOf(
+            Follower(R.drawable.ic_profile, "John Doe", true),
+            Follower(R.drawable.ic_profile, "Jane Smith", true),
+            Follower(R.drawable.ic_profile, "Alice Brown", false)
         )
 
         // RecyclerView 설정
-        val adapter = FollowerAdapter(followers)
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = adapter
+        with(binding) {
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            recyclerView.adapter = FollowerAdapter(followers, requireActivity())
+        }
     }
 }
