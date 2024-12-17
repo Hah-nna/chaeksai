@@ -9,9 +9,9 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentRecentlyFoundNotesDetailBinding
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.RECENTLY_FOUND_NOTES_TOOLBAR_TITLE
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.appcompat.navigationClicks
@@ -38,7 +38,7 @@ class RecentlyFoundNotesDetailFragment : BaseFragment<FragmentRecentlyFoundNotes
 
 
         with(binding){
-            toolbar.toolbarView.title = RECENTLY_FOUND_NOTES_TOOLBAR_TITLE
+            toolbar.toolbarView.setTitle(R.string.RECENTLY_FOUND_NOTES_TOOLBAR_TITLE)
             includedNoteCv.cvNoteDetailImg.setImageResource(noteDetail.hint_img)
             includedNoteCv.iconBook.visibility = View.GONE
 

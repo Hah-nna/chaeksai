@@ -5,8 +5,8 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentBookmarkedNotesBinding
-import com.jeong.sesac.sai.util.BOOKMARKED_NOTES_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.SESAC_LIBRARY
 import kotlinx.coroutines.flow.launchIn
@@ -33,7 +33,7 @@ class BookmarkedNotesFragment :
         with(binding) {
             // Toolbar 설정
             toolbar.toolbarView.apply {
-                title = BOOKMARKED_NOTES_TOOLBAR_TITLE
+                setTitle(R.string.BOOKMARKED_NOTES_TOOLBAR_TITLE)
                 lifecycleScope.launch {
                     clicks().collect { findNavController().navigateUp() }
                 }

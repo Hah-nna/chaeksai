@@ -8,8 +8,8 @@ import androidx.activity.addCallback
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentRegisterDetailBinding
-import com.jeong.sesac.sai.util.BACK_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.Dialog
 import com.jeong.sesac.sai.util.DialogInterface
@@ -35,7 +35,7 @@ class RegisterDetailFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            toolbar.toolbarView.title = BACK_TOOLBAR_TITLE
+            toolbar.toolbarView.setTitle(R.string.BACK_TOOLBAR_TITLE)
             btnScanBook.clicks().onEach {
                 showDialog()
             }.launchIn(viewLifecycleOwner.lifecycleScope)

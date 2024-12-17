@@ -7,7 +7,6 @@ import androidx.navigation.fragment.findNavController
 import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentPrivacyManagementBinding
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.PRIVACY_MANAGEMENT_TOOLBAR_TITLE
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.activity.backPresses
@@ -32,7 +31,7 @@ class PrivacyManagementFragment :
 
             // 툴바 설정
             toolbar.toolbarView.apply {
-                title = PRIVACY_MANAGEMENT_TOOLBAR_TITLE
+                setTitle(R.string.PRIVACY_MANAGEMENT_TOOLBAR_TITLE)
                 navigationClicks()
                     .onEach { findNavController().navigateUp() }
                     .launchIn(lifecycleScope)

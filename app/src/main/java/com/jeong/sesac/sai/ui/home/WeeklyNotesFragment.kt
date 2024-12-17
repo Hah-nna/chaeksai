@@ -9,11 +9,11 @@ import androidx.activity.addCallback
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentWeeklynotesBinding
 import com.jeong.sesac.sai.recycler.gridRecycler.GridRecyclerDecoration
 import com.jeong.sesac.sai.recycler.horizontalRecycler.HorizontalNotesAdapter
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.WEEKLY_NOTES_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.WeeklyNoteMockData
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -37,7 +37,7 @@ class WeeklyNotesFragment :
         super.onViewCreated(view, savedInstanceState)
 
         with(binding.toolbar.toolbarView) {
-            title = WEEKLY_NOTES_TOOLBAR_TITLE
+            setTitle(R.string.WEEKLY_NOTES_TOOLBAR_TITLE)
 
             /**
              * https://github.com/LDRAlighieri/Corbind/blob/master/corbind/src/main/kotlin/ru/ldralighieri/corbind/widget/ToolbarNavigationClicks.kt

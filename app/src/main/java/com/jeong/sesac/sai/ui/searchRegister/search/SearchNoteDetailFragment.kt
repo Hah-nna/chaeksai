@@ -8,9 +8,9 @@ import androidx.activity.addCallback
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.fragment.findNavController
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentSearchNoteDetailBinding
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.SEARCH_NOTES_TOOLBAR_TITLE
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
@@ -33,7 +33,7 @@ class SearchNoteDetailFragment : BaseFragment<FragmentSearchNoteDetailBinding>(F
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            toolbar.toolbarView.title = SEARCH_NOTES_TOOLBAR_TITLE
+            toolbar.toolbarView.setTitle(R.string.SEARCH_NOTES_TOOLBAR_TITLE)
             btnBarcodeScan.clicks().onEach {
                 val action = SearchNoteDetailFragmentDirections
                     .actionFragmentSearchNoteDetailToFragmentBarcodeScanner(noteInfo)

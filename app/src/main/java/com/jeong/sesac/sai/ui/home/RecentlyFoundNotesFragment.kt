@@ -8,11 +8,11 @@ import androidx.activity.addCallback
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentRecentlyFoundNotesBinding
 import com.jeong.sesac.sai.recycler.gridRecycler.GridNotesAdapter
 import com.jeong.sesac.sai.recycler.gridRecycler.GridRecyclerDecoration
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.RECENTLY_FOUND_NOTES_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.WeeklyNoteMockData
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -34,7 +34,7 @@ class RecentlyFoundNotesFragment : BaseFragment<FragmentRecentlyFoundNotesBindin
         super.onViewCreated(view, savedInstanceState)
 
         with(binding.toolbar.toolbarView) {
-            title = RECENTLY_FOUND_NOTES_TOOLBAR_TITLE
+            setTitle(R.string.RECENTLY_FOUND_NOTES_TOOLBAR_TITLE)
             // 툴바를 클릭했을 때 뒤로가기
             navigationClicks().onEach {
             findNavController().navigateUp()

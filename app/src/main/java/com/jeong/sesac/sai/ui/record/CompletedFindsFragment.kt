@@ -5,9 +5,9 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentCompletedFindsBinding
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.COMPLETED_FINDS_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.NOTE_ID
 import com.kakao.sdk.user.Constants.USER_ID
 import kotlinx.coroutines.flow.launchIn
@@ -35,7 +35,7 @@ class CompletedFindsFragment :
 
             // Toolbar 설정
             toolbar.toolbarView.apply {
-                title = COMPLETED_FINDS_TOOLBAR_TITLE
+                setTitle(R.string.COMPLETED_FINDS_TOOLBAR_TITLE)
                 lifecycleScope.launch {
                     clicks().collect { findNavController().navigateUp() }
                 }

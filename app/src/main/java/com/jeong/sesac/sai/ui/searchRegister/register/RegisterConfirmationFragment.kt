@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentRegisterConfirmationBinding
-import com.jeong.sesac.sai.util.BACK_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.BaseFragment
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -28,7 +28,7 @@ class RegisterConfirmationFragment : BaseFragment<FragmentRegisterConfirmationBi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            toolbar.toolbarView.title = BACK_TOOLBAR_TITLE
+            toolbar.toolbarView.setTitle(R.string.BACK_TOOLBAR_TITLE)
             includeCv.iconBook.visibility = View.VISIBLE
             includeCv.tvBookTitle.visibility = View.VISIBLE
             btnConfirm.clicks().onEach {

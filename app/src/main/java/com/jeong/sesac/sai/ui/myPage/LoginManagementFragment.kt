@@ -5,11 +5,11 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.data.LoginInfo
 import com.jeong.sesac.sai.databinding.FragmentLoginManagementBinding
 import com.jeong.sesac.sai.ui.adapter.LoginInfoAdapter
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.LOGIN_MANAGEMENT_TOOLBAR_TITLE
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.activity.backPresses
@@ -30,10 +30,9 @@ class LoginManagementFragment :
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-
             // 툴바 설정
             toolbar.toolbarView.apply {
-                title = LOGIN_MANAGEMENT_TOOLBAR_TITLE
+                setTitle(R.string.LOGIN_MANAGEMENT_TOOLBAR_TITLE)
                 navigationClicks()
                     .onEach { findNavController().navigateUp() }
                     .launchIn(lifecycleScope)

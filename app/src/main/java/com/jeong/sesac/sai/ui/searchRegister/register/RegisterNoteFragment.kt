@@ -8,8 +8,8 @@ import androidx.activity.addCallback
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentRegisterNoteBinding
-import com.jeong.sesac.sai.util.BACK_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.BaseFragment
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -31,7 +31,7 @@ class RegisterNoteFragment : BaseFragment<FragmentRegisterNoteBinding>(FragmentR
         super.onViewCreated(view, savedInstanceState)
         val content = "이 책을 읽는 모두 다 행복해지기를 바랍니다 ㅎㅎ"
         with(binding) {
-            toolbar.toolbarView.title = BACK_TOOLBAR_TITLE
+            toolbar.toolbarView.setTitle(R.string.BACK_TOOLBAR_TITLE)
             toolbar.toolbarView.clicks().onEach {
                 findNavController().navigateUp()
             }.launchIn(viewLifecycleOwner.lifecycleScope)

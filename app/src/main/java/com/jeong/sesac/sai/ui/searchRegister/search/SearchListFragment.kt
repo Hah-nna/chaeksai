@@ -8,11 +8,11 @@ import androidx.activity.addCallback
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentSearchListBinding
 import com.jeong.sesac.sai.recycler.gridRecycler.GridNotesAdapter
 import com.jeong.sesac.sai.recycler.gridRecycler.GridRecyclerDecoration
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.SEARCH_NOTES_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.WeeklyNoteMockData
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -34,7 +34,7 @@ class SearchListFragment : BaseFragment<FragmentSearchListBinding> (FragmentSear
         super.onViewCreated(view, savedInstanceState)
 
         with(binding.toolbar.toolbarView) {
-            title = SEARCH_NOTES_TOOLBAR_TITLE
+            setTitle(R.string.SEARCH_NOTES_TOOLBAR_TITLE)
             navigationClicks().onEach {
                 findNavController().navigateUp()
             }.launchIn(viewLifecycleOwner.lifecycleScope)

@@ -24,8 +24,6 @@ import java.lang.Exception
 
 class MapSearchRegisterFragment :
     BaseFragment<FragmentSearchRegisterBinding>(FragmentSearchRegisterBinding::inflate) {
-    private lateinit var registerNotedAdapter : GridNotesAdapter
-    private lateinit var findNotedAdapter : GridNotesAdapter
     private lateinit var mapView: MapView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,28 +56,11 @@ class MapSearchRegisterFragment :
             }
         })
 
-        registerNotedAdapter = GridNotesAdapter { registerNote ->
-            val action = MapSearchRegisterFragmentDirections.actionFragmentSearchRegisterToFragmentRegisterNote("새싹도서관")
-            findNavController().navigate(action)
-
-        }
-
-        findNotedAdapter = GridNotesAdapter { findNote ->
-            val action = MapSearchRegisterFragmentDirections.actionFragmentSearchRegisterToFragmentSearchList(
-                arrayOf(findNote)
-            )
-            findNavController().navigate(action)
-        }
-
         with(binding) {
-            /**
-             *
-             * */
             btnRegister.clicks().onEach {
                 val registerAction = MapSearchRegisterFragmentDirections.actionFragmentSearchRegisterToFragmentRegisterNote("새싹도서관")
                 findNavController().navigate(registerAction)
-            }.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-                .launchIn(viewLifecycleOwner.lifecycleScope)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
 
             btnFind.clicks().onEach {
                 val findAction = MapSearchRegisterFragmentDirections
@@ -87,12 +68,9 @@ class MapSearchRegisterFragment :
                         WeeklyNoteMockData.notesList.toTypedArray()
                     )
                 findNavController().navigate(findAction)
-            }.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-                .launchIn(viewLifecycleOwner.lifecycleScope)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
         }
 
-        registerNotedAdapter.submitList(WeeklyNoteMockData.notesList)
-        findNotedAdapter.submitList(WeeklyNoteMockData.notesList)
 
     }
 

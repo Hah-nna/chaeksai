@@ -5,9 +5,9 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentMyRegisteredNotesBinding
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.MY_REGISTERED_NOTES_TOOLBAR_TITLE
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -25,7 +25,7 @@ class MyRegisteredNotesFragment :
         with(binding) {
             // Toolbar 설정
             toolbar.toolbarView.apply {
-                title = MY_REGISTERED_NOTES_TOOLBAR_TITLE
+                setTitle(R.string.MY_REGISTERED_NOTES_TOOLBAR_TITLE)
 
                 // Corbind로 클릭 이벤트 처리
                 lifecycleScope.launch {

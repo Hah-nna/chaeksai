@@ -9,9 +9,9 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentWeeklyNoteDetailBinding
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.WEEKLY_NOTES_TOOLBAR_TITLE
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.appcompat.navigationClicks
@@ -35,7 +35,7 @@ class WeeklyNotesDetailFragment : BaseFragment<FragmentWeeklyNoteDetailBinding>(
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            toolbar.toolbarView.title = WEEKLY_NOTES_TOOLBAR_TITLE
+            toolbar.toolbarView.setTitle(R.string.WEEKLY_NOTES_TOOLBAR_TITLE)
             includedNoteCv.iconBook.visibility = View.GONE
             includedNoteCv.cvNoteDetailImg.setImageResource(noteDetail.hint_img)
 

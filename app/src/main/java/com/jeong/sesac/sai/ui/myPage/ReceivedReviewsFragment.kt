@@ -10,7 +10,6 @@ import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.data.Review
 import com.jeong.sesac.sai.databinding.FragmentReceivedReviewsBinding
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.RECEIVED_REVIEW_TOOLBAR_TITLE
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.activity.backPresses
@@ -26,7 +25,7 @@ class ReceivedReviewsFragment :
 
             // 툴바 설정
             toolbar.toolbarView.apply {
-                title = RECEIVED_REVIEW_TOOLBAR_TITLE
+                setTitle(R.string.RECEIVED_REVIEW_TOOLBAR_TITLE)
                 navigationClicks()
                     .onEach { findNavController().navigateUp() }
                     .launchIn(lifecycleScope)
