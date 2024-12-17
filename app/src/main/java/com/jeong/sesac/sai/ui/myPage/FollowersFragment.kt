@@ -10,10 +10,10 @@ import com.jeong.sesac.sai.data.Follower
 import com.jeong.sesac.sai.databinding.FragmentFollowersBinding
 import com.jeong.sesac.sai.ui.adapter.FollowerAdapter
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.FOLLOWER_TOOLBAR_TITLE
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.activity.backPresses
+import ru.ldralighieri.corbind.appcompat.navigationClicks
 
 /** writer: 정지영
  *
@@ -30,13 +30,16 @@ class FollowersFragment :
 
         // Toolbar 설정
         with(binding.toolbar.toolbarView) {
-            title = FOLLOWER_TOOLBAR_TITLE
-
-            // 뒤로가기 버튼 동작
-            requireActivity().onBackPressedDispatcher.backPresses(viewLifecycleOwner)
-                .onEach { findNavController().navigateUp() }
-                .launchIn(lifecycleScope)
+            setTitle(R.string.FOLLOWER_TOOLBAR_TITLE)
+            // 툴바의 아이콘부분을 누를 때 뒤로가기
+            navigationClicks().onEach {
+                findNavController().navigateUp()
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
         }
+        // 뒤로가기 버튼 동작(물리적인 뒤로가기 키를 누를 때...)
+        requireActivity().onBackPressedDispatcher.backPresses(viewLifecycleOwner)
+            .onEach { findNavController().navigateUp() }
+            .launchIn(lifecycleScope)
 
         // 더미 데이터 생성
         val followers = mutableListOf(
