@@ -85,7 +85,6 @@
 
 
     <!-- 네비게이션 라벨-->
-
     <string name="my_registered_notes_fragment">my_registered_notes_fragment</string>
     <string name="weeklyNotes_fragment">weeklyNotes_fragment</string>
     <string name="weeklyNotes_detail_fragment">weeklyNotes_detail_fragment</string>
@@ -99,6 +98,39 @@
     <string name="register_detail_fragment">register_detail_fragment</string>
     <string name="recently_found_notes_fragment_detail">recently_found_notes_fragment_detail</string>
     <string name="weeklyNotes">weeklyNotes_detail_fragment</string>
+
+    <!-- toolbar titles -->
+    <string name="RECENTLY_FOUND_NOTES_TOOLBAR_TITLE">방금 찾은 쪽지</string>
+    <string name="WEEKLY_NOTES_TOOLBAR_TITLE">금주의 새로운 쪽지</string>
+    <string name="SEARCH_NOTES_TOOLBAR_TITLE">쪽지 찾기</string>
+    <string name="GO_HOME_TOOLBAR_TITLE">홈</string>
+    <string name="BACK_TOOLBAR_TITLE">이전으로</string>
+    <string name="APP_SETTING_TOOLBAR_TITLE">앱설정</string>
+    <string name="RECEIVED_REVIEW_TOOLBAR_TITLE">받은 리뷰</string>
+    <string name="PRIVACY_MANAGEMENT_TOOLBAR_TITLE">개인정보관리</string>
+    <string name="FOLLOWER_TOOLBAR_TITLE">팔로워</string>
+    <string name="LOGIN_MANAGEMENT_TOOLBAR_TITLE">로그인 관리</string>
+    <string name="SETTING_MANAGEMENT_TOOLBAR_TITLE">설정</string>
+    <string name="MY_REGISTERED_NOTES_TOOLBAR_TITLE">내가 등록한 쪽지</string>
+    <string name="COMPLETED_FINDS_TOOLBAR_TITLE">내가 찾은 쪽지</string>
+    <string name="BOOKMARKED_NOTES_TOOLBAR_TITLE">내가 찜한 쪽지</string>
+    <string name="WRITE_REVIEW_TOOLBAR_TITLE">리뷰 작성</string>
+
+    <!-- dialog button text -->
+    <string name="DIALOG_BUTTON_TEXT_YES">네</string>
+    <string name="DIALOG_BUTTON_TEXT_NO">아니오</string>
+
+    <!-- dialog titles, messages -->
+    <string name="DIALOG_TITLE_DELETE_CASH">캐시 데이터 삭제</string>
+    <string name="DIALOG_MESSAGE_DELETE_CASH">캐시 데이터를 삭제하시겠습니까?</string>
+
+    <!-- toast message -->
+    <string name="TOAST_MESSAGE_CASH_DELETED">캐시 데이터가 삭제되었습니다.</string>
+
+    <!-- button tags -->
+    <string name="BUTTON_TAG_DEACTIVATE">deactivate</string>
+    <string name="BUTTON_TAG_ACTIVATE">activate</string>
+
 
 
 </resources>
