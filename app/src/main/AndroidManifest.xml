@@ -20,7 +20,7 @@
         >
         <meta-data
             android:name="com.kakao.vectormap.AppKey"
-            android:value="4da58aee4bca744cc8b3764bdb74b99b"
+            android:value="${KAKAO_MAP_MANIFEST_APP_KEY}"
             />
         <activity
             android:name=".MainActivity"
