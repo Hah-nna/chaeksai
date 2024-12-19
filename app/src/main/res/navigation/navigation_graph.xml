@@ -68,7 +68,7 @@
 
         <action
             android:id="@+id/action_fragmentRecentlyFoundNotesDetail_to_fragmentHome"
-            app:destination="@+id/fragmentHome"></action>
+            app:destination="@+id/fragmentHome" />
 
     </fragment>
 
