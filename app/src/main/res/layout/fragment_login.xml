@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_close"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/btn_close"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CHAKSAI"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingHorizontal="64dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_kakao_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="16dp"
+            android:text="카카오로 로그인"
+            android:textColor="@color/primary_text"
+            app:backgroundTint="#ffbf09"
+            app:icon="@drawable/icon_kakao"
+            app:iconTintMode="multiply"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.1" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_naver_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="16dp"
+            android:text="네이버로 로그인"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold"
+            app:backgroundTint="#2db700"
+            app:icon="@drawable/icon_naver"
+            app:iconTintMode="multiply"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_kakao_login"
+            app:layout_constraintVertical_bias="0.1" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_google_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="16dp"
+            android:text="구글로 로그인"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold"
+            app:backgroundTint="@color/white"
+            app:icon="@drawable/icon_google"
+            app:iconTintMode="multiply"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_naver_login"
+            app:layout_constraintVertical_bias="0.1"
+            app:strokeColor="@android:color/darker_gray"
+            app:strokeWidth="1dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
