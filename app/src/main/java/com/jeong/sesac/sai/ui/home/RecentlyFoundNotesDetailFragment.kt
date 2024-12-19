@@ -45,8 +45,7 @@ class RecentlyFoundNotesDetailFragment : BaseFragment<FragmentRecentlyFoundNotes
             btnGoToHome.clicks().onEach {
                 val action = RecentlyFoundNotesDetailFragmentDirections.actionFragmentRecentlyFoundNotesDetailToFragmentHome()
                 findNavController().navigate(action)
-            }.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-                .launchIn(viewLifecycleOwner.lifecycleScope)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
 
             toolbar.toolbarView.navigationClicks().onEach {
             findNavController().navigateUp()
@@ -57,7 +56,4 @@ class RecentlyFoundNotesDetailFragment : BaseFragment<FragmentRecentlyFoundNotes
             findNavController().navigateUp()
         }
     }
-
-
-
 }
