@@ -87,4 +87,5 @@ dependencies {
     implementation("ru.ldralighieri.corbind:corbind-appcompat:1.11.0")
     implementation("ru.ldralighieri.corbind:corbind-activity:1.11.0")
     implementation("ru.ldralighieri.corbind:corbind-lifecycle:1.11.0")
+    implementation("androidx.core:core-splashscreen:1.0.0")
 }
