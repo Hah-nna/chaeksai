@@ -3,10 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <!--integer.xml을 integers.xml로 통일하여 basic_font_weight의 값을 이동하였습니다-->
     <font
-        android:font="@font/dunggeunmo"
-        android:fontStyle="normal"
-        android:fontWeight="@integer/basic_font_weight"
-        app:font="@font/dunggeunmo"
+        app:font="@font/pretendard"
         app:fontStyle="normal"
         app:fontWeight="@integer/basic_font_weight" />
 </font-family>
