@@ -17,5 +17,14 @@
         <item name="materialCardViewStyle">@style/CustomMaterialCardView</item>
     </style>
 
+    <style name="Theme.Sai.Splash" parent="Theme.SplashScreen">
+        <!-- splashScreen background 색상 지정 -->
+        <item name="windowSplashScreenBackground">@color/primary</item>
+        <!-- splashScreen에서 보여줄 icon -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_icon_img</item>
+        <!-- splashScreen 이후에 바뀔 테마 -->
+        <item name="postSplashScreenTheme">@style/Theme.Sai</item>
+    </style>
+
     <style name="Theme.Sai" parent="Base.Theme.Sai" />
 </resources>
