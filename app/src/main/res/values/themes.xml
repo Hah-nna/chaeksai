@@ -1,13 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- 기본 전역 테마 설정 -->
     <style name="Base.Theme.Sai" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:colorBackground">@color/neutral</item>
         <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
-        <!--        <item name="android:buttonStyle">@style/customBtnViewFontStyle</item>-->
+        <item name="android:buttonStyle">@style/customBtnViewFontStyle</item>
         <item name="android:editTextStyle">@style/customEditTextViewFontStyle</item>
         <item name="android:imageButtonStyle">@style/customImgBtnViewFontStyle</item>
 
-        <!--themes에 둥근모 폰트 전체 적용-->
+        <!--themes에 pretendard 폰트 전체 적용-->
         <item name="android:fontFamily">@font/font_family</item>
 
         <!--툴바, 툴바텍스트 스타일 적용-->
