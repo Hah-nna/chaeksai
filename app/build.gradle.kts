@@ -28,7 +28,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
        // kakao map 키 가져옴. manifest 파일에서도 사용할 수 있게 함
         buildConfigField("String", "KAKAO_MAP_KEY", "\"${localProperties.getProperty("KAKAO_MAP_KEY", "")}\"")
-        manifestPlaceholders["KAKAO_MAP_MANIFEST_APP_KEY"] = localProperties.getProperty("KAKAO_MAP_MANAFEST_APP_KEY", "")
+        manifestPlaceholders["KAKAO_MAP_KEY"] = localProperties.getProperty("KAKAO_MAP_MANAFEST_APP_KEY", "")
     }
 
     buildTypes {
@@ -87,5 +87,10 @@ dependencies {
     implementation("ru.ldralighieri.corbind:corbind-appcompat:1.11.0")
     implementation("ru.ldralighieri.corbind:corbind-activity:1.11.0")
     implementation("ru.ldralighieri.corbind:corbind-lifecycle:1.11.0")
-    implementation("androidx.core:core-splashscreen:1.0.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("com.github.bumptech.glide:glide:4.14.2")
+    implementation(libs.retrofit)
+    implementation(libs.converter.moshi)
+    implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
 }
