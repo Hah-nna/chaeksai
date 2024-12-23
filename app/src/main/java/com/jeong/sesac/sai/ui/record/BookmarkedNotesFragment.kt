@@ -51,11 +51,11 @@ class BookmarkedNotesFragment :
 
             // 버튼 클릭 이벤트 처리
             lifecycleScope.launch {
-                button.clicks().collect {
+                button.clicks().onEach {
                     val action = BookmarkedNotesFragmentDirections
                         .actionFragmentBookmarkedNotesToFragmentMapSearchRegister(SESAC_LIBRARY)
                     findNavController().navigate(action)
-                }
+                }.launchIn(lifecycleScope)
             }
         }
     }
