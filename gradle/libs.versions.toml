@@ -23,6 +23,9 @@ ru-ldralighieri-corbind-material = "1.11.0"
 firebaseFirestore = "25.1.1"
 firebaseMessaging = "24.1.0"
 identityAndroidLegacy = "202411.1"
+moshi = "1.15.1"
+moshiKotlin = "1.14.0"
+retrofit = "2.9.0"
 
 [libraries]
 android = { module = "com.kakao.maps.open:android", version.ref = "android" }
@@ -44,6 +47,10 @@ ru-ldralighieri-corbind-material = { module = "ru.ldralighieri.corbind:corbind-m
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 identity-android-legacy = { group = "com.android.identity", name = "identity-android-legacy", version.ref = "identityAndroidLegacy" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
+converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
+moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshiKotlin" }
 
 
 [plugins]
