@@ -24,7 +24,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_confirm"
-        style="@style/BaseButtonStyle"
+        style="@style/LargeButtonStyle"
         android:text="@string/toHome"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/neutral"
-    android:padding="@dimen/guideline_padding"
     tools:context=".ui.myPage.PrivacyManagementFragment">
 
     <include
@@ -15,11 +13,12 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/profileImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/neutral"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:contentDescription="@string/randomDescription"
-        android:src="@drawable/ic_profile"
+        android:src="@drawable/icon_profile"
+        android:scaleType="fitXY"
+        android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />

@@ -58,6 +58,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:clipToPadding="false"
+        android:paddingVertical="12dp"
         tools:listitem="@layout/item_weekly_notes"
         app:layout_constraintTop_toBottomOf="@+id/tv_weeklyNotes"
         app:layout_constraintStart_toStartOf="parent"
