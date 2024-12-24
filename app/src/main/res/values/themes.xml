@@ -2,7 +2,7 @@
     <!-- 기본 전역 테마 설정 -->
     <style name="Base.Theme.Sai" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
-        <item name="android:buttonStyle">@style/customBtnViewFontStyle</item>
+        <item name="android:buttonStyle">@style/BaseButtonStyle</item>
         <item name="android:editTextStyle">@style/customEditTextViewFontStyle</item>
         <item name="android:imageButtonStyle">@style/customImgBtnViewFontStyle</item>
 
