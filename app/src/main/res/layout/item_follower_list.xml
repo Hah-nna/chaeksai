@@ -7,7 +7,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/followBtn"
-        style="@style/BaseButtonStyle"
+        style="@style/SmallButtonStyle"
         android:text="@string/unfollow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
