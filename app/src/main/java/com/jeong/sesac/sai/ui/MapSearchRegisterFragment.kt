@@ -1,15 +1,12 @@
 package com.jeong.sesac.sai.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.jeong.sesac.sai.databinding.FragmentSearchRegisterBinding
-import com.jeong.sesac.sai.recycler.gridRecycler.GridNotesAdapter
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.WeeklyNoteMockData
 import com.kakao.vectormap.KakaoMap
@@ -18,7 +15,6 @@ import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import ru.ldralighieri.corbind.material.checkedChanges
 import ru.ldralighieri.corbind.view.clicks
 import java.lang.Exception
 
@@ -64,7 +60,7 @@ class MapSearchRegisterFragment :
 
             btnFind.clicks().onEach {
                 val findAction = MapSearchRegisterFragmentDirections
-                    .actionFragmentSearchRegisterToFragmentSearchList(
+                    .actionFragmentSearchRegisterToFragmentSearch(
                         WeeklyNoteMockData.notesList.toTypedArray()
                     )
                 findNavController().navigate(findAction)
