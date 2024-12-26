@@ -9,8 +9,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeong.sesac.sai.databinding.FragmentHomeBinding
-import com.jeong.sesac.sai.recycler.gridRecycler.GridNotesAdapter
-import com.jeong.sesac.sai.recycler.horizontalRecycler.HorizontalNotesAdapter
+import com.jeong.sesac.sai.recycler.recentlyFoundNote.RecentlyFoundNoteAdapter
+import com.jeong.sesac.sai.recycler.HorizontalDecoration
+import com.jeong.sesac.sai.recycler.weeklyNote.WeeklyNoteAdapter
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.WeeklyNoteMockData
 import kotlinx.coroutines.flow.launchIn
@@ -18,8 +19,8 @@ import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
-    private lateinit var weeklyNoteAdapter: HorizontalNotesAdapter
-    private lateinit var recentlyFoundAdapter : GridNotesAdapter
+    private lateinit var weeklyNoteAdapter: WeeklyNoteAdapter
+    private lateinit var recentlyFoundAdapter : RecentlyFoundNoteAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,12 +34,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        weeklyNoteAdapter = HorizontalNotesAdapter { weeklyNote ->
+        weeklyNoteAdapter = WeeklyNoteAdapter { weeklyNote ->
             val action = HomeFragmentDirections.actionFragmentHomeToFragmentWeeklyNoteDetail(weeklyNote)
             findNavController().navigate(action)
         }
 
-        recentlyFoundAdapter = GridNotesAdapter { foundNote ->
+        recentlyFoundAdapter = RecentlyFoundNoteAdapter { foundNote ->
             val action = HomeFragmentDirections.actionFragmentHomeToFragmentRecentlyFoundNotesDetail(foundNote)
 
             findNavController().navigate(action)
@@ -50,11 +51,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             rvWeeklyNotes.apply {
                 layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 adapter = this@HomeFragment.weeklyNoteAdapter
+                addItemDecoration(HorizontalDecoration(requireContext()))
             }
 
             rvRecentlyFoundNotes.apply {
                 layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 adapter = this@HomeFragment.recentlyFoundAdapter
+                addItemDecoration(HorizontalDecoration(requireContext()))
             }
 
             /**
