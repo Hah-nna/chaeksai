@@ -137,8 +137,8 @@
 
         <!-- 찾기/등록(맵) -> 쪽지 찾기 액션 -->
         <action
-            android:id="@+id/action_fragmentSearchRegister_to_fragmentSearchList"
-            app:destination="@+id/fragmentSearchList">
+            android:id="@+id/action_fragmentSearchRegister_to_fragmentSearch"
+            app:destination="@+id/fragmentSearch">
 
             <argument
                 android:name="findNoteList"
@@ -238,10 +238,10 @@
 
     <!-- 찾기/등록(맵) -> 쪽지 찾기 프래그먼트 -->
     <fragment
-        android:id="@+id/fragmentSearchList"
-        android:name="com.jeong.sesac.sai.ui.searchRegister.search.SearchListFragment"
-        android:label="fragment_search_list"
-        tools:layout="@layout/fragment_search_list">
+        android:id="@+id/fragmentSearch"
+        android:name="com.jeong.sesac.sai.ui.searchRegister.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search">
 
         <argument
             android:name="findNoteList"
@@ -249,7 +249,7 @@
 
         <!-- 쪽지 찾기 프래그먼트에서 쪽지디테일 프래그먼트로 이동 액션 -->
         <action
-            android:id="@+id/action_fragmentSearchList_to_fragmentSearchNoteDetail"
+            android:id="@+id/action_fragmentSearch_to_fragmentSearchNoteDetail"
             app:destination="@+id/fragmentSearchNoteDetail">
             <argument
                 android:name="findNoteInfo"
@@ -448,11 +448,13 @@
             app:destination="@+id/fragmentSearchRegister" />
     </fragment>
     <!-- 찾기/등록(맵) 프래그먼트 끝 -->
+
+
     <fragment
         android:id="@+id/fragment_record"
-        android:name="RecordFragment"
+        android:name="com.jeong.sesac.sai.ui.RecordFragment"
         android:label="@string/fragment_record"
-        tools:layout="@layout/fragment_record">
+        tools:layout="@layout/fragment_tab_layout">
         <action
             android:id="@+id/action_fragment_record_to_fragment_my_registered_notes"
             app:destination="@id/fragment_my_registered_notes" />
