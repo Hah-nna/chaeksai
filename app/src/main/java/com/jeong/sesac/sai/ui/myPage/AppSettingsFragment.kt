@@ -47,26 +47,9 @@ class AppSettingsFragment :
                 .onEach { showDeleteCashDataDialog() }
                 .launchIn(lifecycleScope)
 
-            // 버튼 상태 토글 이벤트 설정
-            listOf(button1, button2, button3, button4, button5).forEach { button ->
-                button.clicks()
-                    .onEach { toggleButtonState(button) }
-                    .launchIn(lifecycleScope)
-            }
         }
     }
 
-    // 버튼 상태 토글 로직
-    private fun toggleButtonState(button: androidx.appcompat.widget.AppCompatImageButton) {
-        val currentTag = button.tag
-        if (currentTag == R.string.BUTTON_TAG_DEACTIVATE) {
-            button.setImageResource(R.drawable.activate)
-            button.setTag(R.string.BUTTON_TAG_ACTIVATE)
-        } else {
-            button.setImageResource(R.drawable.deactivate)
-            button.setTag(R.string.BUTTON_TAG_DEACTIVATE)
-        }
-    }
 
     // 캐시 데이터 삭제 다이얼로그 표시
     private fun showDeleteCashDataDialog() {
