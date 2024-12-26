@@ -1,4 +1,4 @@
-package com.jeong.sesac.sai.recycler.gridRecycler
+package com.jeong.sesac.sai.recycler.recentlyFoundNote
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,14 +6,14 @@ import androidx.recyclerview.widget.ListAdapter
 import com.jeong.sesac.sai.databinding.ItemRecentlyFoundNoteBinding
 import com.jeong.sesac.sai.util.WeeklyNotesInfo
 
-class GridNotesAdapter(val callBack: (WeeklyNotesInfo) -> Unit) :
-    ListAdapter<WeeklyNotesInfo, GridNotesViewHolder>(DiffUtilGridNotes()) {
+class RecentlyFoundNoteAdapter(val callBack: (WeeklyNotesInfo) -> Unit) :
+    ListAdapter<WeeklyNotesInfo, RecentlyFoundNoteViewHolder>(DiffUtilRecentlyFoundNote()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): GridNotesViewHolder {
-        return GridNotesViewHolder(
+    ): RecentlyFoundNoteViewHolder {
+        return RecentlyFoundNoteViewHolder(
             ItemRecentlyFoundNoteBinding.inflate(
                 LayoutInflater.from(
                     parent.context
@@ -22,7 +22,7 @@ class GridNotesAdapter(val callBack: (WeeklyNotesInfo) -> Unit) :
         )
     }
 
-    override fun onBindViewHolder(holder: GridNotesViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecentlyFoundNoteViewHolder, position: Int) {
         val recentlyFoundNote = currentList[position]
         holder.binding.apply {
             itemRecentlyFoundNoteImg.setImageResource(recentlyFoundNote.hint_img)

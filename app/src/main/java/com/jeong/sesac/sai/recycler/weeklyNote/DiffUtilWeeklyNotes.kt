@@ -1,9 +1,9 @@
-package com.jeong.sesac.sai.recycler.horizontalRecycler
+package com.jeong.sesac.sai.recycler.weeklyNote
 
 import androidx.recyclerview.widget.DiffUtil
 import com.jeong.sesac.sai.util.WeeklyNotesInfo
 
-class DiffUtilHorizontalNotes : DiffUtil.ItemCallback<WeeklyNotesInfo>(){
+class DiffUtilWeeklyNotes : DiffUtil.ItemCallback<WeeklyNotesInfo>(){
 
     override fun areItemsTheSame(oldItem: WeeklyNotesInfo, newItem: WeeklyNotesInfo): Boolean {
         return oldItem.id == newItem.id
