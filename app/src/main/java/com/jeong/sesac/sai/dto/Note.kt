@@ -4,16 +4,14 @@ import java.util.Locale
 
 data class Note(
     val id: String,
-    val book_name: String,
-    val content: String,
     val created_at: Locale,
-    val finder_id: String,
-    val isbn: String,
+    val content: String,
     val library_name: String,
-    val likes: Int,
+    val book_name: String,
+    val isbn: String,
+    val finder_id: String,
     val writer_id: String,
-    val hint_img: String,
-    val hints: List<String>
+    val likes: Int,
 )
 
 
