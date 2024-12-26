@@ -10,5 +10,6 @@ data class WeeklyNotesInfo(
     val note_content : String,
     val hint_img: Int,
     val library: String,
-    val hints : List<String>
+    val hints : List<String>,
+    val likes : Int
 ) : Parcelable
