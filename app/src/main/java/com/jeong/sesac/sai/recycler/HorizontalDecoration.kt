@@ -1,4 +1,4 @@
-package com.jeong.sesac.sai.recycler.horizontalRecycler
+package com.jeong.sesac.sai.recycler
 
 import android.content.Context
 import android.graphics.Rect
@@ -6,7 +6,7 @@ import android.util.TypedValue
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-class RVDecoration(val context : Context) : RecyclerView.ItemDecoration() {
+class HorizontalDecoration(val context : Context) : RecyclerView.ItemDecoration() {
 
 
     private fun dpToPx(dp: Float) =
