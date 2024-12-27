@@ -1,10 +1,10 @@
 package com.jeong.sesac.sai.ui.searchRegister.register
 
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -13,6 +13,10 @@ import com.jeong.sesac.sai.databinding.FragmentRegisterDetailBinding
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.Dialog
 import com.jeong.sesac.sai.util.DialogInterface
+import com.jeong.sesac.sai.util.throttleFirst
+import com.jeong.sesac.sai.util.throttleTime
+import com.jeong.sesac.sai.viewmodel.factory.viewModelFactory
+import com.jeong.sesac.sai.viewmodel.RegisterNoteViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
@@ -23,20 +27,14 @@ class RegisterDetailFragment :
     val args: RegisterDetailFragmentArgs by navArgs()
     var book: String = "물고기는 존재하지 않는다"
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentRegisterDetailBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
+    private val registerNoteViewModel by activityViewModels<RegisterNoteViewModel>{ viewModelFactory }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
             toolbar.toolbarView.setTitle(R.string.BACK_TOOLBAR_TITLE)
-            btnScanBook.clicks().onEach {
+            btnScanBook.clicks().throttleFirst(throttleTime).onEach {
+                Log.d("btnScanBook", "click!!!!")
                 showDialog()
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 

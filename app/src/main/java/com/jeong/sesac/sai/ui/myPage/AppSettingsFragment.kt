@@ -9,6 +9,8 @@ import androidx.navigation.fragment.findNavController
 import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentAppSettingsBinding
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.throttleFirst
+import com.jeong.sesac.sai.util.throttleTime
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.activity.backPresses
@@ -32,18 +34,20 @@ class AppSettingsFragment :
             // 툴바 설정 및 뒤로가기 이벤트 처리
             toolbar.toolbarView.apply {
                 setTitle(R.string.APP_SETTING_TOOLBAR_TITLE)
-                navigationClicks()
+                navigationClicks().throttleFirst(throttleTime)
                     .onEach { findNavController().navigateUp() }
                     .launchIn(lifecycleScope)
             }
 
             // 뒤로가기 버튼 동작
             requireActivity().onBackPressedDispatcher.backPresses(viewLifecycleOwner)
+                .throttleFirst(throttleTime)
                 .onEach { findNavController().navigateUp() }
                 .launchIn(lifecycleScope)
 
             // 캐시 데이터 삭제 버튼 클릭 이벤트
             deleteCashData.clicks()
+                .throttleFirst(throttleTime)
                 .onEach { showDeleteCashDataDialog() }
                 .launchIn(lifecycleScope)
 

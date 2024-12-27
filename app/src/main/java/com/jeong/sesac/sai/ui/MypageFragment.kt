@@ -10,6 +10,8 @@ import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.data.Review
 import com.jeong.sesac.sai.databinding.FragmentMypageBinding
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.throttleFirst
+import com.jeong.sesac.sai.util.throttleTime
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
@@ -32,13 +34,17 @@ class MypageFragment : BaseFragment<FragmentMypageBinding>(FragmentMypageBinding
             recyclerView.adapter = ReviewAdapter(reviews)
 
             // Corbind를 사용하여 설정 버튼 클릭 이벤트 처리
-            btnSetting.clicks().onEach {
+            btnSetting.clicks()
+                .throttleFirst(throttleTime)
+                .onEach {
                 val action = MypageFragmentDirections.actionFragmentMyPageToFragmentSettings()
                     findNavController().navigate(action)
                 }.launchIn(lifecycleScope)
 
              // Corbind를 사용하여 리뷰 더보기 버튼 클릭 이벤트 처리
-                btnReviewMore.clicks().onEach {
+                btnReviewMore.clicks()
+                    .throttleFirst(throttleTime)
+                    .onEach {
                     val action = MypageFragmentDirections.actionFragmentMyPageToFragmentReceivedReviews()
                     findNavController().navigate(action)
                 }.launchIn(lifecycleScope)

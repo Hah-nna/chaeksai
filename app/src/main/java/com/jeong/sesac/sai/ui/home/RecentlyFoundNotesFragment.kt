@@ -10,6 +10,8 @@ import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentRecentlyFoundNotesBinding
 import com.jeong.sesac.sai.recycler.recentlyFoundNote.RecentlyFoundNotePagerAdapter
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.throttleFirst
+import com.jeong.sesac.sai.util.throttleTime
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.appcompat.navigationClicks
@@ -22,7 +24,7 @@ class RecentlyFoundNotesFragment : BaseFragment<FragmentRecentlyFoundNotesBindin
         with(binding.toolbar.toolbarView) {
             setTitle(R.string.RECENTLY_FOUND_NOTES_TOOLBAR_TITLE)
             // 툴바를 클릭했을 때 뒤로가기
-            navigationClicks().onEach {
+            navigationClicks().throttleFirst(throttleTime).onEach {
             findNavController().navigateUp()
             }.launchIn(viewLifecycleOwner.lifecycleScope)
         }

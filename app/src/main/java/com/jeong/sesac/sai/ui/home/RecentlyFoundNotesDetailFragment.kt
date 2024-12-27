@@ -12,6 +12,8 @@ import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentRecentlyFoundNotesDetailBinding
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.throttleFirst
+import com.jeong.sesac.sai.util.throttleTime
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.appcompat.navigationClicks
@@ -42,12 +44,12 @@ class RecentlyFoundNotesDetailFragment : BaseFragment<FragmentRecentlyFoundNotes
             includedNoteCv.cvNoteDetailImg.setImageResource(noteDetail.hint_img)
             includedNoteCv.iconBook.visibility = View.GONE
 
-            btnGoToHome.clicks().onEach {
+            btnGoToHome.clicks().throttleFirst(throttleTime).onEach {
                 val action = RecentlyFoundNotesDetailFragmentDirections.actionFragmentRecentlyFoundNotesDetailToFragmentHome()
                 findNavController().navigate(action)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-            toolbar.toolbarView.navigationClicks().onEach {
+            toolbar.toolbarView.navigationClicks().throttleFirst(throttleTime).onEach {
             findNavController().navigateUp()
             }.launchIn(viewLifecycleOwner.lifecycleScope)
         }

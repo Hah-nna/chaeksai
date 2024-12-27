@@ -2,6 +2,7 @@ package com.jeong.sesac.sai.ui.myPage
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,6 +11,10 @@ import com.jeong.sesac.sai.data.Follower
 import com.jeong.sesac.sai.databinding.FragmentFollowersBinding
 import com.jeong.sesac.sai.ui.adapter.FollowerAdapter
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.throttleFirst
+import com.jeong.sesac.sai.util.throttleTime
+import com.jeong.sesac.sai.viewmodel.factory.viewModelFactory
+import com.jeong.sesac.sai.viewmodel.MyPageViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.activity.backPresses
@@ -24,6 +29,7 @@ import ru.ldralighieri.corbind.appcompat.navigationClicks
  */
 class FollowersFragment :
     BaseFragment<FragmentFollowersBinding>(FragmentFollowersBinding::inflate) {
+    private val myPageViewModel by activityViewModels<MyPageViewModel>{ viewModelFactory }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,6 +44,7 @@ class FollowersFragment :
         }
         // 뒤로가기 버튼 동작(물리적인 뒤로가기 키를 누를 때...)
         requireActivity().onBackPressedDispatcher.backPresses(viewLifecycleOwner)
+            .throttleFirst(throttleTime)
             .onEach { findNavController().navigateUp() }
             .launchIn(lifecycleScope)
 

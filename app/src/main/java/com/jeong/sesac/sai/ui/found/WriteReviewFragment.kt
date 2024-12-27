@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import com.jeong.sesac.sai.util.DEFAULT_REVIEW_CONTENT
 import com.jeong.sesac.sai.util.NOTE_ID
+import com.jeong.sesac.sai.util.throttleFirst
+import com.jeong.sesac.sai.util.throttleTime
 import com.kakao.sdk.user.Constants.USER_ID
 import kotlinx.coroutines.launch
 import ru.ldralighieri.corbind.activity.backPresses
@@ -26,25 +28,25 @@ class WriteReviewFragment :
         val content = "아 너무 좋았구요 이 책은 꼭 읽어보세요"
         with(binding) {
             toolbar.toolbarView.setTitle(R.string.BACK_TOOLBAR_TITLE)
-            btnCompletedReview.clicks().onEach {
+            btnCompletedReview.clicks().throttleFirst(throttleTime).onEach {
                 val action = WriteReviewFragmentDirections.actionFragmentWriteReviewToFragmentReviewCompleted("1234", "1", content)
                 findNavController().navigate(action)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-            toolbar.toolbarView.clicks().onEach {
+            toolbar.toolbarView.clicks().throttleFirst(throttleTime).onEach {
                 findNavController().navigateUp()
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         }
        
             // 뒤로가기 버튼 처리
-            requireActivity().onBackPressedDispatcher.backPresses(viewLifecycleOwner)
+            requireActivity().onBackPressedDispatcher.backPresses(viewLifecycleOwner).throttleFirst(throttleTime)
                 .onEach { findNavController().navigateUp() }
                 .launchIn(lifecycleScope)
 
             // 리뷰 작성 완료 버튼 클릭 이벤트 처리
             lifecycleScope.launch {
-                binding.btnCompletedReview.clicks().collect {
+                binding.btnCompletedReview.clicks().throttleFirst(throttleTime).collect {
                     val action =
                         WriteReviewFragmentDirections
                             .actionFragmentWriteReviewToFragmentReviewCompleted(
