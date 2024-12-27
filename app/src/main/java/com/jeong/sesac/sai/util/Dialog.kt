@@ -70,7 +70,7 @@ class Dialog(
      * 각 클릭이벤트 후 dissmiss()를 해주어 다이얼르그를 뷰에서 삭제함
      * */
     private fun setupClickListeners() {
-        binding.btnLeft.clicks().onEach {
+        binding.btnLeft.clicks().throttleFirst(throttleTime).onEach {
             /**
              * 사용하려는 프랙르먼트에서 dialogInterface를 상속받아 onClickLeftBtn()안에 원하는 것을 구현하면 됨
              * */
@@ -78,7 +78,7 @@ class Dialog(
             dismiss()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        binding.btnRight.clicks().onEach {
+        binding.btnRight.clicks().throttleFirst(throttleTime).onEach {
             /**
              * 사용하려는 프랙르먼트에서 dialogInterface를 상속받아 onClickRightBtn()안에 원하는 것을 구현하면 됨
              * */
