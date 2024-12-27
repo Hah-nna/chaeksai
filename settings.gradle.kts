@@ -23,3 +23,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "sai"
 include(":app")
+include(":domainModule")
+include(":dataModule")
