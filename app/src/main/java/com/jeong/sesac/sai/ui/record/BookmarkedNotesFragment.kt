@@ -2,6 +2,7 @@ package com.jeong.sesac.sai.ui.record
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -11,6 +12,8 @@ import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.SESAC_LIBRARY
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
+import com.jeong.sesac.sai.viewmodel.factory.viewModelFactory
+import com.jeong.sesac.sai.viewmodel.RecordViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -28,6 +31,7 @@ class BookmarkedNotesFragment :
     BaseFragment<FragmentBookmarkedNotesBinding>(FragmentBookmarkedNotesBinding::inflate) {
 
     private val args: BookmarkedNotesFragmentArgs by navArgs()
+    private val recordViewModel by activityViewModels<RecordViewModel> { viewModelFactory }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

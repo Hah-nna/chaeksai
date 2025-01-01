@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -17,7 +16,6 @@ import ru.ldralighieri.corbind.view.clicks
 class BarcodeScannerFragment : BaseFragment<FragmentBarcodeScannerBinding>(FragmentBarcodeScannerBinding::inflate) {
     private val args : BarcodeScannerFragmentArgs by navArgs()
     private val noteInfo by lazy { args.findNoteInfo }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,

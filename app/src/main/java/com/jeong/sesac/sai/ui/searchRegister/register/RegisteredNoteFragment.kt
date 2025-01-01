@@ -11,11 +11,14 @@ import com.jeong.sesac.sai.databinding.FragmentRegisteredNoteBinding
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
+import com.jeong.sesac.sai.viewmodel.factory.viewModelFactory
+import com.jeong.sesac.sai.viewmodel.RegisterNoteViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 
 class RegisteredNoteFragment : BaseFragment<FragmentRegisteredNoteBinding>(FragmentRegisteredNoteBinding::inflate) {
+    private val registerNoteViewModel by activityViewModels<RegisterNoteViewModel>{ viewModelFactory }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

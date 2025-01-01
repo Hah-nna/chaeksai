@@ -1,46 +1,25 @@
 package com.jeong.sesac.sai.viewmodel
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.jeong.sesac.datamodule.repository.AuthRepositoryImpl
-import com.jeong.sesac.sai.viewmodel.entity.LoginState
+import com.jeong.sesac.sai.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
+class AuthViewModel(private val authRepo : AuthRepository) : ViewModel() {
+    private var _isLoggedIn = MutableStateFlow(false)
+    val isLoggedIn get() = _isLoggedIn.asStateFlow()
 
-class AuthViewModel(private val authRepo: AuthRepositoryImpl) : ViewModel() {
-    private var _loginState = MutableStateFlow<LoginState<String>>(LoginState.Loading)
-    val loginState get() = _loginState.asStateFlow()
-
-    fun checkLoginState() {
-        viewModelScope.launch {
-            authRepo.getUserInfo().collectLatest { nickname ->
-                _loginState.value = when {
-                    nickname.isEmpty() -> LoginState.NotLoggedIn
-                    else -> LoginState.Success(nickname)
-                }
-            }
-        }
+    fun login() {
+        // authRepo.login() 호출해서 성공하면
+        // _isLoggedIn = true
+        // 프래그먼트에서 viewModel.isLoggedIn.collectLatest() 해서 상태값 받아오기
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun setUserInfo(nickname: String) {
-        viewModelScope.launch {
-            _loginState.value = LoginState.Loading
-            try {
-                authRepo.createUser(nickname)
-                authRepo.setUserInfo(nickname)
-                _loginState.value = LoginState.Success(nickname)
-            } catch (e: Exception) {
-                _loginState.value = LoginState.Error(e.message ?: "오류 발생")
-            }
-        }
+    fun signUp() {
+        // authRepo.signUp() 호출해서 성공하면
+        // _isLoggedIn = true
+        // 프래그먼트에서 viewModel.isLoggedIn.collectLatest() 해서 상태값 받아오기
+        // 프래그먼트에서 private val viewModes by activityViewModels<AuthViewModel>() <- 이런식으로 뷰모델객체를 얻어서 ㄱ
     }
-
-
 
 }

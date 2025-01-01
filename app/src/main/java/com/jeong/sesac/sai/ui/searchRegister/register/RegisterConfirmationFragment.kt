@@ -11,12 +11,15 @@ import com.jeong.sesac.sai.databinding.FragmentRegisterConfirmationBinding
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
+import com.jeong.sesac.sai.viewmodel.factory.viewModelFactory
+import com.jeong.sesac.sai.viewmodel.RegisterNoteViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 
 class RegisterConfirmationFragment : BaseFragment<FragmentRegisterConfirmationBinding>(FragmentRegisterConfirmationBinding::inflate) {
 
+    private val registerNoteViewModel by activityViewModels<RegisterNoteViewModel>{ viewModelFactory }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

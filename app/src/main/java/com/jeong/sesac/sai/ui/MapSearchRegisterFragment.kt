@@ -1,8 +1,9 @@
 package com.jeong.sesac.sai.ui
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.fragment.app.activityViewModels
+import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.jeong.sesac.sai.databinding.FragmentSearchRegisterBinding
@@ -21,6 +22,19 @@ class MapSearchRegisterFragment :
     BaseFragment<FragmentSearchRegisterBinding>(FragmentSearchRegisterBinding::inflate) {
     private lateinit var mapView: MapView
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding =
+            FragmentSearchRegisterBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

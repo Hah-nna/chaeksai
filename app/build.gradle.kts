@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.navigation.safe.args)
-    alias(libs.plugins.google.services)
     id("kotlin-parcelize")
 }
 
@@ -27,14 +26,9 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        // kakao map 키 가져옴. manifest 파일에서도 사용할 수 있게 함
-        buildConfigField(
-            "String",
-            "KAKAO_MAP_KEY",
-            "\"${localProperties.getProperty("KAKAO_MAP_KEY", "")}\""
-        )
-        manifestPlaceholders["KAKAO_MAP_KEY"] =
-            localProperties.getProperty("KAKAO_MAP_MANAFEST_APP_KEY", "")
+       // kakao map 키 가져옴. manifest 파일에서도 사용할 수 있게 함
+        buildConfigField("String", "KAKAO_MAP_KEY", "\"${localProperties.getProperty("KAKAO_MAP_KEY", "")}\"")
+        manifestPlaceholders["KAKAO_MAP_KEY"] = localProperties.getProperty("KAKAO_MAP_MANAFEST_APP_KEY", "")
     }
 
     buildTypes {
@@ -75,33 +69,29 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.ru.ldralighieri.corbind)
-    implementation(libs.firebase.firestore.ktx)
     implementation(project(":domainModule"))
-    implementation(project(":dataModule"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.ru.ldralighieri.corbind.material)
-    implementation(libs.kakao.maps)
-    implementation(libs.kakao.sdk)
-    implementation(libs.firebase.firestore)
-    implementation("com.github.Dimezis:BlurView:version-2.0.5")
-    implementation(libs.google.services)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.glide)
-    implementation(libs.corbind.lifecycle)
-    implementation(libs.corbind.activity)
-    implementation(libs.corbind.appcompat)
-    implementation(libs.moshi.kotlin)
-    implementation(libs.moshi)
-    implementation(libs.converter.moshi)
-    implementation(libs.retrofit)
+    implementation("com.kakao.maps.open:android:2.9.5")
+    implementation("com.kakao.sdk:v2-all:2.20.6")
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-analytics")
     implementation(libs.android)
-    implementation(libs.datastore.preference)
-    implementation("androidx.preference:preference-ktx:1.2.0")
+    implementation("ru.ldralighieri.corbind:corbind-appcompat:1.11.0")
+    implementation("ru.ldralighieri.corbind:corbind-activity:1.11.0")
+    implementation("ru.ldralighieri.corbind:corbind-lifecycle:1.11.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("com.github.bumptech.glide:glide:4.14.2")
+    implementation(libs.retrofit)
+    implementation(libs.converter.moshi)
+    implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
 }

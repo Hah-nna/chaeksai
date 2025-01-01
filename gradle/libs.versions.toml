@@ -10,29 +10,22 @@ appcompat = "1.7.0"
 material = "1.12.0"
 activity = "1.9.3"
 constraintlayout = "2.2.0"
+lifecycleLivedataKtx = "2.8.7"
 lifecycleViewmodelKtx = "2.8.7"
 fragmentKtx = "1.8.5"
 navigationFragmentKtx = "2.8.5"
 navigationUiKtx = "2.8.5"
 navigationSafeArgs = "2.8.5"
+androidx-lifecycle-livedata-ktx = "2.8.7"
 androidx-lifecycle-viewmodel-ktx = "2.8.7"
 ru-ldralighieri-corbind = "1.11.0"
 ru-ldralighieri-corbind-material = "1.11.0"
 firebaseFirestore = "25.1.1"
 firebaseMessaging = "24.1.0"
 identityAndroidLegacy = "202411.1"
-moshi = "1.15.2"
+moshi = "1.15.1"
 moshiKotlin = "1.14.0"
-retrofit = "2.11.0"
-jetbrainsKotlinJvm = "2.0.21"
-firebaseFirestoreKtx = "25.1.1"
-firebaseDatabaseKtx = "21.0.0"
-firebaseBom = "33.7.0"
-kakaoMaps = "2.9.5"
-kakaoSdk = "2.20.6"
-glide = "4.16.0"
-googleServices = "4.4.2"
-datastore-preference = "1.1.1"
+retrofit = "2.9.0"
 
 [libraries]
 android = { module = "com.kakao.maps.open:android", version.ref = "android" }
@@ -44,6 +37,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
@@ -57,23 +51,10 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshiKotlin" }
-firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
-firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
-kakao-maps = { group = "com.kakao.maps.open", name = "android", version.ref = "kakaoMaps" }
-kakao-sdk = { group = "com.kakao.sdk", name = "v2-all", version.ref = "kakaoSdk" }
-corbind-appcompat = { group = "ru.ldralighieri.corbind", name = "corbind-appcompat", version.ref = "ru-ldralighieri-corbind" }
-corbind-activity = { group = "ru.ldralighieri.corbind", name = "corbind-activity", version.ref = "ru-ldralighieri-corbind" }
-corbind-lifecycle = { group = "ru.ldralighieri.corbind", name = "corbind-lifecycle", version.ref = "ru-ldralighieri-corbind" }
-glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
-google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
-datastore-preference = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore-preference" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-google-services = { id = "com.google.gms.google-services"}
 navigation-safe-args = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigationSafeArgs" }
-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 

@@ -2,7 +2,6 @@ package com.jeong.sesac.sai.ui.home
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.jeong.sesac.sai.databinding.ItemTabRecyclerBinding
@@ -10,7 +9,6 @@ import com.jeong.sesac.sai.recycler.GridDecoration
 import com.jeong.sesac.sai.recycler.recentlyFoundNote.RecentlyFoundNoteAdapter
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.WeeklyNoteMockData
-import com.jeong.sesac.sai.viewmodel.RecentlyFoundViewModel
 
 class RecentlyFoundNotesLIst : BaseFragment<ItemTabRecyclerBinding>(ItemTabRecyclerBinding::inflate) {
 

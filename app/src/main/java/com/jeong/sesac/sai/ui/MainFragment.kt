@@ -12,6 +12,8 @@ import com.jeong.sesac.sai.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
 
+    private val viewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

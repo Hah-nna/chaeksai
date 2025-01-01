@@ -10,8 +10,6 @@ import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentSearchBinding
 import com.jeong.sesac.sai.recycler.search.SearchPagerAdapter
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.throttleFirst
-import com.jeong.sesac.sai.util.throttleTime
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.appcompat.navigationClicks

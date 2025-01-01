@@ -13,9 +13,7 @@ import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.WeeklyNoteMockData
 
 class RecordListFragment : BaseFragment<ItemTabRecyclerBinding>(ItemTabRecyclerBinding::inflate) {
-
-
-    private lateinit var recordAdapter : RecordRecyclerAdapter
+private lateinit var recordAdapter : RecordRecyclerAdapter
 
     companion object {
         fun getInstance(position : Int) =

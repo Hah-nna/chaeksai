@@ -1,10 +1,10 @@
 package com.jeong.sesac.sai.dto
 
-import java.time.LocalDateTime
+import java.util.Locale
 
 data class Note(
     val id: String,
-    val created_at: LocalDateTime,
+    val created_at: Locale,
     val content: String,
     val library_name: String,
     val book_name: String,
@@ -19,10 +19,4 @@ enum class ListType {
     RECENT,
     LIKES_UP,
     LIKES_DOWN
-}
-
-enum class RecordListType {
-    REGISTERED,
-    FOUND,
-    BOOKMARKED
 }
