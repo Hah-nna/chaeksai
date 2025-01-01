@@ -12,7 +12,6 @@ import com.jeong.sesac.sai.databinding.FragmentSettingsBinding
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
-import com.jeong.sesac.sai.viewmodel.factory.viewModelFactory
 import com.jeong.sesac.sai.viewmodel.MyPageViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -36,8 +35,6 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
         _binding = FragmentSettingsBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
-
-    private val myPageViewModel by activityViewModels<MyPageViewModel>{ viewModelFactory }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

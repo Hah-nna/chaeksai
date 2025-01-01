@@ -532,13 +532,14 @@
         <action
             android:id="@+id/action_fragment_myPage_to_fragment_settings"
             app:destination="@id/fragment_settings" />
+
     </fragment>
 
     <fragment
         android:id="@+id/fragmentReceivedReviews"
         android:name="com.jeong.sesac.sai.ui.myPage.ReceivedReviewsFragment"
         android:label="Received Reviews"
-        tools:layout="@layout/fragment_received_reviews"></fragment>
+        tools:layout="@layout/fragment_received_reviews" />
 
     <fragment
         android:id="@+id/fragment_settings"
@@ -583,5 +584,12 @@
         android:name="com.jeong.sesac.sai.ui.myPage.AppSettingsFragment"
         android:label="@string/app_settings_fragment"
         tools:layout="@layout/fragment_app_settings" />
+
+    <fragment
+        android:id="@+id/fragment_login"
+        android:name="com.jeong.sesac.sai.ui.login.LoginFragment"
+        android:label="login"
+        tools:layout="@layout/fragment_social_login"
+        />
 
 </navigation>

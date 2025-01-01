@@ -10,7 +10,6 @@ import com.jeong.sesac.sai.databinding.FragmentPrivacyManagementBinding
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
-import com.jeong.sesac.sai.viewmodel.factory.viewModelFactory
 import com.jeong.sesac.sai.viewmodel.MyPageViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -29,7 +28,6 @@ import ru.ldralighieri.corbind.view.clicks
 class PrivacyManagementFragment :
     BaseFragment<FragmentPrivacyManagementBinding>(FragmentPrivacyManagementBinding::inflate) {
 
-    private val myPageViewModel by activityViewModels<MyPageViewModel>{ viewModelFactory }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

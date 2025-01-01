@@ -2,5 +2,5 @@
 
 <animated-image
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:src="@drawable/splash_text_logo"
+    android:src="@drawable/splash_text_logo02"
     />
