@@ -9,9 +9,11 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentRecentlyFoundNotesDetailBinding
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.RECENTLY_FOUND_NOTES_TOOLBAR_TITLE
+import com.jeong.sesac.sai.util.throttleFirst
+import com.jeong.sesac.sai.util.throttleTime
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.appcompat.navigationClicks
@@ -38,17 +40,16 @@ class RecentlyFoundNotesDetailFragment : BaseFragment<FragmentRecentlyFoundNotes
 
 
         with(binding){
-            toolbar.toolbarView.title = RECENTLY_FOUND_NOTES_TOOLBAR_TITLE
+            toolbar.toolbarView.setTitle(R.string.RECENTLY_FOUND_NOTES_TOOLBAR_TITLE)
             includedNoteCv.cvNoteDetailImg.setImageResource(noteDetail.hint_img)
             includedNoteCv.iconBook.visibility = View.GONE
 
-            btnGoToHome.clicks().onEach {
+            btnGoToHome.clicks().throttleFirst(throttleTime).onEach {
                 val action = RecentlyFoundNotesDetailFragmentDirections.actionFragmentRecentlyFoundNotesDetailToFragmentHome()
                 findNavController().navigate(action)
-            }.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-                .launchIn(viewLifecycleOwner.lifecycleScope)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-            toolbar.toolbarView.navigationClicks().onEach {
+            toolbar.toolbarView.navigationClicks().throttleFirst(throttleTime).onEach {
             findNavController().navigateUp()
             }.launchIn(viewLifecycleOwner.lifecycleScope)
         }
@@ -57,7 +58,4 @@ class RecentlyFoundNotesDetailFragment : BaseFragment<FragmentRecentlyFoundNotes
             findNavController().navigateUp()
         }
     }
-
-
-
 }

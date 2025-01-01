@@ -4,21 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/neutral"
-    android:padding="@dimen/guideline_padding"
     tools:context=".ui.myPage.AppSettingsFragment">
 
     <include
         android:id="@+id/toolbar"
         layout="@layout/included_toolbar"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 알림 제목 -->
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/alertTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/dunggeunmo"
         android:text="@string/alertTitle"
         android:textAppearance="?attr/textAppearanceHeadline5"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,31 +27,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/item_margin_top"
-        android:fontFamily="@font/dunggeunmo"
         android:text="@string/alert_item_1"
         android:textAppearance="?attr/textAppearanceBody1"
         app:layout_constraintStart_toStartOf="@+id/alertTitle"
         app:layout_constraintTop_toBottomOf="@+id/alertTitle" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/dots_1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="@string/dots"
-        app:layout_constraintEnd_toStartOf="@+id/button_1"
-        app:layout_constraintStart_toEndOf="@+id/alert_item_1"
-        app:layout_constraintTop_toTopOf="@+id/alert_item_1" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/button_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/neutral"
-        android:contentDescription="@string/randomDescription"
-        android:src="@drawable/deactivate"
-        android:tag="deactivate"
         app:layout_constraintBottom_toBottomOf="@+id/alert_item_1"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -63,31 +45,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/item_margin_top"
-        android:fontFamily="@font/dunggeunmo"
         android:text="@string/alert_item_2"
         android:textAppearance="?attr/textAppearanceBody1"
         app:layout_constraintStart_toStartOf="@+id/alert_item_1"
         app:layout_constraintTop_toBottomOf="@+id/alert_item_1" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/dots_2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="@string/dots"
-        app:layout_constraintEnd_toStartOf="@+id/button_2"
-        app:layout_constraintStart_toEndOf="@+id/alert_item_2"
-        app:layout_constraintTop_toTopOf="@+id/alert_item_2" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/button_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/neutral"
-        android:contentDescription="@string/randomDescription"
-        android:src="@drawable/activate"
-        android:tag="activate"
         app:layout_constraintBottom_toBottomOf="@+id/alert_item_2"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -96,31 +62,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/item_margin_top"
-        android:fontFamily="@font/dunggeunmo"
         android:text="@string/alert_item_3"
         android:textAppearance="?attr/textAppearanceBody1"
         app:layout_constraintStart_toStartOf="@+id/alert_item_2"
         app:layout_constraintTop_toBottomOf="@+id/alert_item_2" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/dots_3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="@string/dots"
-        app:layout_constraintEnd_toStartOf="@+id/button_3"
-        app:layout_constraintStart_toEndOf="@+id/alert_item_3"
-        app:layout_constraintTop_toTopOf="@+id/alert_item_3" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/button_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/neutral"
-        android:contentDescription="@string/randomDescription"
-        android:src="@drawable/activate"
-        android:tag="activate"
         app:layout_constraintBottom_toBottomOf="@+id/alert_item_3"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -129,31 +79,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/item_margin_top"
-        android:fontFamily="@font/dunggeunmo"
         android:text="@string/alert_item_4"
         android:textAppearance="?attr/textAppearanceBody1"
         app:layout_constraintStart_toStartOf="@+id/alert_item_3"
         app:layout_constraintTop_toBottomOf="@+id/alert_item_3" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/dots_4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="@string/dots"
-        app:layout_constraintEnd_toStartOf="@+id/button_4"
-        app:layout_constraintStart_toEndOf="@+id/alert_item_4"
-        app:layout_constraintTop_toTopOf="@+id/alert_item_4" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/button_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/neutral"
-        android:contentDescription="@string/randomDescription"
-        android:src="@drawable/activate"
-        android:tag="activate"
         app:layout_constraintBottom_toBottomOf="@+id/alert_item_4"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -162,31 +96,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/item_margin_top"
-        android:fontFamily="@font/dunggeunmo"
         android:text="@string/alert_item_5"
         android:textAppearance="?attr/textAppearanceBody1"
         app:layout_constraintStart_toStartOf="@+id/alert_item_4"
         app:layout_constraintTop_toBottomOf="@+id/alert_item_4" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/dots_5"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="@string/dots"
-        app:layout_constraintEnd_toStartOf="@+id/button_5"
-        app:layout_constraintStart_toEndOf="@+id/alert_item_5"
-        app:layout_constraintTop_toTopOf="@+id/alert_item_5" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/button_5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/neutral"
-        android:contentDescription="@string/randomDescription"
-        android:src="@drawable/deactivate"
-        android:tag="deactivate"
         app:layout_constraintBottom_toBottomOf="@+id/alert_item_5"
         app:layout_constraintEnd_toEndOf="parent" />
 

@@ -2,47 +2,48 @@ package com.jeong.sesac.sai.ui
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeong.sesac.sai.databinding.FragmentHomeBinding
-import com.jeong.sesac.sai.recycler.gridRecycler.GridNotesAdapter
-import com.jeong.sesac.sai.recycler.horizontalRecycler.HorizontalNotesAdapter
+import com.jeong.sesac.sai.recycler.recentlyFoundNote.RecentlyFoundNoteAdapter
+import com.jeong.sesac.sai.recycler.HorizontalDecoration
+import com.jeong.sesac.sai.recycler.weeklyNote.WeeklyNoteAdapter
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.WeeklyNoteMockData
+import com.jeong.sesac.sai.util.throttleFirst
+import com.jeong.sesac.sai.util.throttleTime
+import com.jeong.sesac.sai.viewmodel.AuthViewModel
+import com.jeong.sesac.sai.viewmodel.entity.LoginState
+import com.jeong.sesac.sai.viewmodel.factory.AuthViewModelFactory
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import ru.ldralighieri.corbind.view.clicks
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
-    private lateinit var weeklyNoteAdapter: HorizontalNotesAdapter
-    private lateinit var recentlyFoundAdapter : GridNotesAdapter
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
+    // recyclerViewAdapters
+    private lateinit var weeklyNoteAdapter: WeeklyNoteAdapter
+    private lateinit var recentlyFoundAdapter : RecentlyFoundNoteAdapter
+    private val viewModel by activityViewModels<AuthViewModel> { AuthViewModelFactory(requireContext()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        weeklyNoteAdapter = HorizontalNotesAdapter { weeklyNote ->
+        weeklyNoteAdapter = WeeklyNoteAdapter { weeklyNote ->
             val action = HomeFragmentDirections.actionFragmentHomeToFragmentWeeklyNoteDetail(weeklyNote)
             findNavController().navigate(action)
         }
 
-        recentlyFoundAdapter = GridNotesAdapter { foundNote ->
+        recentlyFoundAdapter = RecentlyFoundNoteAdapter { foundNote ->
             val action = HomeFragmentDirections.actionFragmentHomeToFragmentRecentlyFoundNotesDetail(foundNote)
 
             findNavController().navigate(action)
-
+//        requireActivity().filesDir.li
         }
 
 
@@ -50,11 +51,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             rvWeeklyNotes.apply {
                 layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 adapter = this@HomeFragment.weeklyNoteAdapter
+                addItemDecoration(HorizontalDecoration(requireContext()))
             }
 
             rvRecentlyFoundNotes.apply {
                 layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 adapter = this@HomeFragment.recentlyFoundAdapter
+                addItemDecoration(HorizontalDecoration(requireContext()))
             }
 
             /**
@@ -71,22 +74,39 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
              * viewLifecycleOwner.lifecycleScope로 한 이유는
              * 프래그먼트 뷰의 라이프 사이클에 맞춰 코루틴 스코프(ui 스레드)가 연동되어 뷰의 라이프 사이클에 맞게 코루틴을 실행하고 관리하기 위해서
              * */
-            tvWeeklyNotesMore.clicks().onEach {
+            tvWeeklyNotesMore.clicks().throttleFirst(throttleTime).onEach {
                 val action = HomeFragmentDirections.actionFragmentHomeToFragmentWeeklyNotes(WeeklyNoteMockData.notesList.first()
                 )
                 findNavController().navigate(action)
                 Log.d("HOME", "실행")
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-            tvRecentlyFoundNotesMore.clicks().onEach {
+            tvRecentlyFoundNotesMore.clicks().throttleFirst(throttleTime).onEach {
                 Log.d("HOME", "실행")
                 val action = HomeFragmentDirections.actionFragmentHomeToFragmentRecentlyFoundNotes()
                 findNavController().navigate(action)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
+
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.loginState.collectLatest {
+               when(it) {
+                   is LoginState.Success -> {
+            binding.tvTitle.text = "안녕하세요\n${it.data}님👋🏻"
+
+                   }
+                   else -> binding.tvTitle.text = "로그인이 필요합니다"
+               }
+            }
+        }
+        viewModel.checkLoginState()
+
         weeklyNoteAdapter.submitList(WeeklyNoteMockData.notesList)
         recentlyFoundAdapter.submitList(WeeklyNoteMockData.notesList)
     }
+
+
 
 }

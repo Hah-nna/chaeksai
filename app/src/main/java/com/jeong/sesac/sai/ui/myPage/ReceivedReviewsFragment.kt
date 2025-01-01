@@ -10,7 +10,8 @@ import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.data.Review
 import com.jeong.sesac.sai.databinding.FragmentReceivedReviewsBinding
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.RECEIVED_REVIEW_TOOLBAR_TITLE
+import com.jeong.sesac.sai.util.throttleFirst
+import com.jeong.sesac.sai.util.throttleTime
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.activity.backPresses
@@ -19,6 +20,7 @@ import ru.ldralighieri.corbind.appcompat.navigationClicks
 class ReceivedReviewsFragment :
     BaseFragment<FragmentReceivedReviewsBinding>(FragmentReceivedReviewsBinding::inflate) {
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -26,14 +28,16 @@ class ReceivedReviewsFragment :
 
             // 툴바 설정
             toolbar.toolbarView.apply {
-                title = RECEIVED_REVIEW_TOOLBAR_TITLE
+                setTitle(R.string.RECEIVED_REVIEW_TOOLBAR_TITLE)
                 navigationClicks()
+                    .throttleFirst(throttleTime)
                     .onEach { findNavController().navigateUp() }
                     .launchIn(lifecycleScope)
             }
 
             // 뒤로가기 버튼 동작
             requireActivity().onBackPressedDispatcher.backPresses(viewLifecycleOwner)
+                .throttleFirst(throttleTime)
                 .onEach { findNavController().navigateUp() }
                 .launchIn(lifecycleScope)
 

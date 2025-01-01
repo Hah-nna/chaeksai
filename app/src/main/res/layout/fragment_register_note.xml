@@ -27,12 +27,13 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:hint="등록할 쪽지 내용을 적어주세요"
-            android:maxLines="10" />
+            android:maxLines="10"
+            />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_register_hint"
-        style="@style/BaseButtonStyle"
+        style="@style/LargeButtonStyle"
         android:text="@string/leaveHints"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,63 +1,52 @@
 package com.jeong.sesac.sai.ui.searchRegister.search
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.activity.addCallback
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.jeong.sesac.sai.databinding.FragmentSearchListBinding
-import com.jeong.sesac.sai.recycler.gridRecycler.GridNotesAdapter
-import com.jeong.sesac.sai.recycler.gridRecycler.GridRecyclerDecoration
+import com.jeong.sesac.sai.databinding.ItemTabRecyclerBinding
+import com.jeong.sesac.sai.recycler.GridDecoration
+import com.jeong.sesac.sai.recycler.recentlyFoundNote.RecentlyFoundNoteAdapter
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.SEARCH_NOTES_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.WeeklyNoteMockData
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import ru.ldralighieri.corbind.appcompat.navigationClicks
 
-class SearchListFragment : BaseFragment<FragmentSearchListBinding> (FragmentSearchListBinding::inflate) {
-    private lateinit var searchListAdapter : GridNotesAdapter
+class SearchListFragment : BaseFragment<ItemTabRecyclerBinding>(ItemTabRecyclerBinding::inflate) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSearchListBinding.inflate(layoutInflater, container, false)
-        return binding.root
+    private lateinit var searchListAdapter : RecentlyFoundNoteAdapter
+
+    companion object {
+        fun getInstance(position: Int) =
+            SearchListFragment().apply {
+                arguments = Bundle().apply {
+                    putInt("position", position)
+                }
+            }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding.toolbar.toolbarView) {
-            title = SEARCH_NOTES_TOOLBAR_TITLE
-            navigationClicks().onEach {
-                findNavController().navigateUp()
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
-        }
-
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            findNavController().navigateUp()
-        }
-        searchListAdapter = GridNotesAdapter { findNoteInfo ->
+        searchListAdapter = RecentlyFoundNoteAdapter { findNoteInfo ->
             val action =
-                SearchListFragmentDirections.actionFragmentSearchListToFragmentSearchNoteDetail(findNoteInfo)
+                SearchFragmentDirections.actionFragmentSearchToFragmentSearchNoteDetail(findNoteInfo)
             findNavController().navigate(action)
         }
 
         with(binding) {
-            rvGridNotesList.apply {
+            rvContainer.apply {
                 layoutManager = GridLayoutManager(requireContext(), 2)
-                addItemDecoration(GridRecyclerDecoration(2, 96))
+                addItemDecoration(GridDecoration(requireContext()))
                 adapter = this@SearchListFragment.searchListAdapter
             }
         }
-        searchListAdapter.submitList(WeeklyNoteMockData.notesList)
 
+        val filteredList = when(arguments?.getInt(("position")) ?: 0) {
+            0 -> WeeklyNoteMockData.notesList.sortedByDescending { it.date }
+            1 -> WeeklyNoteMockData.notesList.sortedByDescending { it.likes }
+            else -> WeeklyNoteMockData.notesList.sortedBy { it.likes }
+        }
 
+        searchListAdapter.submitList(filteredList)
     }
 }

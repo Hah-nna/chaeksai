@@ -5,14 +5,15 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentCompletedFindsBinding
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.COMPLETED_FINDS_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.NOTE_ID
+import com.jeong.sesac.sai.util.throttleFirst
+import com.jeong.sesac.sai.util.throttleTime
 import com.kakao.sdk.user.Constants.USER_ID
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import ru.ldralighieri.corbind.activity.backPresses
 import ru.ldralighieri.corbind.view.clicks
 
@@ -35,14 +36,14 @@ class CompletedFindsFragment :
 
             // Toolbar 설정
             toolbar.toolbarView.apply {
-                title = COMPLETED_FINDS_TOOLBAR_TITLE
-                lifecycleScope.launch {
-                    clicks().collect { findNavController().navigateUp() }
-                }
+                setTitle(R.string.COMPLETED_FINDS_TOOLBAR_TITLE)
+                clicks().throttleFirst(throttleTime).onEach { findNavController().navigateUp() }
+                    .launchIn(lifecycleScope)
             }
 
             // 뒤로가기 버튼 처리
             requireActivity().onBackPressedDispatcher.backPresses(viewLifecycleOwner)
+                .throttleFirst(throttleTime)
                 .onEach { findNavController().navigateUp() }
                 .launchIn(lifecycleScope)
 
@@ -52,13 +53,13 @@ class CompletedFindsFragment :
             selectedDescription.text = args.description
 
             // 버튼 클릭 이벤트 처리
-            lifecycleScope.launch {
-                button.clicks().collect {
+                button.clicks()
+                    .throttleFirst(throttleTime)
+                    .onEach {
                     val action = CompletedFindsFragmentDirections
                         .actionFragmentCompletedFindsToFragmentWriteReview(USER_ID, NOTE_ID)
                     findNavController().navigate(action)
-                }
-            }
+            }.launchIn(lifecycleScope)
         }
     }
 }

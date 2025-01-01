@@ -5,10 +5,12 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentBookmarkedNotesBinding
-import com.jeong.sesac.sai.util.BOOKMARKED_NOTES_TOOLBAR_TITLE
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.SESAC_LIBRARY
+import com.jeong.sesac.sai.util.throttleFirst
+import com.jeong.sesac.sai.util.throttleTime
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -33,14 +35,14 @@ class BookmarkedNotesFragment :
         with(binding) {
             // Toolbar 설정
             toolbar.toolbarView.apply {
-                title = BOOKMARKED_NOTES_TOOLBAR_TITLE
-                lifecycleScope.launch {
-                    clicks().collect { findNavController().navigateUp() }
-                }
+                setTitle(R.string.BOOKMARKED_NOTES_TOOLBAR_TITLE)
+                clicks().throttleFirst(throttleTime).onEach{ findNavController().navigateUp() }.launchIn(lifecycleScope)
+
             }
 
             // 뒤로가기 버튼 처리
             requireActivity().onBackPressedDispatcher.backPresses(viewLifecycleOwner)
+                .throttleFirst(throttleTime)
                 .onEach { findNavController().navigateUp() }
                 .launchIn(lifecycleScope)
 
@@ -51,11 +53,13 @@ class BookmarkedNotesFragment :
 
             // 버튼 클릭 이벤트 처리
             lifecycleScope.launch {
-                button.clicks().collect {
+                button.clicks()
+                    .throttleFirst(throttleTime)
+                    .onEach {
                     val action = BookmarkedNotesFragmentDirections
                         .actionFragmentBookmarkedNotesToFragmentMapSearchRegister(SESAC_LIBRARY)
                     findNavController().navigate(action)
-                }
+                }.launchIn(lifecycleScope)
             }
         }
     }

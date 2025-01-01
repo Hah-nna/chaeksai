@@ -3,260 +3,286 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/neutral"
-    android:padding="@dimen/guideline_padding">
-
-    <!-- 설정 화면 제목 텍스트 -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_settings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/dunggeunmo"
-        android:text="@string/fragment_myPage"
-        android:textAppearance="?attr/textAppearanceHeadline4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- 흰색 카드뷰 (중앙 정렬) -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_view_white"
-        android:layout_width="@dimen/constraint_layout"
-        android:layout_height="@dimen/constraint_layout"
-        app:cardCornerRadius="@dimen/cardCornerRadius"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guidelineMiddle"
-        app:strokeColor="@color/black"
-        app:strokeWidth="@dimen/cardviewStrokeWidth" />
+    android:layout_height="match_parent">
 
     <!-- 설정 버튼 (오른쪽 상단) -->
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/myPage_to_settings_btn"
-        android:layout_width="@dimen/icon_size"
-        android:layout_height="@dimen/icon_size"
-        android:background="@null"
+        android:id="@+id/btn_setting"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/settings_btn"
         android:scaleType="centerInside"
-        android:src="@drawable/settings_purplebackground"
+        android:src="@drawable/icon_mypage_setting"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- 프로필 이미지 -->
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/profileImage"
-        android:layout_width="@dimen/profile_image_size"
-        android:layout_height="@dimen/profile_image_size"
-        android:background="@null"
-        android:contentDescription="@string/profile_image"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_profile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
+    <!-- 비로그인 상태 뷰 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/non_logged_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="visible"
+        >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_non_login"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="로그인/회원가입"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- 로그인 시 보여줄 뷰 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/logged_in_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"
+        android:visibility="gone">
+
+        <!-- 프로필 이미지 -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/profileImage"
+            android:layout_width="@dimen/profile_image_size"
+            android:layout_height="@dimen/profile_image_size"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/profile_image"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_profile"
+            app:layout_constraintEnd_toEndOf="@+id/tv_note_count"
+            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- 닉네임 텍스트 -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_between_image"
+            android:text="홍길동"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/profileImage"
+            app:layout_constraintStart_toStartOf="@id/profileImage"
+            app:layout_constraintTop_toBottomOf="@id/profileImage" />
+
+        <!-- 쪽지 갯수 -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_note_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10043"
+            app:layout_constraintBottom_toTopOf="@+id/tv_note_label"
+            app:layout_constraintEnd_toStartOf="@+id/tv_follow_count"
+            app:layout_constraintStart_toEndOf="@+id/profileImage"
+            app:layout_constraintTop_toTopOf="@+id/profileImage" />
+
+        <!-- 쪽지 라벨 -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_note_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="쪽지"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/profileImage"
+            app:layout_constraintEnd_toStartOf="@+id/tv_follow_label"
+            app:layout_constraintStart_toEndOf="@+id/profileImage"
+            app:layout_constraintTop_toBottomOf="@+id/tv_note_count" />
+
+        <!-- 팔로우 갯수 -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_follow_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12345"
+            app:layout_constraintBottom_toTopOf="@+id/tv_follow_label"
+            app:layout_constraintEnd_toStartOf="@+id/tv_following_count"
+            app:layout_constraintStart_toEndOf="@+id/tv_note_count"
+            app:layout_constraintTop_toTopOf="@+id/profileImage" />
+
+        <!-- 팔로우 라벨 -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_follow_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="팔로워"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/profileImage"
+            app:layout_constraintEnd_toStartOf="@+id/tv_following_label"
+            app:layout_constraintStart_toEndOf="@+id/tv_note_count"
+            app:layout_constraintTop_toBottomOf="@+id/tv_follow_count" />
+
+        <!-- 팔로잉 갯수 -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_following_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12345"
+            app:layout_constraintBottom_toTopOf="@+id/tv_following_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_follow_count"
+            app:layout_constraintTop_toTopOf="@+id/profileImage" />
+
+        <!-- 팔로잉 라벨  -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_following_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="팔로잉"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/profileImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_follow_count"
+            app:layout_constraintTop_toBottomOf="@+id/tv_following_count" />
+
+
+        <!-- 힌트 교환권 -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_hint_exchange_ticket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="힌트교환권"
+            app:layout_constraintEnd_toStartOf="@+id/hint_ticket"
+            app:layout_constraintStart_toStartOf="@id/profileImage"
+            app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
+
+        <!-- 힌트 교환권 갯수 -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/img_hint_exchange_ticket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="5 / 10"
+            app:layout_constraintEnd_toEndOf="@+id/tv_hint_exchange_ticket"
+            app:layout_constraintStart_toStartOf="@+id/tv_hint_exchange_ticket"
+            app:layout_constraintTop_toBottomOf="@+id/tv_hint_exchange_ticket" />
+
+        <!-- 사용가능한 힌트 -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/hint_ticket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="28dp"
+            android:text="사용가능한 힌트"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_hint_exchange_ticket"
+            app:layout_constraintBottom_toTopOf="@+id/ic_hints"
+            app:layout_constraintStart_toEndOf="@+id/tv_hint_exchange_ticket"
+            app:layout_constraintTop_toTopOf="@+id/tv_hint_exchange_ticket" />
+
+        <!-- 사용가능한 힌트 아이콘 -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ic_hints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@null"
+            android:contentDescription="@string/availableHints"
+            android:scaleType="centerInside"
+            android:src="@drawable/availablehintsgreen"
+            app:layout_constraintBottom_toBottomOf="@+id/img_hint_exchange_ticket"
+            app:layout_constraintEnd_toStartOf="@+id/hint_ticket_count"
+            app:layout_constraintStart_toEndOf="@+id/img_hint_exchange_ticket"
+            app:layout_constraintStart_toStartOf="@+id/hint_ticket"
+            app:layout_constraintTop_toBottomOf="@+id/hint_ticket" />
+
+        <!-- 사용가능한 힌트 갯수 텍스트 -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/hint_ticket_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/X_availableHintsPlaceHolder"
+            app:layout_constraintBottom_toBottomOf="@+id/ic_hints"
+            app:layout_constraintEnd_toEndOf="@+id/hint_ticket"
+            app:layout_constraintStart_toEndOf="@+id/ic_hints"
+            app:layout_constraintTop_toBottomOf="@+id/hint_ticket" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_received_review"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="받은 리뷰"
+        android:layout_marginStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/myPage_to_settings_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/logged_in_layout" />
 
-    <!-- 닉네임 텍스트 -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/nicknameText"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_review_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/text_between_image"
-        android:fontFamily="@font/dunggeunmo"
-        android:text="@string/nickname_text"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintEnd_toEndOf="@id/profileImage"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@id/profileImage"
-        app:layout_constraintTop_toBottomOf="@id/profileImage" />
-
-    <!-- 쪽지 글자 -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/messageText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/text_between_image"
-        android:fontFamily="@font/dunggeunmo"
-        android:text="@string/message"
-        android:textAppearance="?attr/textAppearanceBody2"
-        app:layout_constraintBottom_toBottomOf="@id/profileImage"
-        app:layout_constraintEnd_toStartOf="@id/followText"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toEndOf="@id/profileImage" />
-
-    <!-- 팔로우 글자 -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/followText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/text_between_text"
-        android:fontFamily="@font/dunggeunmo"
-        android:text="@string/follow"
-        android:textAppearance="?attr/textAppearanceBody2"
-        app:layout_constraintBottom_toBottomOf="@id/profileImage"
-        app:layout_constraintEnd_toStartOf="@id/followerText"
-        app:layout_constraintStart_toEndOf="@id/messageText" />
-
-    <!-- 팔로워 글자 -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/followerText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/text_between_text"
-        android:layout_marginEnd="@dimen/text_between_image"
-        android:fontFamily="@font/dunggeunmo"
-        android:text="@string/follower"
-        android:textAppearance="?attr/textAppearanceBody2"
-        app:layout_constraintBottom_toBottomOf="@id/profileImage"
+        android:background="@android:color/transparent"
+        android:text=">"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_received_review"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/followText" />
+        app:layout_constraintTop_toTopOf="@+id/tv_received_review"
+        />
 
-    <!-- 쪽지 개수 -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/messageCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/dunggeunmo"
-        android:text="@string/randomNumber"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintBottom_toTopOf="@id/messageText"
-        app:layout_constraintEnd_toEndOf="@id/messageText"
-        app:layout_constraintStart_toStartOf="@id/messageText"
-        app:layout_constraintTop_toTopOf="@+id/profileImage" />
 
-    <!-- 팔로우 수 -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/followCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/dunggeunmo"
-        android:text="@string/randomNumber"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintBottom_toTopOf="@id/followText"
-        app:layout_constraintEnd_toEndOf="@id/followText"
-        app:layout_constraintStart_toStartOf="@id/followText"
-        app:layout_constraintTop_toTopOf="@+id/profileImage" />
-
-    <!-- 팔로워 수 -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/followerCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/dunggeunmo"
-        android:text="@string/randomNumber"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintBottom_toTopOf="@id/followerText"
-        app:layout_constraintEnd_toEndOf="@id/followerText"
-        app:layout_constraintStart_toStartOf="@id/followerText"
-        app:layout_constraintTop_toTopOf="@+id/profileImage" />
-
-    <!-- 힌트 교환권 텍스트 -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/hintExchangeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/text_between_text_little_padding"
-        android:fontFamily="@font/dunggeunmo"
-        android:text="@string/hintExchangePlaceHolder"
-        android:textAppearance="?attr/textAppearanceBody2"
-        app:layout_constraintEnd_toStartOf="@id/availableHints"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nicknameText" />
-
-    <!-- 힌트 게이지 표시 이미지 -->
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="wrap_content"
-        android:layout_height="18dp"
-        android:background="@null"
-        android:contentDescription="@string/availableHints"
-        android:scaleType="fitCenter"
-        android:src="@drawable/gauge9"
-        app:layout_constraintBottom_toBottomOf="@id/ic_availableHints"
-        app:layout_constraintEnd_toEndOf="@id/hintExchangeText"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@id/hintExchangeText"
-        app:layout_constraintTop_toBottomOf="@id/hintExchangeText" />
-
-    <!-- 사용 가능한 힌트 개수 텍스트 -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/availableHints"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/text_between_text_little_padding"
-        android:fontFamily="@font/dunggeunmo"
-        android:text="@string/availableHints"
-        android:textAppearance="?attr/textAppearanceBody2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/hintExchangeText"
-        app:layout_constraintTop_toBottomOf="@id/nicknameText" />
-
-    <!-- 힌트 아이콘 -->
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ic_availableHints"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/icon_size_small"
-        android:background="@null"
-        android:contentDescription="@string/availableHints"
-        android:scaleType="centerInside"
-        android:src="@drawable/availablehintsgreen"
-        app:layout_constraintStart_toStartOf="@id/availableHints"
-        app:layout_constraintTop_toBottomOf="@id/availableHints" />
-
-    <!-- 힌트 개수 텍스트 -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/text_between_image"
-        android:fontFamily="@font/dunggeunmo"
-        android:text="@string/X_availableHintsPlaceHolder"
-        android:textAppearance="?attr/textAppearanceBody1"
-        app:layout_constraintBottom_toBottomOf="@id/ic_availableHints"
-        app:layout_constraintStart_toEndOf="@id/ic_availableHints"
-        app:layout_constraintTop_toTopOf="@id/ic_availableHints" />
-
-    <!-- 받은 리뷰 텍스트 -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/receivedReviews"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/button_btw_background"
-        android:fontFamily="@font/dunggeunmo"
-        android:text="@string/receivedReviews"
-        android:textAppearance="?attr/textAppearanceHeadline4"
-        app:layout_constraintBottom_toBottomOf="@id/reviewMoreBtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/reviewMoreBtn" />
-
-    <!--'더보기' 버튼-->
-    <com.google.android.material.button.MaterialButton
-        style="@style/SmallButtonStyle"
-        android:id="@+id/reviewMoreBtn"
-        android:layout_margin="@dimen/button_btw_background"
-        android:contentDescription="@string/randomDescription"
-        android:text="@string/more"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guidelineMiddle" />
-
-    <!-- 리뷰 리스트 표시 RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="@dimen/constraint_layout"
-        android:layout_height="@dimen/constraint_layout"
-        android:layout_marginTop="@dimen/guideline_padding"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/receivedReviews"
-        tools:listitem="@layout/item_review_list" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_received_review">
 
-    <!-- 중간 위치를 정의하는 가이드라인 -->
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineMiddle"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+
+            <!-- 리뷰 리스트 표시 RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/constraint_layout"
+                android:background="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/item_review_list" />
+
+            <eightbitlab.com.blurview.BlurView
+                android:id="@+id/blurView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:blurOverlayColor="#78ffffff" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_non_login_recycler_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.32" />
+        android:text="로그인 후에 사용가능합니다"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/cv_recycler"
+        app:layout_constraintEnd_toEndOf="@+id/cv_recycler"
+        app:layout_constraintStart_toStartOf="@+id/cv_recycler"
+        app:layout_constraintTop_toTopOf="@+id/cv_recycler" />
 
+    <include
+        android:id="@+id/progress_bar"
+        layout="@layout/progress_bar"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

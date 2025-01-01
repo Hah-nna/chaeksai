@@ -25,18 +25,13 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_write_review"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/LargeButtonStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/included_note_cv"
         app:layout_constraintVertical_bias="0.6"
-        app:cornerRadius="@dimen/basic_border_radius"
         android:text="@string/text_review"
-        android:textColor="@color/accent_text"
-        app:backgroundTint="@color/primary"
-        app:strokeWidth="2dp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,8 @@ import com.jeong.sesac.sai.databinding.FragmentReviewCompletedBinding
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.Dialog
 import com.jeong.sesac.sai.util.DialogInterface
+import com.jeong.sesac.sai.util.throttleFirst
+import com.jeong.sesac.sai.util.throttleTime
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
@@ -33,7 +35,7 @@ class ReviewCompletedFragment : BaseFragment<FragmentReviewCompletedBinding>(Fra
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            btnCompletedReview.clicks().onEach {
+            btnCompletedReview.clicks().throttleFirst(throttleTime).onEach {
                 showDialog()
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
