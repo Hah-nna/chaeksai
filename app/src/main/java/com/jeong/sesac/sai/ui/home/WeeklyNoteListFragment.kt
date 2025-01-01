@@ -2,6 +2,7 @@ package com.jeong.sesac.sai.ui.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.jeong.sesac.sai.databinding.ItemTabRecyclerBinding

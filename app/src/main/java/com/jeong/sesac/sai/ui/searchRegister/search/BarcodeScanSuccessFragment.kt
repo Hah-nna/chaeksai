@@ -1,9 +1,11 @@
 package com.jeong.sesac.sai.ui.searchRegister.search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -16,6 +18,7 @@ import ru.ldralighieri.corbind.view.clicks
 class BarcodeScanSuccessFragment : BaseFragment<FragmentBarcodeScanSuccessBinding>(FragmentBarcodeScanSuccessBinding::inflate) {
     private val args : BarcodeScanSuccessFragmentArgs by navArgs()
     private val noteInfo by lazy { args.findNoteInfo }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,6 +33,7 @@ class BarcodeScanSuccessFragment : BaseFragment<FragmentBarcodeScanSuccessBindin
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
             btnConfirm.clicks().onEach {
+                Log.d("btnConfirm", "click!!!!")
                 val action = BarcodeScanSuccessFragmentDirections
                     .actionFragmentBarcodeScannerSuccessToFragmentFoundNoteDetail(noteInfo)
                 findNavController().navigate(action)

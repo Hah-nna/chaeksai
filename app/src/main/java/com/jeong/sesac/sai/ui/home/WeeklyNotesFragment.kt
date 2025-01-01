@@ -17,8 +17,6 @@ import ru.ldralighieri.corbind.appcompat.navigationClicks
 
 class WeeklyNotesFragment :
     BaseFragment<FragmentWeeklynotesBinding>(FragmentWeeklynotesBinding::inflate) {
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
