@@ -5,7 +5,7 @@ import com.jeong.sesac.domain.model.UserInfo
 interface FireBaseDataSource {
       // 로그인
       suspend fun createUser(userInfo: UserInfo) : Boolean
-
+      suspend fun getDuplicateNickname(nickname : String) : Boolean
       // 유저정보
 //      fun getUserInfo()
 //      fun updateProfile()

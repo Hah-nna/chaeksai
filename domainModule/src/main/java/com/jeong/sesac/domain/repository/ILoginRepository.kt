@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface ILoginRepository {
     suspend fun getUser(id : String)
     suspend fun setUser(userInfo: UserInfo) : Boolean
+    suspend fun checkDuplicateNickname(nickname : String) : Boolean
 }

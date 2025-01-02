@@ -13,4 +13,8 @@ class LoginRepositoryImpl(private val fireStoreImpl : FireBaseDataSourceImpl) : 
     override suspend fun setUser(userInfo: UserInfo) : Boolean {
        return fireStoreImpl.createUser(userInfo)
     }
+
+    override suspend fun checkDuplicateNickname(nickname : String) : Boolean {
+        return fireStoreImpl.getDuplicateNickname(nickname)
+    }
 }
