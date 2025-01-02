@@ -42,8 +42,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.2"
-        android:maxLines="1"
+        android:maxLength="8"
         android:backgroundTint="@color/black"
+
         />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -60,14 +61,14 @@
         android:layout_width="0dp"
         app:layout_constraintWidth_percent="0.7"
         android:layout_height="wrap_content"
-        android:text="앱 사용하러가기"
+        android:text="입장하기"
         style="@style/LargeButtonStyle"
         app:layout_constraintTop_toBottomOf="@+id/etv_nickname"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.4"
-        android:enabled="true"
+        android:enabled="false"
         />
     <include
         android:id="@+id/progress_bar"
