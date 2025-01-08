@@ -1,12 +1,18 @@
 package com.jeong.sesac.sai.ui.searchRegister.register
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.addCallback
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.jeong.sesac.sai.CameraActivity
 import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentRegisterDetailBinding
 import com.jeong.sesac.sai.util.BaseFragment
@@ -22,9 +28,31 @@ class RegisterDetailFragment :
     BaseFragment<FragmentRegisterDetailBinding>(FragmentRegisterDetailBinding::inflate),
     DialogInterface {
     val args: RegisterDetailFragmentArgs by navArgs()
-    var book: String = "물고기는 존재하지 않는다"
+    var book: String = ""
+
+    /**
+     *
+     * cameraActivity의 onImageSaved()의 setResult()에서 온 결과가
+     * cameraLauncher의 콜백으로 전달됨
+     *
+     * */
+    private val cameraLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        // result: ActivityResult
+        // result.data : CameraActivity가 리턴한 Intent
+        if(result.resultCode == RESULT_OK) {
+            with(binding) {
+                Log.e("TAG-R", result.data?.data.toString())
+                // 저장된 이미지의 uri를 이미지뷰에 표시
+                ivSelectedImg.setImageURI(result.data?.data)
+                ivUploadIcon.visibility = View.INVISIBLE
+            }
+        }
+    }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
@@ -38,6 +66,9 @@ class RegisterDetailFragment :
                 findNavController().navigateUp()
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
+            cvUploadImg.clicks().throttleFirst(throttleTime).onEach {
+                cameraLauncher.launch(Intent(requireContext(), CameraActivity::class.java))
+            }.launchIn(lifecycleScope)
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             findNavController().navigateUp()

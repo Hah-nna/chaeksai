@@ -16,14 +16,28 @@ class FireBaseDataSourceImpl() : FireBaseDataSource {
         try {
             val docRef = userCollectionRef.add(userInfo.toMap()).await()
             val docRefId = docRef.id
-            Log.d("유저생성 data", docRef.id)
 
             userCollectionRef.document(docRefId)
                 .update("id", docRefId)
                 .await()
+
             return true
         } catch (e: Exception) {
             Log.e("FireBaseDataSourceImpl.createUser() is fail", e.message.toString())
+            return false
+        }
+    }
+
+    override suspend fun getDuplicateNickname(nickname: String): Boolean {
+        try {
+           val result = userCollectionRef
+                .whereEqualTo("nickname", nickname)
+                .get()
+                .await()
+
+          return result.size() > 0
+        } catch (e : Exception) {
+            Log.e(" getDuplicateNickname err", e.message.toString())
             return false
         }
     }

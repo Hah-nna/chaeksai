@@ -132,4 +132,7 @@
     <string name="BUTTON_TAG_ACTIVATE">activate</string>
 
 
+    <string name="login_required">로그인이 필요합니다</string>
+    <string name="welcome_message">안녕하세요 %s 님</string>
+
 </resources>

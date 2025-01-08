@@ -4,7 +4,7 @@ import com.jeong.sesac.datamodule.api.service.OpenAPIService
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-const val openApiBaseUrl = "https://www.nl.go.kr"
+const val OPEN_API_BASE_URL = "https://www.nl.go.kr"
 
 class OpenAPIManager {
     companion object {
@@ -12,7 +12,7 @@ class OpenAPIManager {
         fun getInstance(): OpenAPIService {
             if(retrofitService == null) {
             val retrofit = Retrofit.Builder()
-                .baseUrl("openApiBaseUrl")
+                .baseUrl(OPEN_API_BASE_URL)
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()
 

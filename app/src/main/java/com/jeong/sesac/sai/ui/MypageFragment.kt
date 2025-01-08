@@ -11,26 +11,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.jeong.sesac.datamodule.repository.AuthRepositoryImpl
-import com.jeong.sesac.sai.MainActivity
 import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.data.Review
 import com.jeong.sesac.sai.databinding.FragmentMypageBinding
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
-import com.jeong.sesac.sai.viewmodel.AuthViewModel
-import com.jeong.sesac.sai.viewmodel.entity.LoginState
-import com.jeong.sesac.sai.viewmodel.factory.AuthViewModelFactory
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import ru.ldralighieri.corbind.view.clicks
 
 class MypageFragment : BaseFragment<FragmentMypageBinding>(FragmentMypageBinding::inflate) {
 
-    private val viewModel by activityViewModels<AuthViewModel> { AuthViewModelFactory(requireContext()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,45 +56,44 @@ class MypageFragment : BaseFragment<FragmentMypageBinding>(FragmentMypageBinding
         }
 
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.loginState.collectLatest {
-                when (it) {
-                    is LoginState.Loading -> {
-                        binding.progressBar.progressCircular.visibility = View.VISIBLE
-                    }
-
-                    is LoginState.NotLoggedIn -> {
-                        with(binding) {
-                            loggedInLayout.visibility = View.INVISIBLE
-                            nonLoggedContainer.visibility = View.VISIBLE
-                            tvReceivedReview.visibility = View.INVISIBLE
-                            btnReviewMore.visibility = View.INVISIBLE
-                            blurView.visibility = View.VISIBLE
-                            tvNonLoginRecyclerView.visibility = View.VISIBLE
-                        }
-                    }
-
-                    is LoginState.Success -> {
-                        with(binding) {
-                            progressBar.progressCircular.visibility = View.GONE
-                            loggedInLayout.visibility = View.VISIBLE
-                            nonLoggedContainer.visibility = View.GONE
-                            tvReceivedReview.visibility = View.VISIBLE
-                            btnReviewMore.visibility = View.VISIBLE
-                            blurView.visibility = View.GONE
-                            tvNonLoginRecyclerView.visibility = View.GONE
-                        }
-                    }
-
-                    is LoginState.Error -> {
-                        throw Error("에러발생")
-                    }
-
-                }
-            }
-        }
-        viewModel.checkLoginState()
-
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            viewModel.loginState.collectLatest {
+//                when (it) {
+//                    is UiState.Loading -> {
+//                        binding.progressBar.progressCircular.visibility = View.VISIBLE
+//                    }
+//
+//                    is UiState.Error -> {
+//                        with(binding) {
+//                            loggedInLayout.visibility = View.INVISIBLE
+//                            nonLoggedContainer.visibility = View.VISIBLE
+//                            tvReceivedReview.visibility = View.INVISIBLE
+//                            btnReviewMore.visibility = View.INVISIBLE
+//                            blurView.visibility = View.VISIBLE
+//                            tvNonLoginRecyclerView.visibility = View.VISIBLE
+//                        }
+//                    }
+//
+//                    is LoginState.Success -> {
+//                        with(binding) {
+//                            progressBar.progressCircular.visibility = View.GONE
+//                            loggedInLayout.visibility = View.VISIBLE
+//                            nonLoggedContainer.visibility = View.GONE
+//                            tvReceivedReview.visibility = View.VISIBLE
+//                            btnReviewMore.visibility = View.VISIBLE
+//                            blurView.visibility = View.GONE
+//                            tvNonLoginRecyclerView.visibility = View.GONE
+//                        }
+//                    }
+//
+//                    is LoginState.Error -> {
+//                        throw Error("에러발생")
+//                    }
+//
+//                }
+//            }
+//        }
+//
     }
 
     private fun setRecyclerView() {
@@ -135,28 +126,5 @@ class MypageFragment : BaseFragment<FragmentMypageBinding>(FragmentMypageBinding
         }
 
     }
-//
-//    private fun setupLoginState(isLoggedIn) {
-//            with(binding) {
-//                if (!isLoggedIn) {
-//                    // 로그인 전
-//                    loggedInLayout.visibility = View.INVISIBLE
-//                    nonLoggedContainer.visibility = View.VISIBLE
-//                    tvReceivedReview.visibility = View.INVISIBLE
-//                    btnReviewMore.visibility = View.INVISIBLE
-//                    blurView.visibility = View.VISIBLE
-//                    tvNonLoginRecyclerView.visibility = View.VISIBLE
-//                } else {
-//                    // 로그인 후
-//                    loggedInLayout.visibility = View.VISIBLE
-//                    nonLoggedContainer.visibility = View.GONE
-//                    tvReceivedReview.visibility = View.VISIBLE
-//                    btnReviewMore.visibility = View.VISIBLE
-//                    blurView.visibility = View.GONE
-//                    tvNonLoginRecyclerView.visibility = View.GONE
-//                }
-//            }
-//    }
-
 
 }

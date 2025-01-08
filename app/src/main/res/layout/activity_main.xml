@@ -8,8 +8,47 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
-    <include
-        android:id="@+id/included"
-        layout="@layout/include_main" />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/basic_padding"
+        android:paddingHorizontal="@dimen/basic_padding"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/navigation_graph"/>
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="32dp"
+        android:padding="2dp"
+        app:elevation="100dp"
+        app:itemIconTint="@drawable/bottom_nav_icon_text_color"
+        app:itemTextColor="@drawable/bottom_nav_icon_text_color"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_menu"
+        app:itemActiveIndicatorStyle="@style/CustomBottomNavIndicator"
+        />
+  <View
+      android:id="@+id/bottom_nav_border"
+      android:layout_width="match_parent"
+      android:layout_height="5dp"
+      android:background="@drawable/bottom_shadow"
+      app:layout_constraintBottom_toTopOf="@id/bottom_bar"/>
+
+  <include
+      android:id="@+id/progress_bar"
+      layout="@layout/progress_bar"
+      android:visibility="gone"
+      />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

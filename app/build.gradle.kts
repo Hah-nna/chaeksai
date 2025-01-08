@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.navigation.safe.args)
     alias(libs.plugins.google.services)
     id("kotlin-parcelize")
+    id("kotlin-kapt")
 }
 
 // local.properties 안의 내용 읽기
@@ -33,8 +34,15 @@ android {
             "KAKAO_MAP_KEY",
             "\"${localProperties.getProperty("KAKAO_MAP_KEY", "")}\""
         )
-        manifestPlaceholders["KAKAO_MAP_KEY"] =
-            localProperties.getProperty("KAKAO_MAP_MANAFEST_APP_KEY", "")
+
+        buildConfigField(
+            "String",
+            "KAKAO_REST_API_KEY",
+            "\"${localProperties.getProperty("KAKAO_REST_API_KEY", "")}\""
+        )
+
+        manifestPlaceholders["KAKAO_API_KEY"] =
+            localProperties.getProperty("KAKAO_API_KEY", "")
     }
 
     buildTypes {
@@ -84,6 +92,8 @@ dependencies {
     implementation(project(":domainModule"))
     implementation(project(":dataModule"))
     testImplementation(libs.junit)
+    implementation(libs.play.services.location)
+    implementation(libs.google.services)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.ru.ldralighieri.corbind.material)
@@ -91,8 +101,8 @@ dependencies {
     implementation(libs.kakao.sdk)
     implementation(libs.firebase.firestore)
     implementation("com.github.Dimezis:BlurView:version-2.0.5")
-    implementation(libs.google.services)
     implementation(platform(libs.firebase.bom))
+    implementation("com.google.firebase:firebase-storage:21.0.1")
     implementation(libs.glide)
     implementation(libs.corbind.lifecycle)
     implementation(libs.corbind.activity)
@@ -103,5 +113,25 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.android)
     implementation(libs.datastore.preference)
+
+    // shared preference
     implementation("androidx.preference:preference-ktx:1.2.0")
+
+    // tedPermission
+    implementation("io.github.ParkSangGwon:tedpermission-normal:3.4.2")
+
+    // Moshi 관련
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+    
+    // cameraX 관련 dependencies
+    implementation("androidx.camera:camera-core:1.1.0-beta01")
+    implementation("androidx.camera:camera-camera2:1.1.0-beta01")
+    implementation("androidx.camera:camera-lifecycle:1.1.0-beta01")
+    implementation("androidx.camera:camera-view:1.1.0-beta01")
+    implementation("androidx.camera:camera-extensions:1.1.0-beta01")
+    implementation("com.google.guava:guava:31.0.1-android")
+
+    // Coil 관련 dependencies
+    implementation("io.coil-kt.coil3:coil:3.0.4")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
 }

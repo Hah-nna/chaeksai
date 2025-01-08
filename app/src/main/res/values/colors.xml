@@ -16,5 +16,9 @@
     <color name="secondary_text">#676767</color>
     <color name="accent_text">#000000</color>
     <color name="red">#D72309</color>
+
+    <!-- 유효성 검사 관련 colors -->
+    <color name="valid">#37B549</color>
+    <color name="inValid">#D72309</color>
 </resources>
 
