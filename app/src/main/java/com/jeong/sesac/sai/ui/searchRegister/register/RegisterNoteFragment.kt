@@ -9,8 +9,10 @@ import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentRegisterNoteBinding
+import com.jeong.sesac.sai.ui.home.RecentlyFoundNotesDetailFragmentArgs
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
@@ -20,23 +22,19 @@ import ru.ldralighieri.corbind.view.clicks
 
 class RegisterNoteFragment : BaseFragment<FragmentRegisterNoteBinding>(FragmentRegisterNoteBinding::inflate) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentRegisterNoteBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
+    private val args : RegisterNoteFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val libraryName = args.libraryName
         super.onViewCreated(view, savedInstanceState)
-        val content = "이 책을 읽는 모두 다 행복해지기를 바랍니다 ㅎㅎ"
+
         with(binding) {
             toolbar.toolbarView.setTitle(R.string.BACK_TOOLBAR_TITLE)
             toolbar.toolbarView.clicks().throttleFirst(throttleTime).onEach {
                 findNavController().navigateUp()
             }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+            var content = binding.tvNoteContent.text.toString()
 
             /**
              * checkedChanges() : Unit을 반환하는 flow
@@ -46,7 +44,6 @@ class RegisterNoteFragment : BaseFragment<FragmentRegisterNoteBinding>(FragmentR
              * 실제로 여기서 flow에서 emit한 값을 수집하는 코루틴을 만들고 실행
              * */
             btnRegisterHint.clicks().throttleFirst(throttleTime).onEach {
-                Log.d("btnRegisterHint", "click!!!!")
                 val action = RegisterNoteFragmentDirections.actionFragmentRegisterNoteToFragmentRegisterDetail("청량리도서관", content)
                 findNavController().navigate(action)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
