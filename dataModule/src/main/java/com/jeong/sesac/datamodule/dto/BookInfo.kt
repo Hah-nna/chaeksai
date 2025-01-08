@@ -1,4 +1,4 @@
-package com.jeong.sesac.datamodule.entity
+package com.jeong.sesac.datamodule.dto
 
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.squareup.moshi.Json
