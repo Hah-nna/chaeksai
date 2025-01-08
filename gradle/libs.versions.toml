@@ -33,6 +33,7 @@ kakaoSdk = "2.20.6"
 glide = "4.16.0"
 googleServices = "4.4.2"
 datastore-preference = "1.1.1"
+playServicesLocation = "21.3.0"
 
 [libraries]
 android = { module = "com.kakao.maps.open:android", version.ref = "android" }
@@ -68,12 +69,13 @@ corbind-lifecycle = { group = "ru.ldralighieri.corbind", name = "corbind-lifecyc
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
 datastore-preference = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore-preference" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-google-services = { id = "com.google.gms.google-services"}
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices"}
 navigation-safe-args = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigationSafeArgs" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
