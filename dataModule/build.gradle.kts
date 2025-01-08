@@ -1,7 +1,20 @@
+import java.util.Properties
+import java.io.FileInputStream
+
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+}
+
+val localProperties: Properties by lazy {
+    Properties().apply {
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            load(FileInputStream(localPropertiesFile))
+        }
+    }
 }
 
 android {
@@ -11,6 +24,11 @@ android {
     defaultConfig {
         minSdk = 24
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField(
+            "String",
+            "KAKAO_REST_API_KEY",
+            "\"${localProperties.getProperty("KAKAO_REST_API_KEY", "")}\""
+        )
     }
 
     compileOptions {
@@ -20,6 +38,9 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 
@@ -31,6 +52,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.moshi)
     implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
     implementation(libs.kakao.sdk)
     implementation(libs.datastore.preference)
 }
