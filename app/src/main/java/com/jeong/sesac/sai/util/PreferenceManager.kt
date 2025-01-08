@@ -11,6 +11,11 @@ class AppPreferenceManager {
         private lateinit var sp : SharedPreferences
         private lateinit var spEditor : SharedPreferences.Editor
 
+        private const val NICKNAME = "nickname"
+        private const val LAST_LAT = "last_lat"
+        private const val LAST_LNG = "last_lng"
+
+
         fun getInstance(context : Context) : AppPreferenceManager {
             if(this::manager.isInitialized) {
                 return manager
@@ -21,7 +26,7 @@ class AppPreferenceManager {
             }
             return manager
         }
-        private const val NICKNAME = "nickname"
+
     }
 
     var nickName : String
@@ -33,5 +38,24 @@ class AppPreferenceManager {
                Log.d("닉네임 set", nickName)
                apply()
            }
+        }
+
+    var lastLat : Double
+        get() = sp.getString(LAST_LAT, "37.566535")?.toDouble() ?: 37.566535
+        set(value) {
+            with(spEditor) {
+                putString(LAST_LAT, value.toString())
+                apply()
+            }
+        }
+
+
+    var lastLng : Double
+        get() = sp.getString(LAST_LNG, "126.977969")?.toDouble() ?: 126.977969
+        set(value) {
+            with(spEditor) {
+                putString(LAST_LNG, value.toString())
+                apply()
+            }
         }
 }
