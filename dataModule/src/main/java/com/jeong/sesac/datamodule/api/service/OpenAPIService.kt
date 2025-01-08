@@ -1,10 +1,9 @@
 package com.jeong.sesac.datamodule.api.service
 
-import com.jeong.sesac.datamodule.entity.BookInfo
+import com.jeong.sesac.datamodule.dto.BookInfo
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
-import java.time.LocalDateTime
 
 /**
  * FireBaseService에서
