@@ -15,6 +15,19 @@ class RecentlyFoundNoteAdapter(val callBack: (WeeklyNotesInfo) -> Unit) :
     ): RecentlyFoundNoteViewHolder {
         return RecentlyFoundNoteViewHolder(
             ItemRecentlyFoundNoteBinding.inflate(
+                /**
+                 * LayoutInflater
+                 * xml을 실제 View 객체로 변환하는 시스템 서비스
+                 *
+                 * LayoutInflater.from(parent.context) :
+                 * 리사이클러뷰의 context(parent.context)를 가져와서 LayoutInflater의 인스턴스를 생성하겠음
+                 *
+                 *
+                 * parent, false :
+                 * 리사이클러뷰 아이템(ItemRecentlyFoundNoteBinding)이 붙을 부모뷰(RecyclerView)를 지정함
+                 * false 로 설정해서 ItemRecentlyFoundNoteBinding을 parent에 바로 붙이지 않음
+                 *
+                 * */
                 LayoutInflater.from(
                     parent.context
                 ), parent, false
