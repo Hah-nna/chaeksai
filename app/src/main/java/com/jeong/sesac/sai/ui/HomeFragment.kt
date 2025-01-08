@@ -3,33 +3,32 @@ package com.jeong.sesac.sai.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentHomeBinding
 import com.jeong.sesac.sai.recycler.recentlyFoundNote.RecentlyFoundNoteAdapter
 import com.jeong.sesac.sai.recycler.HorizontalDecoration
 import com.jeong.sesac.sai.recycler.weeklyNote.WeeklyNoteAdapter
+import com.jeong.sesac.sai.util.AppPreferenceManager
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.WeeklyNoteMockData
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
-import com.jeong.sesac.sai.viewmodel.AuthViewModel
-import com.jeong.sesac.sai.viewmodel.entity.LoginState
-import com.jeong.sesac.sai.viewmodel.factory.AuthViewModelFactory
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import ru.ldralighieri.corbind.view.clicks
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
-    // recyclerViewAdapters
     private lateinit var weeklyNoteAdapter: WeeklyNoteAdapter
     private lateinit var recentlyFoundAdapter : RecentlyFoundNoteAdapter
-    private val viewModel by activityViewModels<AuthViewModel> { AuthViewModelFactory(requireContext()) }
+    private lateinit var preferenceManger: AppPreferenceManager
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        preferenceManger = AppPreferenceManager.getInstance(requireContext())
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,7 +42,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             val action = HomeFragmentDirections.actionFragmentHomeToFragmentRecentlyFoundNotesDetail(foundNote)
 
             findNavController().navigate(action)
-//        requireActivity().filesDir.li
         }
 
 
@@ -86,22 +84,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 val action = HomeFragmentDirections.actionFragmentHomeToFragmentRecentlyFoundNotes()
                 findNavController().navigate(action)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
-
-
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.loginState.collectLatest {
-               when(it) {
-                   is LoginState.Success -> {
-            binding.tvTitle.text = "안녕하세요\n${it.data}님👋🏻"
-
-                   }
-                   else -> binding.tvTitle.text = "로그인이 필요합니다"
-               }
+            // 닉네임 set하는 부분
+        try {
+            val nickname = preferenceManger.nickName
+            binding.tvTitle.text = when(nickname.isEmpty()) {
+                true -> getString(R.string.login_required)
+                else -> getString(R.string.welcome_message, nickname)
             }
+
+        } catch (e : Exception) {
+            throw Error(e.message)
         }
-        viewModel.checkLoginState()
 
         weeklyNoteAdapter.submitList(WeeklyNoteMockData.notesList)
         recentlyFoundAdapter.submitList(WeeklyNoteMockData.notesList)
