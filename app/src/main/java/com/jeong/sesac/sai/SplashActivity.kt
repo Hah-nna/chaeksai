@@ -9,10 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
-import androidx.preference.PreferenceManager
 import com.jeong.sesac.sai.util.AppPreferenceManager
-import kotlinx.coroutines.launch
 
 class SplashActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
@@ -34,13 +31,13 @@ class SplashActivity : AppCompatActivity() {
             val preferences = AppPreferenceManager.getInstance(this)
             if (preferences.nickName.isEmpty()) {
                 Intent(this@SplashActivity, LoginActivity::class.java).run {
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(this)
                 }
                 finish()
             } else {
                 Intent(this@SplashActivity, MainActivity::class.java).run {
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(this)
                 }
                     finish()
