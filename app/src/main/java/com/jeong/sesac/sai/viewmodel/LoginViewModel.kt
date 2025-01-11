@@ -33,9 +33,9 @@ class LoginViewModel(private val loginRepo: LoginRepositoryImpl) : ViewModel() {
         runCatching {
             loginRepo.checkDuplicateNickname(nickname)
         }.onSuccess {
-            _duplicateState.value = UiState.Error("닉네임 중복")
-        }.onFailure {
             _duplicateState.value = UiState.Success(nickname)
+        }.onFailure {
+            _duplicateState.value = UiState.Error("닉네임 중복")
         }.getOrThrow()
     }
 
