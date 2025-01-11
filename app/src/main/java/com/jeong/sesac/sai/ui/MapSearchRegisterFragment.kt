@@ -74,7 +74,7 @@ class MapSearchRegisterFragment :
     private val viewModel: KakaoMapViewModel by viewModels {
         appViewModelFactory
     }
-    private lateinit var label : Label
+    private lateinit var label: Label
     private var libraryLabels = mutableListOf<LodLabel>()
     private lateinit var mapAdapter: MapAdapter
 
@@ -141,29 +141,39 @@ class MapSearchRegisterFragment :
         override fun onMapReady(map: KakaoMap) {
             kakaoMap = map
 
+            binding.progressBar.progressCircular.visibility = View.VISIBLE
             kakaoMap.setOnLodLabelClickListener { _, _, label ->
                 // 클릭된 라벨의 위치
                 val clickedPosition = label.position
+                // 클릭된 라벨의 도서관 이름(setText로 라벨에 등록한 도서관이름)
+                val libraryName = label.texts[0]
+
+
                 // 해당 라벨로 이동(줌레벨 16)
                 val cameraUpdate = CameraUpdateFactory.newCenterPosition(clickedPosition, 16)
                 kakaoMap.moveCamera(cameraUpdate)
 
-                // 클릭된 라벨의 도서관 이름(setText로 라벨에 등록한 도서관이름)
-                val libraryName = label.texts[0]
+                viewLifecycleOwner.lifecycleScope.launch {
+                    val currentState = viewModel.librariesInfoState.value
 
-                // viewModel.librariesInfo에서 이름 같은거만 찾아서
-                val currentState = viewModel.librariesInfoState.value
-                when(currentState) {
-                    is UiState.Loading -> {
-                        binding.progressBar.progressCircular.visibility = View.VISIBLE
-                    }
-                    is UiState.Success -> {
-                        currentState.data.find { it.place_name == libraryName }?.let { library ->
-                            showLibraryInfo(library)
+                    // viewModel.librariesInfo에서 이름 같은거만 찾아서
+                    when (currentState) {
+                        is UiState.Loading -> {
+                            binding.progressBar.progressCircular.visibility = View.VISIBLE
                         }
-                    }
-                    is UiState.Error -> {
-                        throw Error("에러입니다")
+
+                        is UiState.Success -> {
+                            binding.progressBar.progressCircular.visibility = View.GONE
+                            currentState.data.find { it.place_name == libraryName }
+                                ?.let { library ->
+                                    showLibraryInfo(library)
+                                }
+                        }
+
+                        is UiState.Error -> {
+                            binding.progressBar.progressCircular.visibility = View.GONE
+                            throw Error("에러입니다")
+                        }
                     }
                 }
             }
@@ -197,13 +207,14 @@ class MapSearchRegisterFragment :
         }
 
         mapAdapter = MapAdapter(
-            onRegisterCallback = { libraryInfo ->
+            { libraryInfo ->
                 val registerAction =
                     MapSearchRegisterFragmentDirections.actionFragmentSearchRegisterToFragmentRegisterNote(
                         libraryInfo.place_name
                     )
                 findNavController().navigate(registerAction)
             },
+
             // 추후 쪽지 찾기때 변경해야함
 //            onFindCallback = { libraryInfo ->
 //                val findAction = MapSearchRegisterFragmentDirections.actionFragmentSearchRegisterToFragmentSearch(libraryInfo.place_name)
@@ -248,29 +259,30 @@ class MapSearchRegisterFragment :
         // 위에서 요청하고 여기서는 최신의 데이터를 뷰모델에서 받아서 라벨 생성
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.librariesInfoState.collectLatest { state ->
-                when(state) {
+                when (state) {
                     is UiState.Loading -> {
                         with(binding) {
-                        progressBar.progressCircular.visibility = View.GONE
+                            progressBar.progressCircular.visibility = View.VISIBLE
                             tvLibraryInfo.setText("gps를 켜서 도서관을 찾아보세요")
                         }
                     }
+
                     is UiState.Success -> {
                         with(binding) {
                             progressBar.progressCircular.visibility = View.GONE
                             tvLibraryInfo.visibility = View.VISIBLE
                         }
                         val library = state.data
-                        if(library.isEmpty()) {
+                        if (library.isEmpty()) {
                             binding.tvLibraryInfo.setText("gps를 켜서 도서관을 찾아보세요!")
                         } else {
                             binding.tvLibraryInfo.visibility = View.GONE
                             mapAdapter.submitList(library)
                         }
 
-                label.remove()
-                libraryLabels.forEach { it.remove() }
-                libraryLabels.clear()
+                        label.remove()
+                        libraryLabels.forEach { it.remove() }
+                        libraryLabels.clear()
 
                         currentLocationListener()
 
@@ -282,10 +294,11 @@ class MapSearchRegisterFragment :
                             createLocationLabel(libraryPosition, library.place_name)
                         }
                     }
+
                     is UiState.Error -> {
                         with(binding) {
-                        progressBar.progressCircular.visibility = View.GONE
-                        tvLibraryInfo.setText("도서관 정보를 불러오는데 실패했습니다")
+                            progressBar.progressCircular.visibility = View.GONE
+                            tvLibraryInfo.setText("도서관 정보를 불러오는데 실패했습니다")
                         }
                     }
                 }
@@ -498,15 +511,18 @@ class MapSearchRegisterFragment :
     }
 
     // label 눌렀을 때 보여줄 bottom sheet와 리사이클러뷰어댑터 설정
-   private fun showLibraryInfo(lib : PlaceInfo) {
+    private fun showLibraryInfo(lib: PlaceInfo) {
         val bottomSheet = binding.bottomSheet
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+
 
         bottomSheetBehavior.apply {
             state = BottomSheetBehavior.STATE_HALF_EXPANDED
             isFitToContents = true
         }
+
         mapAdapter.submitList(listOf(lib))
+
     }
 
 }

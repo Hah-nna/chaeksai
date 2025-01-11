@@ -134,4 +134,7 @@ dependencies {
     // Coil 관련 dependencies
     implementation("io.coil-kt.coil3:coil:3.0.4")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
+
+    // MLKit barcode
+    implementation("com.google.mlkit:barcode-scanning:17.1.0")
 }

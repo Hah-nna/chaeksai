@@ -7,6 +7,10 @@
     android:layout_height="match_parent"
     tools:context=".ui.MapSearchRegisterFragment"
     >
+    <include
+        android:id="@+id/progress_bar"
+        layout="@layout/progress_bar"
+        />
 
    <androidx.constraintlayout.widget.ConstraintLayout
        android:layout_width="match_parent"
@@ -88,8 +92,4 @@
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
         app:tint="@color/red" />
 
-    <include
-        android:id="@+id/progress_bar"
-        layout="@layout/progress_bar"
-        />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

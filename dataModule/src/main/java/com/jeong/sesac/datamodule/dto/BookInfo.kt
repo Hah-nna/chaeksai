@@ -7,6 +7,12 @@ import com.squareup.moshi.JsonClass
 @IgnoreExtraProperties
 @JsonClass(generateAdapter = true)
 data class BookInfo(
+    val docs : List<Book>
+)
+
+@IgnoreExtraProperties
+@JsonClass(generateAdapter = true)
+data class Book(
     // 오픈 api에서 오는 데이터 키 이름이 다 대문자임...
     @Json(name = "PAGE_NO")
     val page_no : Int = 1,
