@@ -2,9 +2,9 @@ package com.jeong.sesac.sai
 
 import android.Manifest
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
@@ -20,22 +20,44 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.core.Preview
 import androidx.camera.core.CameraSelector
 import android.util.Log
+import android.util.Size
+import android.view.View
+import androidx.camera.core.AspectRatio
+import androidx.camera.core.ExperimentalGetImage
+import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCaptureException
 import androidx.lifecycle.lifecycleScope
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
+import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.barcode.common.Barcode
+import com.google.mlkit.vision.common.InputImage
 import com.jeong.sesac.sai.databinding.ActivityCameraBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
+import java.io.InputStream
 import java.util.Locale
 
+enum class CameraMode {
+        PHOTO_CAPTURE,
+        BARCODE_SCAN
+    }
+
 class CameraActivity : AppCompatActivity() {
+
+
     private lateinit var binding: ActivityCameraBinding
 
     // 사진 촬영에 관한 useCase
     // 기본적인 사진촬영에 관한 객체
-    private var imgCapture: ImageCapture? = null
-
     // 카메라 작업을 위한 백그라운드 스레드 실행하는 역할
+    private lateinit var imgCapture: ImageCapture
+
+    // 바코드 스캔을 위한 이미지 분석객체
+    private lateinit var imgAnalysis: ImageAnalysis
+
+    private var currentMode: CameraMode = CameraMode.PHOTO_CAPTURE
+
     /**
      * Executor(java) :
      * 주어진 명령을 미래의 어느 시점에 실행
@@ -65,7 +87,15 @@ class CameraActivity : AppCompatActivity() {
         binding = ActivityCameraBinding.inflate(layoutInflater).also {
             setContentView(it.root)
         }
-        // 모든 권한 체크
+
+        currentMode =
+            when(intent.getStringExtra("camera_mode")) {
+                "BARCODE_SCAN" -> CameraMode.BARCODE_SCAN
+                "PHOTO_CAPTURE" -> CameraMode.PHOTO_CAPTURE
+                else -> CameraMode.PHOTO_CAPTURE
+            }
+
+         // 카메라 권한 체크
         if (allPermissionsGranted()) {
             startCamera()
         } else {
@@ -74,7 +104,6 @@ class CameraActivity : AppCompatActivity() {
                 this, REQUIRED_PERMISSION, REQUEST_CODE_PERMISSIONS
             )
         }
-        binding.imageCaptureButton.clicks().onEach { takePhoto() }.launchIn(lifecycleScope)
     }
 
     override fun onStart() {
@@ -82,9 +111,62 @@ class CameraActivity : AppCompatActivity() {
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
+    private fun startCamera() {
+        Log.d("startCamera", "startCamera!!!")
+        // 카메라를 설치하려면 시간 걸림 -> 나중에 완료될 작업이라는 것을 알려줌
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(this@CameraActivity)
+
+        // 카메라가 준비되면 실행할 작업(addListener({...}))
+        cameraProviderFuture.addListener({
+            // 라이프사이클오너와 카메라 라이프사이클을 바인딩
+            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+
+            // 프리뷰
+            val preview = Preview.Builder()
+                .apply {
+                    // 보여질 해상도 비율 설정
+                    setTargetAspectRatio(AspectRatio.RATIO_16_9)
+//                setTargetResolution(Size(1920, 1080))
+                }
+                .build()
+                .also {
+                    it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+                }
+
+            // currentCameraMode에 따라서 변경
+            when (currentMode) {
+                CameraMode.PHOTO_CAPTURE -> {
+                    imgCapture = ImageCapture.Builder().apply {
+                        // 이미지 캡쳐시 반응속도 관련 설정. 지금 설정은 반응속도 우선으로 선택한 것임
+//                        setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
+                        // 캡쳐할 이미지의 헤상도 설정
+                        setTargetResolution(Size(1920, 1080))
+                    }.build()
+                    bindPhotoCapture(cameraProvider, preview)
+                    binding.imageCaptureButton.clicks().onEach { takePhoto() }
+                        .launchIn(lifecycleScope)
+                    binding.imageCaptureButton.visibility = View.VISIBLE
+                }
+
+                CameraMode.BARCODE_SCAN -> {
+                    imgAnalysis = ImageAnalysis.Builder()
+                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                        .build()
+                    bindBarcodeScan(cameraProvider, preview)
+                    binding.imageCaptureButton.visibility = View.INVISIBLE
+                }
+            }
+        }, ContextCompat.getMainExecutor(this))
+    }
+
+
+
+
+    // 카메라 모드가 photo capture일때
     private fun takePhoto() {
+        Log.d("takePhoto", "takePhoto!!!")
         // 이미지 캡쳐가 설정되기 전에 사진 버튼을 탭하면 null -> 카메라가 준비되지 않으면 종료
-        val imgCapture = imgCapture ?: return
+        val imgCapture = imgCapture
 
         // 이미지를 보관할 MediaStore
         // MediaStore에 표시되는 이름이 고유해야하니까 타임스탬프 사용
@@ -130,6 +212,19 @@ class CameraActivity : AppCompatActivity() {
                     val savedUri = outputFileResults.savedUri
 
                     // 여기서 uri 가져와서 coil로 자르고 저장해서 setData 하기
+                    // -> 일단 저장된 uri의 이미지의 크기 확인하기(얼마나 줄었는지 확인해야하니까)
+                    // -> 확인하고 사이즈 줄인 다음에 줄인 이미지를 저장 -> 이 uri를 보냄
+                    // 원본 이미지 삭제
+
+                    val options = BitmapFactory.Options().apply {
+                        inJustDecodeBounds = true
+                    }
+                    contentResolver.openInputStream(savedUri!!).use {
+                        BitmapFactory.decodeStream(it, null, options)
+                    }
+                    Log.d("bitmapSize" , "${options.outWidth}, ${options.outHeight}")
+
+
 
                     // 결과를 이전 화면으로 전달하기 위한 Intent를 만듦
                     // Intent : 한 화면(액티비티)에서 다른 화면으로 정보를 전달하는 역할그
@@ -138,9 +233,7 @@ class CameraActivity : AppCompatActivity() {
                         // 저장된 이미지의 uri를 Intent에 첨부
                         setData(savedUri)
                     }
-                    val msg = "이미지 캡쳐 성공성공 : ${outputFileResults.savedUri}"
                     Log.e("TAG-C-S", savedUri.toString())
-                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
 
                     // 결과를 설정하고 현재 액티비티(camera Activity)를 종료함
                     setResult(RESULT_OK, resultIntent)
@@ -150,52 +243,105 @@ class CameraActivity : AppCompatActivity() {
         )
     }
 
-    private fun startCamera() {
-        // 카메라를 설치하려면 시간 걸림 -> 나중에 완료될 작업이라는 것을 알려줌
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(this@CameraActivity)
 
-        // 카메라가 준비되면 실행할 작업(addListener({...}))
-        cameraProviderFuture.addListener({
-            // 라이프사이클오너와 카메라 라이프사이클을 바인딩
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+    @androidx.annotation.OptIn(ExperimentalGetImage::class)
+    private fun scanBarcode() {
+        Log.d("scanBarcode", "click!!!!!")
+        val options = BarcodeScannerOptions.Builder()
+            .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS)
+            .enableAllPotentialBarcodes()
+            .build()
 
-            // 프리뷰
-            val preview = Preview.Builder()
-                .build()
-                .also {
-                    it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
-                }
+        val barcodeScanner = BarcodeScanning.getClient(options)
 
-            imgCapture = ImageCapture.Builder().build()
-
-            // 후면 카메라를 기본으로 셋팅
-            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
-            /**
-             * 기존에 실행중이던 카메라 연경 해제
-             * 다시 새로운 설정으로 연결
-             * 왜냐면 이전 설정이 남아있으면 충돌 발생가능
-             * */
-            try {
-                // 기존의 바인딩을 모두 해제
-                cameraProvider.unbindAll()
-
-                // 새로운 바인딩을 생성
-                cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imgCapture
+        imgAnalysis.setAnalyzer(cameraExecutor) {
+            imgProxy ->
+            val mediaImage = imgProxy.image
+            if(mediaImage !== null) {
+                val img = InputImage.fromMediaImage(
+                    mediaImage, imgProxy.imageInfo.rotationDegrees
                 )
-            } catch (exc: Exception) {
-                Log.e(TAG, "Use case binding failed", exc)
-            }
 
-        }, ContextCompat.getMainExecutor(this))
+                barcodeScanner.process(img)
+                    .addOnSuccessListener {
+                        barcodes ->
+                        for(barcode in barcodes) {
+                            val barcodeValue = barcode.rawValue
+                            Log.d("rawData", barcodeValue.toString())
+                            if(!barcodeValue.isNullOrEmpty()) {
+                                val resultIntent = Intent().apply {
+                                    putExtra("barcode_value", barcodeValue)
+                                }
+                                setResult(RESULT_OK, resultIntent)
+                                Log.d("barcodeValue", "$resultIntent")
+                                finish()
+                                break
+                            }
+                        }
+                    }.addOnFailureListener{
+                        throw Error("바코드 스캔 실패")
+                    }.addOnCompleteListener {
+                        imgProxy.close()
+                    }
+            } else {
+                imgProxy.close()
+            }
+        }
+
     }
 
+    private fun bindBarcodeScan(cameraProvider: ProcessCameraProvider, preview: Preview) {
+        val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
+        try {
+            // 기존의 바인딩을 모두 해제
+            cameraProvider.unbindAll()
+
+            scanBarcode()
+
+            // 새로운 바인딩을 생성
+            cameraProvider.bindToLifecycle(
+                this, cameraSelector, preview, imgAnalysis
+            )
+        } catch (exc: Exception) {
+            Log.e(TAG, "Use case binding failed", exc)
+        }
+
+    }
+
+    private fun bindPhotoCapture(
+        cameraProvider: ProcessCameraProvider,
+        preview: Preview
+    ) {
+        // 후면 카메라를 기본으로 셋팅
+        val cameraSelector = androidx.camera.core.CameraSelector.DEFAULT_BACK_CAMERA
+
+//        takePhoto()
+        /**
+         * 기존에 실행중이던 카메라 연경 해제
+         * 다시 새로운 설정으로 연결
+         * 왜냐면 이전 설정이 남아있으면 충돌 발생가능
+         * */
+        try {
+            // 기존의 바인딩을 모두 해제
+            cameraProvider.unbindAll()
+
+
+            // 새로운 바인딩을 생성
+            cameraProvider.bindToLifecycle(
+                this, cameraSelector, preview, imgCapture
+            )
+        } catch (exc: Exception) {
+            Log.e(TAG, "Use case binding failed", exc)
+        }
+    }
+//
     private fun allPermissionsGranted() = REQUIRED_PERMISSION.all {
         ContextCompat.checkSelfPermission(
             baseContext, it
         ) == PackageManager.PERMISSION_GRANTED
     }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -211,11 +357,17 @@ class CameraActivity : AppCompatActivity() {
                 finish()
             }
         }
-
     }
 
-    override fun onStop() {
+    override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
     }
+//
+//    override fun onStop() {
+//        super.onDestroy()
+//        cameraExecutor.shutdown()
+//    }
+
+
 }
