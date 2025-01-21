@@ -26,24 +26,16 @@
         android:id="@+id/bottom_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:elevation="32dp"
-        android:padding="2dp"
-        app:elevation="100dp"
+        android:padding="@dimen/padding_small"
         app:itemIconTint="@drawable/bottom_nav_icon_text_color"
         app:itemTextColor="@drawable/bottom_nav_icon_text_color"
-        app:labelVisibilityMode="labeled"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_menu"
         app:itemActiveIndicatorStyle="@style/CustomBottomNavIndicator"
         />
-  <View
-      android:id="@+id/bottom_nav_border"
-      android:layout_width="match_parent"
-      android:layout_height="5dp"
-      android:background="@drawable/bottom_shadow"
-      app:layout_constraintBottom_toTopOf="@id/bottom_bar"/>
 
   <include
       android:id="@+id/progress_bar"
