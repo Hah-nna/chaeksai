@@ -31,8 +31,8 @@ android {
         // kakao map 키 가져옴. manifest 파일에서도 사용할 수 있게 함
         buildConfigField(
             "String",
-            "KAKAO_MAP_KEY",
-            "\"${localProperties.getProperty("KAKAO_MAP_KEY", "")}\""
+            "KAKAO_API_KEY",
+            "\"${localProperties.getProperty("KAKAO_API_KEY", "")}\""
         )
 
         buildConfigField(
@@ -88,9 +88,12 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.ru.ldralighieri.corbind)
+    implementation(libs.firebase.firestore)
     implementation(libs.firebase.firestore.ktx)
-    implementation(project(":domainModule"))
-    implementation(project(":dataModule"))
+    implementation("com.github.Dimezis:BlurView:version-2.0.5")
+    implementation(platform(libs.firebase.bom))
+    implementation("com.google.firebase:firebase-storage:21.0.1")
+    implementation(libs.places)
     testImplementation(libs.junit)
     implementation(libs.play.services.location)
     implementation(libs.google.services)
@@ -99,11 +102,6 @@ dependencies {
     implementation(libs.ru.ldralighieri.corbind.material)
     implementation(libs.kakao.maps)
     implementation(libs.kakao.sdk)
-    implementation(libs.firebase.firestore)
-    implementation("com.github.Dimezis:BlurView:version-2.0.5")
-    implementation(platform(libs.firebase.bom))
-    implementation("com.google.firebase:firebase-storage:21.0.1")
-    implementation(libs.glide)
     implementation(libs.corbind.lifecycle)
     implementation(libs.corbind.activity)
     implementation(libs.corbind.appcompat)
@@ -111,8 +109,9 @@ dependencies {
     implementation(libs.moshi)
     implementation(libs.converter.moshi)
     implementation(libs.retrofit)
-    implementation(libs.android)
     implementation(libs.datastore.preference)
+    implementation(project(":data"))
+    implementation(project(":feature"))
 
     // shared preference
     implementation("androidx.preference:preference-ktx:1.2.0")
@@ -137,4 +136,7 @@ dependencies {
 
     // MLKit barcode
     implementation("com.google.mlkit:barcode-scanning:17.1.0")
+
+    // xml circleView
+    implementation("de.hdodenhof:circleimageview:2.2.0")
 }
