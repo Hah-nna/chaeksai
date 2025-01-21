@@ -4,18 +4,15 @@
         <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
         <item name="android:buttonStyle">@style/BaseButtonStyle</item>
         <item name="android:editTextStyle">@style/customEditTextViewFontStyle</item>
-        <item name="android:imageButtonStyle">@style/customImgBtnViewFontStyle</item>
         <!--themes에 pretendard 폰트 전체 적용-->
         <item name="android:fontFamily">@font/font_family</item>
 
         <!--툴바, 툴바텍스트 스타일 적용-->
         <item name="toolbarStyle">@style/ToolbarStyle</item>
 
-        <!-- 카드뷰 아웃라인 전체 적용 -->
+        <!-- 카드뷰 기본스타일 적용 -->
         <item name="materialCardViewStyle">@style/CustomMaterialCardView</item>
-
     </style>
-
 
     <style name="Theme.Sai" parent="Base.Theme.Sai" />
 </resources>
