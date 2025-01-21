@@ -1,10 +1,11 @@
-package com.jeong.sesac.datamodule.api.manager
+package com.jeong.sesac.data.api.manager
 
-import com.jeong.sesac.datamodule.api.service.OpenAPIService
+import com.jeong.sesac.data.api.service.OpenAPIService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+
 
 const val OPEN_API_BASE_URL = "https://www.nl.go.kr"
 

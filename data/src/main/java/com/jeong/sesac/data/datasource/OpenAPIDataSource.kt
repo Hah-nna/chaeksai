@@ -1,6 +1,6 @@
-package com.jeong.sesac.datamodule.datasource
+package com.jeong.sesac.data.datasource
 
-import com.jeong.sesac.datamodule.dto.Book
+import com.jeong.sesac.data.dto.Book
 
 // 국립도서관 isbn 관련 open api
 interface OpenAPIDataSource {
