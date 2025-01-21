@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">sai</string>
     <string name="home_fragment">home_fragment</string>
+    <string name="home">홈</string>
     <string name="fragment_myPage">마이페이지</string>
     <string name="fragment_record">기록</string>
     <string name="app_settings_fragment">앱설정</string>
@@ -88,7 +89,7 @@
     <string name="my_registered_notes_fragment">my_registered_notes_fragment</string>
     <string name="weeklyNotes_fragment">weeklyNotes_fragment</string>
     <string name="weeklyNotes_detail_fragment">weeklyNotes_detail_fragment</string>
-    <string name="fragment_search_register">fragment_search_register</string>
+    <string name="fragment_library_map">fragment_library_map</string>
     <string name="completed_finds_fragment">completed_finds_fragment</string>
     <string name="fragment_bookmarkedNotes">fragment_bookmarkedNotes</string>
     <string name="privacy_management_fragment">privacy_management_fragment</string>
@@ -134,5 +135,15 @@
 
     <string name="login_required">로그인이 필요합니다</string>
     <string name="welcome_message">안녕하세요 %s 님</string>
+    <string name="library_map">등록/보기</string>
+    <string name="record">기록</string>
+    <string name="myPage">마이페이지</string>
+    <string name="takePicture">사진찍기</string>
+    <string name="write_nickname">닉네임을 입력해주세요</string>
+    <string name="splash_chaksai">CHAKSAI</string>
+    <string name="re_scan_barcode">인식이 잘못 되었거나\n정답이 아닙니다.\n다시 인식해주세요.</string>
+    <string name="register_note_title">도서관에서 있었던 일들을\n자유롭게 남겨주세요</string>
+    <string name="bottom_item_book">책</string>
+    <string name="bottom_item_chatting">chatting</string>
 
 </resources>
