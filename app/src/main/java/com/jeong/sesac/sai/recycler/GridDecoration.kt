@@ -23,9 +23,11 @@ class GridDecoration(val context : Context) : RecyclerView.ItemDecoration() {
         super.getItemOffsets(outRect, view, parent, state)
         val spacing = dpToPx(16F).toInt()
 
-        outRect.top = spacing
-        outRect.right = spacing
-        outRect.bottom = spacing
-        outRect.left = spacing
+        with(outRect) {
+        top = spacing
+        right = spacing
+        bottom = spacing
+        left = spacing
+        }
     }
 }
