@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.HomeFragment">
+    tools:context=".ui.home.HomeFragment">
 
     <include
         android:id="@+id/progress_circle"
@@ -34,7 +34,7 @@
         android:id="@+id/tv_weeklyNotes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/main_head_second_title"
+        android:text="이번주 인기 쪽지"
         app:layout_constraintTop_toBottomOf="@+id/tv_title"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="18dp"
@@ -71,7 +71,7 @@
         android:id="@+id/tv_recentlyFoundNotes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/main_head_third_title"
+        android:text="최근 등록된 쪽지"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rv_weekly_notes"
         android:layout_marginTop="18dp"
@@ -94,7 +94,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        tools:listitem="@layout/item_recently_found_note"
+        tools:listitem="@layout/item_new_note"
         android:layout_marginTop="18dp"
         android:paddingVertical="12dp"
         android:clipToPadding="false"
