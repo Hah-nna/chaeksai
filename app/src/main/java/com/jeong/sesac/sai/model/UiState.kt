@@ -1,4 +1,4 @@
-package com.jeong.sesac.sai.viewmodel.entity
+package com.jeong.sesac.sai.model
 
 sealed class UiState<out T> {
     data object Loading : UiState<Nothing>()
