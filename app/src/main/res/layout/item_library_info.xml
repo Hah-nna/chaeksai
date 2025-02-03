@@ -6,24 +6,26 @@
     android:padding="16dp"
     >
 
+
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_library_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:text="도서관이름"
-        android:textStyle="bold"
         android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_library_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/tv_library_name"
         android:text="서울 마포구 신촌로 26길 10 주민센터 복지관 2층(노고산동)"
         app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tv_library_name" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_phone"
@@ -31,32 +33,29 @@
         android:layout_height="wrap_content"
         android:text="02-714-8080"
         android:textColor="@android:color/holo_blue_dark"
-        app:layout_constraintTop_toBottomOf="@+id/tv_library_address"
         app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tv_library_address" />
 
-    <androidx.appcompat.widget.AppCompatButton
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_register"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintWidth_percent="0.45"
         app:layout_constraintTop_toBottomOf="@+id/tv_phone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_find"
         android:text="쪽지등록"
         />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_find"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintWidth_percent="0.45"
         app:layout_constraintTop_toBottomOf="@+id/tv_phone"
         app:layout_constraintTop_toTopOf="@+id/btn_register"
-        app:layout_constraintStart_toEndOf="@+id/btn_register"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="쪽지찾기"
         />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
