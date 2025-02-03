@@ -31,7 +31,7 @@
     </style>
 
     <!-- 기본 MaterialButton 스타일 -->
-    <style name="BaseButtonStyle" parent="Widget.MaterialComponents.Button">
+    <style name="BaseButtonStyle" parent="Widget.Material3.Button.ElevatedButton">
         <!-- 버튼 공통 속성 -->
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -40,7 +40,7 @@
         <item name="android:padding">16dp</item>
         <item name="cornerRadius">12dp</item>
         <item name="android:textStyle">bold</item>
-        <item name="elevation">10dp</item>
+        <item name="android:elevation">4dp</item>
         <item name="android:fontFamily">@font/font_family</item>
     </style>
 
