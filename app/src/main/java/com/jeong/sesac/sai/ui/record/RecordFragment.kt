@@ -1,10 +1,10 @@
-package com.jeong.sesac.sai.ui
+package com.jeong.sesac.sai.ui.record
 
 import android.os.Bundle
 import android.view.View
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jeong.sesac.sai.databinding.FragmentTabLayoutBinding
-import com.jeong.sesac.sai.recycler.Record.RecordPagerAdapter
+import com.jeong.sesac.sai.recycler.record.RecordPagerAdapter
 import com.jeong.sesac.sai.util.BaseFragment
 
 class RecordFragment : BaseFragment<FragmentTabLayoutBinding>(FragmentTabLayoutBinding::inflate) {
@@ -23,9 +23,8 @@ class RecordFragment : BaseFragment<FragmentTabLayoutBinding>(FragmentTabLayoutB
 
         TabLayoutMediator(binding.buttonGroup, binding.viewPager) { tab, position ->
             tab.text = when (position) {
-                0 -> "등록한쪽지"
-                1 -> "찾은쪽지"
-                else -> "찜한쪽지"
+                0 -> "내쪽지"
+                else -> "좋아요한쪽지"
             }
         }.attach()
     }
