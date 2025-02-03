@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.LibraryMap.LibraryMapFragment"
+    tools:context=".ui.libraryMap.LibraryMapFragment"
+    android:fitsSystemWindows="false"
     >
     <include
         android:id="@+id/progress_bar"
@@ -22,19 +23,44 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-<androidx.appcompat.widget.AppCompatTextView
-    android:id="@+id/test_view"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-   android:minHeight="300dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    />
 
-    <androidx.appcompat.widget.AppCompatButton
+       <androidx.constraintlayout.widget.ConstraintLayout
+           android:id="@+id/search_container"
+           app:layout_constraintTop_toTopOf="parent"
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           app:layout_constraintHeight_percent="0.08"
+           android:layout_margin="16dp"
+           >
+
+           <com.google.android.material.card.MaterialCardView
+               android:id="@+id/cv_search"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:layout_margin="4dp"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toTopOf="parent"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintBottom_toBottomOf="parent">
+
+               <androidx.appcompat.widget.AppCompatEditText
+                   android:layout_width="match_parent"
+                   android:layout_height="0dp"
+                   android:background="@color/white"
+                   android:clipToPadding="false"
+                   android:hint="도서관이름을 입력해주세요"
+                   android:maxLines="1"
+                   android:paddingHorizontal="8dp"
+                   android:textSize="12sp" />
+
+           </com.google.android.material.card.MaterialCardView>
+       </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_re_search_places"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_container"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="이 위치에서 찾기"
@@ -83,6 +109,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:contentDescription="current_location"
         android:src="@drawable/icon_location"
         app:backgroundTint="@color/white"
         app:fabCustomSize="38dp"
