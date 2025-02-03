@@ -1,7 +1,5 @@
-package com.jeong.sesac.domain.repository
+package com.jeong.sesac.feature.repository
 
-import com.jeong.sesac.domain.model.UserInfo
-import kotlinx.coroutines.flow.Flow
 
 interface ILoginRepository {
     suspend fun getUser(id : String)
