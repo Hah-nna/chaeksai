@@ -1,19 +1,33 @@
 package com.jeong.sesac.sai.ui.home
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.jeong.sesac.domain.model.NoteFilterType
+import com.jeong.sesac.domain.model.SortOrder
 import com.jeong.sesac.sai.databinding.ItemTabRecyclerBinding
+import com.jeong.sesac.sai.model.UiState
 import com.jeong.sesac.sai.recycler.GridDecoration
 import com.jeong.sesac.sai.recycler.weeklyNote.WeeklyNoteAdapter
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.WeeklyNoteMockData
+import com.jeong.sesac.sai.viewmodel.NoteListViewModel
+import com.jeong.sesac.sai.viewmodel.factory.appViewModelFactory
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class WeeklyNoteListFragment :
     BaseFragment<ItemTabRecyclerBinding>(ItemTabRecyclerBinding::inflate) {
     private lateinit var weeklyNoteAdapter: WeeklyNoteAdapter
+    private val viewModel: NoteListViewModel by activityViewModels<NoteListViewModel> { appViewModelFactory }
 
     companion object {
         fun getInstance(position: Int) =
@@ -25,12 +39,14 @@ class WeeklyNoteListFragment :
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
         weeklyNoteAdapter = WeeklyNoteAdapter { weeklyDetailNote ->
-            val action = WeeklyNotesFragmentDirections.actionFragmentWeeklyNotesToDetail(weeklyDetailNote)
+            val action =
+                WeeklyNotesFragmentDirections.actionFragmentWeeklyNotesToDetail(weeklyDetailNote.id)
             findNavController().navigate(action)
         }
 
@@ -43,17 +59,40 @@ class WeeklyNoteListFragment :
         }
 
 
-        val filteredList = when(arguments?.getInt(("position")) ?: 0) {
-            0 -> WeeklyNoteMockData.notesList.sortedByDescending { it.date }
-            1 -> WeeklyNoteMockData.notesList.sortedByDescending { it.likes }
-            else -> WeeklyNoteMockData.notesList.sortedBy { it.likes }
+        val filteredType = when (arguments?.getInt("position") ?: 0) {
+            0 -> NoteFilterType.ThisWeek(SortOrder.LATEST)
+            1 -> NoteFilterType.ThisWeek(SortOrder.LIKES_DESC)
+            else -> NoteFilterType.ThisWeek(SortOrder.LIKES_ASC)
         }
+        viewModel.getNoteList(filteredType)
 
-        weeklyNoteAdapter.submitList(filteredList)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.noteListState.collectLatest { state ->
+                    when (state) {
+                        is UiState.Loading -> {
+                            binding.progress.progressCircular.isVisible = true
+                        }
 
+                        is UiState.Success -> {
+                            binding.progress.progressCircular.isVisible = false
+                            weeklyNoteAdapter.submitList(state.data)
+                        }
+
+                        is UiState.Error -> {
+                            binding.progress.progressCircular.isVisible = false
+                            Toast.makeText(requireContext(), state.error, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
     }
-
-
-
-
 }
+
+
+
+
+
+
+
