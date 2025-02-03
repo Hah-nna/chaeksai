@@ -1,4 +1,4 @@
-package com.jeong.sesac.sai.dto
+package com.jeong.sesac.sai.model
 
 data class LibraryInfo (
     val id : String,
