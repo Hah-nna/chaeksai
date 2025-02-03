@@ -144,6 +144,6 @@
     <string name="re_scan_barcode">인식이 잘못 되었거나\n정답이 아닙니다.\n다시 인식해주세요.</string>
     <string name="register_note_title">도서관에서 있었던 일들을\n자유롭게 남겨주세요</string>
     <string name="bottom_item_book">책</string>
-    <string name="bottom_item_chatting">chatting</string>
+    <string name="bottom_item_chatting">채팅</string>
 
 </resources>
