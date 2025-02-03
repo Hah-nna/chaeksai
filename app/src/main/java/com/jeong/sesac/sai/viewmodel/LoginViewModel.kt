@@ -3,8 +3,8 @@ package com.jeong.sesac.sai.viewmodel
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jeong.sesac.datamodule.repository.LoginRepositoryImpl
-import com.jeong.sesac.sai.viewmodel.entity.UiState
+import com.jeong.sesac.data.repository.LoginRepositoryImpl
+import com.jeong.sesac.sai.model.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -19,26 +19,17 @@ class LoginViewModel(private val loginRepo: LoginRepositoryImpl) : ViewModel() {
     @SuppressLint("NewApi")
     fun serUserInfo(nickname: String) = viewModelScope.launch {
         _userCreateState.value = UiState.Loading
-        runCatching {
-            loginRepo.setUser(nickname)
-        }.onSuccess {
-            _userCreateState.value = UiState.Success(nickname)
-        }.onFailure {
-            _userCreateState.value = UiState.Error("유저 생성실패")
-        }.getOrThrow()
+        val isSuccess = loginRepo.setUser(nickname)
+        _userCreateState.value =
+            if (isSuccess) UiState.Success(nickname) else UiState.Error("다시 시도해주세요")
     }
 
     fun checkDuplicatedNickname(nickname: String) = viewModelScope.launch {
         _duplicateState.value = UiState.Loading
-        runCatching {
-            loginRepo.checkDuplicateNickname(nickname)
-        }.onSuccess {
-            _duplicateState.value = UiState.Success(nickname)
-        }.onFailure {
-            _duplicateState.value = UiState.Error("닉네임 중복")
-        }.getOrThrow()
+        val isSuccess = loginRepo.checkDuplicateNickname(nickname)
+        _duplicateState.value =
+            if (isSuccess) UiState.Success(nickname) else UiState.Error("다시 시도해주세요")
     }
-
 
 }
 
