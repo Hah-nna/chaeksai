@@ -88,23 +88,17 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.ru.ldralighieri.corbind)
-    implementation(libs.firebase.firestore)
-    implementation(libs.firebase.firestore.ktx)
-    implementation("com.github.Dimezis:BlurView:version-2.0.5")
+    implementation(libs.google.services)
     implementation(platform(libs.firebase.bom))
-    implementation("com.google.firebase:firebase-storage:21.0.1")
+    implementation(libs.firebase.firestore.ktx)
     implementation(libs.places)
     testImplementation(libs.junit)
     implementation(libs.play.services.location)
-    implementation(libs.google.services)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.ru.ldralighieri.corbind.material)
     implementation(libs.kakao.maps)
     implementation(libs.kakao.sdk)
-    implementation(libs.corbind.lifecycle)
-    implementation(libs.corbind.activity)
-    implementation(libs.corbind.appcompat)
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi)
     implementation(libs.converter.moshi)
@@ -112,31 +106,33 @@ dependencies {
     implementation(libs.datastore.preference)
     implementation(project(":data"))
     implementation(project(":feature"))
+    implementation(libs.corbind.appcompat)
+    implementation(libs.corbind.activity)
 
     // shared preference
-    implementation("androidx.preference:preference-ktx:1.2.0")
+    implementation("androidx.preference:preference-ktx:1.2.1")
 
     // tedPermission
-    implementation("io.github.ParkSangGwon:tedpermission-normal:3.4.2")
+    implementation(libs.tedpermission.normal)
 
     // Moshi 관련
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
-    
+    kapt(libs.moshi.kotlin.codegen)
+
     // cameraX 관련 dependencies
-    implementation("androidx.camera:camera-core:1.1.0-beta01")
-    implementation("androidx.camera:camera-camera2:1.1.0-beta01")
-    implementation("androidx.camera:camera-lifecycle:1.1.0-beta01")
-    implementation("androidx.camera:camera-view:1.1.0-beta01")
-    implementation("androidx.camera:camera-extensions:1.1.0-beta01")
-    implementation("com.google.guava:guava:31.0.1-android")
+    implementation("androidx.camera:camera-core:1.4.1")
+    implementation("androidx.camera:camera-camera2:1.4.1")
+    implementation("androidx.camera:camera-lifecycle:1.4.1")
+    implementation("androidx.camera:camera-view:1.4.1")
+    implementation("androidx.camera:camera-extensions:1.4.1")
+    implementation("com.google.guava:guava:33.3.1-android")
 
     // Coil 관련 dependencies
     implementation("io.coil-kt.coil3:coil:3.0.4")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
 
     // MLKit barcode
-    implementation("com.google.mlkit:barcode-scanning:17.1.0")
+    implementation("com.google.mlkit:barcode-scanning:17.3.0")
 
     // xml circleView
-    implementation("de.hdodenhof:circleimageview:2.2.0")
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 }
