@@ -8,14 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.jeong.sesac.sai.R
-import com.jeong.sesac.sai.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
     }
 
     override fun onCreateView(

@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="@dimen/margin_top_small"
         />
 
     <com.google.android.material.button.MaterialButton
@@ -28,8 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/included_note_cv"
-        app:layout_constraintVertical_bias="0.6"
-        android:text="홈으로"
+        android:text="@string/goToHome"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

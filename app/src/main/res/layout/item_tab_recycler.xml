@@ -16,4 +16,8 @@
         android:paddingVertical="12dp"
         />
 
+    <include
+        android:id="@+id/progress"
+        layout="@layout/progress_bar"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

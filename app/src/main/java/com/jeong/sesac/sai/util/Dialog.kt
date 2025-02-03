@@ -25,14 +25,30 @@ interface DialogInterface {
  *
  * */
 class Dialog(
-    private val dialogInterface : DialogInterface,
+    private val dialogInterface: DialogInterface,
     private val title: String,
+    private val isSingleButton: Boolean = false,
     private val leftBtnText: String,
-    private val rightBtnText: String,
+    private val rightBtnText: String? = null,
 ) : DialogFragment() {
 
     private var _binding: DialogBinding? = null
     private val binding get() = _binding!!
+
+    companion object {
+        fun createTwoBtnDialog(
+            dialogInterface: DialogInterface,
+            title: String,
+            leftBtnText: String,
+            rightBtnText: String,
+        ) = Dialog(dialogInterface, title, false, leftBtnText, rightBtnText)
+
+        fun createSingleBtnDialog(
+            dialogInterface: DialogInterface,
+            title: String,
+            btnText: String
+        ) = Dialog(dialogInterface, title, true, btnText, null)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,10 +72,19 @@ class Dialog(
      * 다이얼로그의 타이틀, 왼쪽 버튼 텍스트, 오른쪽 버튼 텍스트를 지정함
      * */
     private fun setupDialog() {
-            with(binding) {
-                tvDialog.text = title
+        with(binding) {
+            tvDialog.text = title
+
+            if (isSingleButton) {
+                verticalLine.visibility = View.GONE
+                btnLeft.text = leftBtnText
+                btnRight.visibility = View.GONE
+            } else {
+                verticalLine.visibility = View.VISIBLE
                 btnLeft.text = leftBtnText
                 btnRight.text = rightBtnText
+
+            }
         }
 
     }
@@ -70,7 +95,9 @@ class Dialog(
      * 각 클릭이벤트 후 dissmiss()를 해주어 다이얼르그를 뷰에서 삭제함
      * */
     private fun setupClickListeners() {
-        binding.btnLeft.clicks().throttleFirst(throttleTime).onEach {
+
+       with(binding) {
+        btnLeft.clicks().throttleFirst(throttleTime).onEach {
             /**
              * 사용하려는 프랙르먼트에서 dialogInterface를 상속받아 onClickLeftBtn()안에 원하는 것을 구현하면 됨
              * */
@@ -78,13 +105,18 @@ class Dialog(
             dismiss()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        binding.btnRight.clicks().throttleFirst(throttleTime).onEach {
+        if(!isSingleButton) {
+        btnRight.clicks().throttleFirst(throttleTime).onEach {
             /**
              * 사용하려는 프랙르먼트에서 dialogInterface를 상속받아 onClickRightBtn()안에 원하는 것을 구현하면 됨
              * */
             dialogInterface.onClickRightBtn()
             dismiss()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+        }
+
+       }
+
     }
 
     /**

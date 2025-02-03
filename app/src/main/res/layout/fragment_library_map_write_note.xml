@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/included_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            >
+
+            <!-- head title-->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_welcome_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="10"
+                android:text="@string/register_note_title"
+                android:textAlignment="center"
+                android:textSize="@dimen/text_middle"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/tv_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- note title 부분 -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_top_small"
+                android:text="제목"
+                android:textSize="@dimen/text_small"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/etv_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_welcome_title" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_top_small"
+                android:hint="제목을 입력해주세요"
+                app:layout_constraintBottom_toTopOf="@+id/cv_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+            <!-- 쪽지 내용 부분-->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_content"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="@dimen/padding_top_small"
+                android:maxHeight="200dp"
+                app:cardElevation="0dp"
+                app:layout_constraintTop_toBottomOf="@+id/etv_title"
+                app:strokeColor="@android:color/darker_gray"
+                app:strokeWidth="1dp">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/tv_note_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:hint="등록할 쪽지 내용을 적어주세요\n"
+                    android:maxLines="10" />
+            </com.google.android.material.card.MaterialCardView>
+
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/rv_note_background"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/cv_content"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/tv_img"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:clipToPadding="false"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                />-->
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/padding_top_small"
+                android:text="이미지"
+                android:textSize="@dimen/text_small"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cv_content" />
+
+
+            <!-- 이미지 첨부 -->
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_img"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/padding_top_small"
+                android:maxHeight="100dp"
+                app:cardElevation="0dp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_img"
+                app:strokeColor="@android:color/darker_gray"
+                app:strokeWidth="1dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ic_upload_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_upload_img" />
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_complete"
+                style="@style/LargeButtonStyle"
+                android:layout_marginTop="@dimen/margin_top_small"
+                android:text="@string/register"
+                app:layout_constraintTop_toBottomOf="@+id/cv_img"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/progress"
+        layout="@layout/progress_bar" />
+</androidx.constraintlayout.widget.ConstraintLayout>

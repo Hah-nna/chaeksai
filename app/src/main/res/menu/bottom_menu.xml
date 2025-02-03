@@ -3,22 +3,27 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/fragmentHome"
-            android:title="홈"
+            android:title="@string/home"
             android:icon="@drawable/icon_home" />
         <item
-            android:id="@+id/fragmentSearchRegister"
-            android:title="찾기/등록"
+            android:id="@+id/fragmentLibraryMapFragment"
+            android:title="@string/library_map"
             android:icon="@drawable/icon_search"
             />
         <item
             android:id="@+id/fragment_record"
-            android:title="기록"
+            android:title="@string/record"
             android:icon="@drawable/icon_record"
             />
 
         <item
+            android:id="@+id/fragment_chatting"
+            android:title="@string/bottom_item_chatting"
+            android:icon="@drawable/ic_chat"
+            />
+        <item
             android:id="@+id/fragment_myPage"
-            android:title="마이페이지"
+            android:title="@string/myPage"
             android:icon="@drawable/icon_setting"
             />
 

@@ -1,14 +1,14 @@
 [versions]
 agp = "8.7.3"
-android = "2.9.5"
-kotlin = "2.0.0"
+android = "2.12.8"
+kotlin = "2.1.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
 material = "1.12.0"
-activity = "1.9.3"
+activity = "1.10.0"
 constraintlayout = "2.2.0"
 lifecycleViewmodelKtx = "2.8.7"
 fragmentKtx = "1.8.5"
@@ -18,64 +18,65 @@ navigationSafeArgs = "2.8.5"
 androidx-lifecycle-viewmodel-ktx = "2.8.7"
 ru-ldralighieri-corbind = "1.11.0"
 ru-ldralighieri-corbind-material = "1.11.0"
-firebaseFirestore = "25.1.1"
-firebaseMessaging = "24.1.0"
 identityAndroidLegacy = "202411.1"
 moshi = "1.15.2"
 moshiKotlin = "1.14.0"
 retrofit = "2.11.0"
-jetbrainsKotlinJvm = "2.0.21"
-firebaseFirestoreKtx = "25.1.1"
-firebaseDatabaseKtx = "21.0.0"
-firebaseBom = "33.7.0"
-kakaoMaps = "2.9.5"
-kakaoSdk = "2.20.6"
-glide = "4.16.0"
+jetbrainsKotlinJvm = "2.1.0"
 googleServices = "4.4.2"
-datastore-preference = "1.1.1"
 playServicesLocation = "21.3.0"
+firebaseFirestoreKtx = "25.1.1"
+firebaseBom = "33.8.0"
+kakaoMaps = "2.12.8"
+kakaoSdk = "2.20.6"
+datastore-preference = "1.1.2"
+tedpermissionNormal = "3.4.2"
+uiAndroid = "1.7.6"
+places = "4.1.0"
+firebaseStorageKtx = "21.0.1"
+firebaseCommonKtx = "21.0.0"
 
 [libraries]
-android = { module = "com.kakao.maps.open:android", version.ref = "android" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshiKotlin" }
 ru-ldralighieri-corbind = { module = "ru.ldralighieri.corbind:corbind", version.ref = "ru-ldralighieri-corbind" }
 ru-ldralighieri-corbind-material = { module = "ru.ldralighieri.corbind:corbind-material", version.ref = "ru-ldralighieri-corbind-material" }
-firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
-firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
-identity-android-legacy = { group = "com.android.identity", name = "identity-android-legacy", version.ref = "identityAndroidLegacy" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshiKotlin" }
-firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
-firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 kakao-maps = { group = "com.kakao.maps.open", name = "android", version.ref = "kakaoMaps" }
 kakao-sdk = { group = "com.kakao.sdk", name = "v2-all", version.ref = "kakaoSdk" }
 corbind-appcompat = { group = "ru.ldralighieri.corbind", name = "corbind-appcompat", version.ref = "ru-ldralighieri-corbind" }
 corbind-activity = { group = "ru.ldralighieri.corbind", name = "corbind-activity", version.ref = "ru-ldralighieri-corbind" }
-corbind-lifecycle = { group = "ru.ldralighieri.corbind", name = "corbind-lifecycle", version.ref = "ru-ldralighieri-corbind" }
-glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
-google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
 datastore-preference = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore-preference" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
+places = { group = "com.google.android.libraries.places", name = "places", version.ref = "places" }
+tedpermission-normal = { module = "io.github.ParkSangGwon:tedpermission-normal", version.ref = "tedpermissionNormal" }
+firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
+firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices"}
 navigation-safe-args = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigationSafeArgs" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 

@@ -5,10 +5,6 @@
         <item name="android:fontFamily">@font/font_family</item>
     </style>
 
-    <style name="customImgBtnViewFontStyle" parent="Widget.AppCompat.ImageButton">
-        <item name="android:fontFamily">@font/font_family</item>
-    </style>
-
     <style name="customBtnViewFontStyle" parent="Widget.AppCompat.Button">
         <item name="android:fontFamily">@font/font_family</item>
     </style>
@@ -34,50 +30,8 @@
         <item name="android:textColor">@color/primary_text</item>
     </style>
 
-    <style name="ChipTextStyle" parent="TextAppearance.MaterialComponents.Chip">
-        <item name="android:fontFamily">@font/font_family</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name="android:textAppearance">@style/ChipTextStyle</item>
-        <item name="chipBackgroundColor">@color/primary</item>
-        <item name="chipStrokeWidth">1dp</item>
-        <item name="chipStrokeColor">@color/accent_text</item>
-    </style>
-
-    <style name="CustomAppCompatButtonStyle" parent="Widget.AppCompat.Button">
-        <!-- 텍스트 관련 스타일 -->
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:padding">@dimen/guideline_padding</item>
-        <item name="android:textAlignment">center</item>
-    </style>
-
-    <style name="CustomMaterialButtonStyle" parent="Widget.MaterialComponents.Button">
-        <!-- 텍스트 스타일 -->
-        <item name="android:textAppearance">@style/CustomButtonTextAppearance</item>
-    </style>
-
-    <!-- 텍스트 스타일 -->
-    <style name="CustomButtonTextAppearance" parent="TextAppearance.MaterialComponents.Button">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="CustomButtonShape" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-        <item name="cornerSize">12dp</item>
-    </style>
-
-    <style name="ElevatedButton" parent="Widget.MaterialComponents.Button">
-        <!-- 기본 elevation -->
-        <item name="elevation">8dp</item>
-        <!-- 클릭 상태 elevation -->
-        <item name="pressedTranslationZ">0dp</item>
-    </style>
-
     <!-- 기본 MaterialButton 스타일 -->
-    <style name="BaseButtonStyle" parent="Widget.MaterialComponents.Button">
+    <style name="BaseButtonStyle" parent="Widget.Material3.Button.ElevatedButton">
         <!-- 버튼 공통 속성 -->
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -86,7 +40,7 @@
         <item name="android:padding">16dp</item>
         <item name="cornerRadius">12dp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:background">@drawable/button_shadow</item>
+        <item name="android:elevation">4dp</item>
         <item name="android:fontFamily">@font/font_family</item>
     </style>
 
@@ -105,16 +59,9 @@
         <item name="android:color">@color/neutral_variant</item>
     </style>
 
-    <style name="CustomMaterialCardView" parent="Widget.Material3.CardView.Outlined">
-        <item name="strokeWidth">3dp</item>
-        <item name="strokeColor">@android:color/black</item>
+    <style name="CustomMaterialCardView" parent="Widget.Material3.CardView.Elevated">
         <item name="cardCornerRadius">12dp</item>
-        <item name="android:background">"@color/neutral"</item>
-        <item name="elevation">12dp</item>
-    </style>
-
-    <style name="CustomMaterialCardViewElevated" parent="CustomMaterialCardView">
-        <item name="strokeWidth">0dp</item>
-        <item name="cardElevation">5dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="backgroundTint">@color/white</item>
     </style>
 </resources>

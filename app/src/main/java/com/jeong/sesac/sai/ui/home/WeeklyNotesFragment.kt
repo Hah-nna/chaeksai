@@ -26,12 +26,12 @@ class WeeklyNotesFragment :
             tab.text = when (position) {
                 0 -> "최신순"
                 1 -> "좋아요높은순"
-                else -> "좋아요높은순"
+                else -> "좋아요낮은순"
             }
         }.attach()
 
         with(binding.toolbar.toolbarView) {
-            setTitle(R.string.WEEKLY_NOTES_TOOLBAR_TITLE)
+            setTitle("이번주 인기 쪽지")
             /**
              * https://github.com/LDRAlighieri/Corbind/blob/master/corbind/src/main/kotlin/ru/ldralighieri/corbind/widget/ToolbarNavigationClicks.kt
              * 여기를 참조해서 toolbar 이벤트 설정함

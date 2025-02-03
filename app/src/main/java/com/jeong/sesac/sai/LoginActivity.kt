@@ -17,7 +17,7 @@ import com.jeong.sesac.sai.util.AppPreferenceManager
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
 import com.jeong.sesac.sai.viewmodel.LoginViewModel
-import com.jeong.sesac.sai.viewmodel.entity.UiState
+import com.jeong.sesac.sai.model.UiState
 import com.jeong.sesac.sai.viewmodel.factory.appViewModelFactory
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
