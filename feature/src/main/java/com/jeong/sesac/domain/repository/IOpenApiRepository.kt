@@ -1,6 +1,6 @@
-package com.jeong.sesac.domain.repository
+package com.jeong.sesac.feature.repository
 
-import com.jeong.sesac.domain.model.BookInfo
+import com.jeong.sesac.feature.model.BookInfo
 
 interface IOpenApiRepository {
     suspend fun getBookInfo(isbn : String ) : List<BookInfo>
