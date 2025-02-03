@@ -19,7 +19,7 @@
         android:paddingHorizontal="48dp"
         android:paddingTop="58dp"
         android:paddingBottom="58dp"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:textStyle="bold"
         />
 
