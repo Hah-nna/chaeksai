@@ -1,20 +1,24 @@
-package com.jeong.sesac.sai.recycler.recentlyFoundNote
+package com.jeong.sesac.sai.recycler.newNote
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.jeong.sesac.sai.databinding.ItemRecentlyFoundNoteBinding
-import com.jeong.sesac.sai.util.WeeklyNotesInfo
+import coil3.load
+import coil3.request.crossfade
+import coil3.size.Scale
+import com.jeong.sesac.feature.model.NoteWithUser
+import com.jeong.sesac.sai.databinding.ItemNewNoteBinding
+import com.jeong.sesac.sai.model.LibraryNoteUI
 
-class RecentlyFoundNoteAdapter(val callBack: (WeeklyNotesInfo) -> Unit) :
-    ListAdapter<WeeklyNotesInfo, RecentlyFoundNoteViewHolder>(DiffUtilRecentlyFoundNote()) {
+class NewNoteAdapter(val callBack: (NoteWithUser) -> Unit) :
+    ListAdapter<NoteWithUser, NewNoteViewHolder>(DiffUtilNewNote()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecentlyFoundNoteViewHolder {
-        return RecentlyFoundNoteViewHolder(
-            ItemRecentlyFoundNoteBinding.inflate(
+    ): NewNoteViewHolder {
+        return NewNoteViewHolder(
+            ItemNewNoteBinding.inflate(
                 /**
                  * LayoutInflater
                  * xml을 실제 View 객체로 변환하는 시스템 서비스
@@ -35,12 +39,15 @@ class RecentlyFoundNoteAdapter(val callBack: (WeeklyNotesInfo) -> Unit) :
         )
     }
 
-    override fun onBindViewHolder(holder: RecentlyFoundNoteViewHolder, position: Int) {
-        val recentlyFoundNote = currentList[position]
+    override fun onBindViewHolder(holder: NewNoteViewHolder, position: Int) {
+        val noteList = currentList[position]
         holder.binding.apply {
-            itemRecentlyFoundNoteImg.setImageResource(recentlyFoundNote.hint_img)
+            itemRecentlyFoundNoteImg.load(noteList.image) {
+                crossfade(true)
+                scale(Scale.FILL)
+            }
             root.setOnClickListener {
-                callBack(recentlyFoundNote)
+                callBack(noteList)
             }
         }
     }
