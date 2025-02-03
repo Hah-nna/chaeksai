@@ -1,6 +1,6 @@
-package com.jeong.sesac.datamodule.api.service
+package com.jeong.sesac.data.api.service
 
-import com.jeong.sesac.datamodule.dto.BookInfo
+import com.jeong.sesac.data.dto.BookInfo
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
