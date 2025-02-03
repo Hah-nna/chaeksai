@@ -1,4 +1,4 @@
-package com.jeong.sesac.sai.ui
+package com.jeong.sesac.sai.ui.libraryMap
 
 import android.Manifest
 import android.content.Context
@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -33,16 +34,16 @@ import com.google.android.gms.location.Priority
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
-import com.jeong.sesac.domain.model.PlaceInfo
+import com.jeong.sesac.feature.model.PlaceInfo
 import com.jeong.sesac.sai.R
-import com.jeong.sesac.sai.databinding.FragmentSearchRegisterBinding
+import com.jeong.sesac.sai.databinding.FragmentLibraryMapBinding
 import com.jeong.sesac.sai.recycler.map.MapAdapter
 import com.jeong.sesac.sai.util.AppPreferenceManager
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
 import com.jeong.sesac.sai.viewmodel.KakaoMapViewModel
-import com.jeong.sesac.sai.viewmodel.entity.UiState
+import com.jeong.sesac.sai.model.UiState
 import com.jeong.sesac.sai.viewmodel.factory.appViewModelFactory
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
@@ -54,6 +55,7 @@ import com.kakao.vectormap.label.Label
 import com.kakao.vectormap.label.LabelOptions
 import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
+import com.kakao.vectormap.label.LabelTextBuilder
 import com.kakao.vectormap.label.LodLabel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
@@ -61,8 +63,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.ldralighieri.corbind.view.clicks
 
-class MapSearchRegisterFragment :
-    BaseFragment<FragmentSearchRegisterBinding>(FragmentSearchRegisterBinding::inflate) {
+class LibraryMapFragment :
+    BaseFragment<FragmentLibraryMapBinding>(FragmentLibraryMapBinding::inflate) {
     private lateinit var mapView: MapView
     private lateinit var kakaoMap: KakaoMap
     private lateinit var preference: AppPreferenceManager
@@ -74,7 +76,8 @@ class MapSearchRegisterFragment :
     private val viewModel: KakaoMapViewModel by viewModels {
         appViewModelFactory
     }
-    private lateinit var label: Label
+
+    private var label: Label? = null
     private var libraryLabels = mutableListOf<LodLabel>()
     private lateinit var mapAdapter: MapAdapter
 
@@ -164,7 +167,7 @@ class MapSearchRegisterFragment :
 
                         is UiState.Success -> {
                             binding.progressBar.progressCircular.visibility = View.GONE
-                            currentState.data.find { it.place_name == libraryName }
+                            currentState.data.find { it.place == libraryName }
                                 ?.let { library ->
                                     showLibraryInfo(library)
                                 }
@@ -176,6 +179,7 @@ class MapSearchRegisterFragment :
                         }
                     }
                 }
+                true
             }
 
             val cameraUpdate = CameraUpdateFactory.newCenterPosition(
@@ -207,28 +211,41 @@ class MapSearchRegisterFragment :
         }
 
         mapAdapter = MapAdapter(
-            { libraryInfo ->
-                val registerAction =
-                    MapSearchRegisterFragmentDirections.actionFragmentSearchRegisterToFragmentRegisterNote(
-                        libraryInfo.place_name
-                    )
-                findNavController().navigate(registerAction)
-            },
+            onRegisterCallback = { libraryInfo ->
+                try {
+                    val action = LibraryMapFragmentDirections
+                        .actionFragmentLibraryMapFragmentToFragmentLibraryWriteNote(libraryInfo.place)
+                    findNavController().navigate(action)
+                } catch (e: Exception) {
+                    Log.e("Navigation", "Navigation failed", e)
+                }
 
-            // 추후 쪽지 찾기때 변경해야함
-//            onFindCallback = { libraryInfo ->
-//                val findAction = MapSearchRegisterFragmentDirections.actionFragmentSearchRegisterToFragmentSearch(libraryInfo.place_name)
-//                findNavController().navigate(findAction)
-//            }
+            },
+            onLibraryNotesCallback = { libraryInfo ->
+                val findAction =
+                    LibraryMapFragmentDirections.actionFragmentLibraryMapFragmentToFragmentLibraryNoteList(
+                        libraryInfo.place
+                    )
+                findNavController().navigate(findAction)
+            },
+            viewLifecycleOwner.lifecycleScope,
         )
 
         with(binding) {
             rvLibraryInfo.apply {
                 layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                adapter = this@MapSearchRegisterFragment.mapAdapter
+                adapter = this@LibraryMapFragment.mapAdapter
                 addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
             }
+
+            searchContainer.clicks().onEach {
+                val action = LibraryMapFragmentDirections.actionFragmentLibraryMapFragmentToFragmentMapSearch()
+                findNavController().navigate(action)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+
+
         }
 
         /**
@@ -252,7 +269,7 @@ class MapSearchRegisterFragment :
                     preference.lastLat,
                     preference.lastLng
                 )
-
+                Log.d("clickckck", "click!!!")
                 viewModel.getLibrariesInfo(currentLocation.longitude, currentLocation.latitude)
             }.launchIn(lifecycleScope)
 
@@ -280,7 +297,7 @@ class MapSearchRegisterFragment :
                             mapAdapter.submitList(library)
                         }
 
-                        label.remove()
+                        label?.remove()
                         libraryLabels.forEach { it.remove() }
                         libraryLabels.clear()
 
@@ -288,10 +305,10 @@ class MapSearchRegisterFragment :
 
                         library.forEach { library ->
                             val libraryPosition = LatLng.from(
-                                library.y.toDouble(),
-                                library.x.toDouble()
+                                library.lat.toDouble(),
+                                library.lng.toDouble()
                             )
-                            createLocationLabel(libraryPosition, library.place_name)
+                            createLocationLabel(libraryPosition, library.place)
                         }
                     }
 
@@ -464,6 +481,7 @@ class MapSearchRegisterFragment :
             locationResult.lastLocation?.let { location ->
                 val currentLatLng = LatLng.from(location.latitude, location.longitude)
 
+                Log.d("위치", "현재위치 ${location.latitude}" )
                 createCurrentLocationLabel(currentLatLng)
                 val updateCamera = CameraUpdateFactory.newCenterPosition(currentLatLng)
                 kakaoMap.moveCamera(updateCamera)
@@ -485,7 +503,7 @@ class MapSearchRegisterFragment :
             .setStyles(styles)
 
         val layer = kakaoMap.labelManager!!.layer
-        layer!!.addLabel(options)
+//        layer!!.addLabel(options)
 
         label = layer!!.addLabel(options)
     }
@@ -502,7 +520,7 @@ class MapSearchRegisterFragment :
         )
 
         val options = LabelOptions.from(position)
-            .setStyles(styles).setTexts(place_name)
+            .setStyles(styles).setTexts(LabelTextBuilder().setTexts(place_name))
 
         val layer = kakaoMap.labelManager!!.lodLayer
         val label = layer!!.addLodLabel(options)

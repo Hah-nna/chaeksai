@@ -1,10 +1,11 @@
-package com.jeong.sesac.datamodule.api.manager
+package com.jeong.sesac.data.api.manager
 
-import com.jeong.sesac.datamodule.api.service.KakaoMapService
+import com.jeong.sesac.data.api.service.KakaoMapService
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+
 
 const val KAKAO_MAP_API_BASE_URL = "https://dapi.kakao.com"
 
