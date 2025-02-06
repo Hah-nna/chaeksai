@@ -18,7 +18,7 @@ class LoginRepositoryImpl(private val fireStoreImpl: FireBaseDataSourceImpl) : I
             nickname = nickname,
             profile = "",
             // 이건 유저 등록할 떄 업데이트
-            created_at = "",
+            created_at = System.currentTimeMillis(),
             provider_info = ProviderType.KAKAO
         )
         return fireStoreImpl.createUser(userInfo)
