@@ -23,16 +23,16 @@ class NoteListRepositoryImpl(private val fireBaseDataSource: FireBaseDataSourceI
                 else -> null
             }
 
-            // 타입에 따라서 노트리스트 필터링
+            // 타입에 따라서 쪽지리스트 필터링
             val filteredNoteList = when (filterType) {
                 is NoteFilterType.ThisWeek -> {
                     val weekAgo = System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000
                     val thisWeekNotes = noteList.filter {
-                         it.createdAt.time  > weekAgo
+                        it.createdAt > weekAgo
                     }
 
                     when (filterType.sortOrder) {
-                        SortOrder.LATEST -> thisWeekNotes.sortedByDescending { it.createdAt.time }
+                        SortOrder.LATEST -> thisWeekNotes.sortedByDescending { it.createdAt }
                         SortOrder.LIKES_DESC -> thisWeekNotes.sortedByDescending { it.likes }
                         SortOrder.LIKES_ASC -> thisWeekNotes.sortedBy { it.likes }
                     }
@@ -40,9 +40,9 @@ class NoteListRepositoryImpl(private val fireBaseDataSource: FireBaseDataSourceI
 
                 is NoteFilterType.ByCreatedAt -> {
                     if (filterType.ascending) {
-                        noteList.sortedBy { it.createdAt.time }
+                        noteList.sortedBy { it.createdAt }
                     } else {
-                        noteList.sortedByDescending { it.createdAt.time }
+                        noteList.sortedByDescending { it.createdAt }
                     }
                 }
 
@@ -59,16 +59,16 @@ class NoteListRepositoryImpl(private val fireBaseDataSource: FireBaseDataSourceI
                 }
 
                 is NoteFilterType.AllLibrary -> {
-                    noteList.sortedByDescending { it.createdAt.time }
+                    noteList.sortedByDescending { it.createdAt }
                 }
 
                 is NoteFilterType.MyNotes -> {
-                    noteList.filter { it.userId == userId }.sortedByDescending { it.createdAt.time }
+                    noteList.filter { it.userId == userId }.sortedByDescending { it.createdAt }
                 }
 
                 is NoteFilterType.MyLikedNotes -> {
                     val likedNoteIdList = fireBaseDataSource.getMyLikedNotes(userId!!)
-                    noteList.filter { it.id in likedNoteIdList }.sortedByDescending { it.createdAt.time }
+                    noteList.filter { it.id in likedNoteIdList }.sortedByDescending { it.createdAt }
 
                 }
             }
