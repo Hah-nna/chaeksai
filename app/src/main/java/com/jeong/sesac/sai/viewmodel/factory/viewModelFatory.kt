@@ -5,10 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.jeong.sesac.data.api.manager.KakaoMapManager
 import com.jeong.sesac.data.api.manager.OpenAPIManager
+import com.jeong.sesac.data.datasource.CommentFirebaseDataSourceImpl
 import com.jeong.sesac.data.datasource.FireBaseDataSourceImpl
 import com.jeong.sesac.data.datasource.FireBaseStorageDataSourceImpl
 import com.jeong.sesac.data.datasource.KakaoMapDataSourceImpl
 import com.jeong.sesac.data.datasource.OpenAPIDataSourceImpl
+import com.jeong.sesac.data.repository.CommentRepositoryImpl
 import com.jeong.sesac.data.repository.KakaoMapRepositoryImpl
 import com.jeong.sesac.data.repository.LoginRepositoryImpl
 import com.jeong.sesac.data.repository.NoteListRepositoryImpl
@@ -16,6 +18,7 @@ import com.jeong.sesac.data.repository.OpenApiRepositoryImpl
 import com.jeong.sesac.data.repository.WriteNoteRepositoryImpl
 import com.jeong.sesac.sai.util.AppPreferenceManager
 import com.jeong.sesac.sai.util.ChakSaiClass
+import com.jeong.sesac.sai.viewmodel.CommentViewModel
 import com.jeong.sesac.sai.viewmodel.KakaoMapViewModel
 import com.jeong.sesac.sai.viewmodel.LoginViewModel
 import com.jeong.sesac.sai.viewmodel.NoteListViewModel
@@ -38,6 +41,10 @@ val appViewModelFactory = object : ViewModelProvider.Factory {
 
                 isAssignableFrom(NoteListViewModel::class.java) -> {
                     NoteListViewModel(NoteListRepositoryImpl(FireBaseDataSourceImpl(FireBaseStorageDataSourceImpl(ChakSaiClass.getContext()))))
+                }
+
+                isAssignableFrom(CommentViewModel::class.java) -> {
+                    CommentViewModel(CommentRepositoryImpl(CommentFirebaseDataSourceImpl(FireBaseDataSourceImpl(FireBaseStorageDataSourceImpl(ChakSaiClass.getContext())))))
                 }
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
