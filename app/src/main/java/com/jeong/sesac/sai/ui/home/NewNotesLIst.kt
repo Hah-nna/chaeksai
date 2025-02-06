@@ -62,7 +62,6 @@ class NewNotesLIst : BaseFragment<ItemTabRecyclerBinding>(ItemTabRecyclerBinding
         viewModel.getNoteList(filteredType)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.noteListState.collectLatest { state ->
                     when(state) {
                         is UiState.Loading -> {
@@ -80,7 +79,6 @@ class NewNotesLIst : BaseFragment<ItemTabRecyclerBinding>(ItemTabRecyclerBinding
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                    }
                 }
             }
         }

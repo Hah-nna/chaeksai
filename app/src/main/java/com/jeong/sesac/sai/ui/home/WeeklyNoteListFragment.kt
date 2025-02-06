@@ -67,7 +67,6 @@ class WeeklyNoteListFragment :
         viewModel.getNoteList(filteredType)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.noteListState.collectLatest { state ->
                     when (state) {
                         is UiState.Loading -> {
@@ -86,7 +85,6 @@ class WeeklyNoteListFragment :
                     }
                 }
             }
-        }
     }
 }
 
