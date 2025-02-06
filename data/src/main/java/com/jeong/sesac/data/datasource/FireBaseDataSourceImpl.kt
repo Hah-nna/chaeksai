@@ -73,7 +73,7 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
                     mapOf(
                         "id" to noteDocRefId,
                         "userId" to userId,
-                        "createdAt" to Timestamp(Date())
+                        "createdAt" to note.createdAt
                     )
                 ).await()
 
