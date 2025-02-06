@@ -118,41 +118,42 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         viewModel.getNoteList(NoteFilterType.ByLikes(false))
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.noteListState.collectLatest { state ->
-                    when(state) {
-                        is UiState.Loading -> binding.progressCircle.progressCircular.isVisible = true
+                    when (state) {
+                        is UiState.Loading -> binding.progressCircle.progressCircular.isVisible =
+                            true
+
                         is UiState.Success -> {
                             binding.progressCircle.progressCircular.isVisible = false
                             weeklyNoteAdapter.submitList(state.data)
                         }
+
                         is UiState.Error -> {
                             binding.progressCircle.progressCircular.isVisible = false
                             Toast.makeText(requireContext(), state.error, Toast.LENGTH_SHORT)
                         }
                     }
+                }
+            }
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.noteListState.collectLatest { state ->
+                        when (state) {
+                            is UiState.Loading -> binding.progressCircle.progressCircular.isVisible =
+                                true
+
+                            is UiState.Success -> {
+                                binding.progressCircle.progressCircular.isVisible = false
+                                recentlyNewAdapter.submitList(state.data)
+                            }
+
+                            is UiState.Error -> {
+                                binding.progressCircle.progressCircular.isVisible = false
+                                Toast.makeText(requireContext(), state.error, Toast.LENGTH_SHORT)
+                            }
+                        }
 
                 }
             }
         }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.noteListState.collectLatest { state ->
-                    when(state) {
-                        is UiState.Loading -> binding.progressCircle.progressCircular.isVisible = true
-                        is UiState.Success -> {
-                            binding.progressCircle.progressCircular.isVisible = false
-                            recentlyNewAdapter.submitList(state.data)
-                        }
-                        is UiState.Error -> {
-                            binding.progressCircle.progressCircular.isVisible = false
-                            Toast.makeText(requireContext(), state.error, Toast.LENGTH_SHORT)
-                        }
-                    }
-
-                }
-            }
-        }
-    }
 }
