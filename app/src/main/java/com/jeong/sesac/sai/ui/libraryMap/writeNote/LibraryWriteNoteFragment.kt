@@ -151,8 +151,6 @@ class LibraryWriteNoteFragment :
                         }
                     }
                 }
-
-
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
             toolbar.toolbarView.clicks().onEach {
