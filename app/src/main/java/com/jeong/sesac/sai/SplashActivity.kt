@@ -44,14 +44,4 @@ class SplashActivity : AppCompatActivity() {
             }
         }, 1500)
     }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("SplashActivity onStop", "onStop")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("SplashActivity onDestroy", "onDestroy")
-    }
 }
