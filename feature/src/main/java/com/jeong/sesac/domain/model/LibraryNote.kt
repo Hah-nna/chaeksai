@@ -8,7 +8,7 @@ data class Like (
     val userId: String,
     val noteId: String,
     val isLiked: Boolean,
-    val createdAt: String
+    val createdAt: Long
 )
 
 data class PlaceInfo(
@@ -26,7 +26,7 @@ data class Note(
     val userId: String = "",
     val image: String = "",
     val title: String = "",
-    val createdAt: Date = Date(),
+    val createdAt: Long = System.currentTimeMillis(),
     val libraryName: String = "",
     val content: String = "",
     val likes: Int = 0,
@@ -37,7 +37,7 @@ data class NoteWithUser(
     val userInfo: UserInfo,
     val image: String,
     val title: String,
-    val createdAt: Date,
+    val createdAt: Long,
     val libraryName: String,
     val content: String,
     val likes: Int,
@@ -54,14 +54,25 @@ data class Comment(
     val userId: String,
     val noteId: String,
     val content: String,
-    val createdAt: String
+    val createdAt: Long = System.currentTimeMillis()
+)
+
+data class CommentWithUser(
+    val id: String = "",
+    val userInfo: UserInfo = UserInfo(
+        id = "",
+        profile = "",
+        nickName = ""
+    ),
+    val content: String = "",
+    val createdAt: Long = 0L
 )
 
 data class User(
     val id: String,
     val profile: String,
     val nickname: String,
-    val created_at: String,
+    val created_at: Long,
     val provider_info: ProviderType = ProviderType.KAKAO
 ) {
     fun toMap(): Map<String, Any> {

@@ -29,7 +29,7 @@ class WriteNoteViewModel(
             content = content,
             libraryName = libraryName,
             likes = 0,
-            createdAt = Date(),
+            createdAt = System.currentTimeMillis(),
         )
 
         viewModelScope.launch {
