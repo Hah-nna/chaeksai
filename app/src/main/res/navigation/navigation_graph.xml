@@ -191,6 +191,44 @@
             android:name="noteId"
             app:argType="string" />
 
+        <action
+            android:id="@+id/action_fragmentNoteDetail_to_fragmentEditComment"
+            app:destination="@+id/fragmentEditComment">
+
+            <argument
+                android:name="noteId"
+                app:argType="string" />
+            <argument
+                android:name="nickname"
+                app:argType="string" />
+            <argument
+                android:name="commentId"
+                app:argType="string" />
+            <argument
+                android:name="content"
+                app:argType="string" />
+        </action>
+
+    </fragment>
+
+
+    <!-- 댓글 수정 프래그먼트 -->
+    <fragment
+        android:id="@+id/fragmentEditComment"
+        android:name="com.jeong.sesac.sai.ui.comment.EditCommentFragment"
+        android:label="fragment_edit_comment">
+        <argument
+            android:name="noteId"
+            app:argType="string" />
+        <argument
+            android:name="nickname"
+            app:argType="string" />
+        <argument
+            android:name="commentId"
+            app:argType="string" />
+        <argument
+            android:name="content"
+            app:argType="string" />
     </fragment>
 
     <!-- 쪽지 search 프래그먼트(이 페이지에서 검색결과에 다른 쪽지를 리사이클러뷰로 보여줌 각 쪽지를 누르면 또 디테일 페이지로 ㄱ) -->
