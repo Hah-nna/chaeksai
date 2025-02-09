@@ -33,14 +33,14 @@ data class Note(
 )
 
 data class NoteWithUser(
-    val id: String,
-    val userInfo: UserInfo,
-    val image: String,
-    val title: String,
-    val createdAt: Long,
-    val libraryName: String,
-    val content: String,
-    val likes: Int,
+    val id: String = "",
+    val userInfo: UserInfo = UserInfo("", "", ""),
+    val image: String = "",
+    val title: String = "",
+    val createdAt: Long = 0L,
+    val libraryName: String = "",
+    val content: String = "",
+    val likes: Int = 0,
 )
 
 data class UserInfo (
