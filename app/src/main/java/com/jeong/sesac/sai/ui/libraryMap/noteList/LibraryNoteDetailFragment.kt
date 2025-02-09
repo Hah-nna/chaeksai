@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,12 +17,14 @@ import coil3.load
 import coil3.request.crossfade
 import coil3.size.Scale
 import com.jeong.sesac.feature.model.Comment
+import com.jeong.sesac.feature.model.CommentWithUser
 import com.jeong.sesac.feature.model.NoteWithUser
 import com.jeong.sesac.sai.databinding.FragmentLibraryNoteDetailBinding
 import com.jeong.sesac.sai.model.UiState
 import com.jeong.sesac.sai.recycler.comment.CommentAdapter
 import com.jeong.sesac.sai.util.AppPreferenceManager
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.CommentModalBottomSheet
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
 import com.jeong.sesac.sai.viewmodel.CommentViewModel
@@ -39,7 +42,7 @@ class LibraryNoteDetailFragment : BaseFragment<FragmentLibraryNoteDetailBinding>
     private lateinit var preference : AppPreferenceManager
 
     private val viewModel: NoteListViewModel by activityViewModels<NoteListViewModel> { appViewModelFactory }
-    private val commentViewModel : CommentViewModel by viewModels<CommentViewModel> { appViewModelFactory }
+    private val commentViewModel : CommentViewModel by activityViewModels<CommentViewModel> { appViewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,25 +55,29 @@ class LibraryNoteDetailFragment : BaseFragment<FragmentLibraryNoteDetailBinding>
         viewModel.selectNote(args.noteId)
         Log.d("noteId", "${args.noteId}")
 
-        commentAdapter = CommentAdapter { comment ->
-            // 꾹 누르면 menu (신고) 나오게 하기
+        commentAdapter = CommentAdapter(preference.nickName, viewLifecycleOwner.lifecycleScope) { comment, isMyComment ->
+            showBottomSheet(comment, isMyComment)
         }
         binding.rvComments.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = commentAdapter
         }
 
-        binding.toolbar.toolbarView.setNavigationOnClickListener {
+        /**
+         * 툴바에서 네비게이션 아이콘 누르면 뒤로 가기
+         * */
+        binding.toolbar.toolbarView.clicks().onEach {
             findNavController().navigateUp()
-        }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
 
+
+        /**
+         * 물리키 뒤로 가기
+         * */
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             findNavController().navigateUp()
         }
 
-        binding.toolbar.toolbarView.clicks().onEach {
-            findNavController().navigateUp()
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewLifecycleOwner.lifecycleScope.launch {
            viewModel.selectedNoteState.collectLatest { state ->
@@ -80,12 +87,12 @@ class LibraryNoteDetailFragment : BaseFragment<FragmentLibraryNoteDetailBinding>
                        true
                    is UiState.Success -> {
                        binding.progress.progressCircular.isVisible = false
-                       state.let { it.data?.let { it1 -> bindData(it1) } }
+                       Log.d("NoteDetail", "Received note: ${state.data}")
+                       bindData(state.data)
                    }
-
                    is UiState.Error -> {
                        binding.progress.progressCircular.isVisible = false
-                       Toast.makeText(requireContext(), state.error, Toast.LENGTH_SHORT)
+                       Toast.makeText(requireContext(), state.error, Toast.LENGTH_SHORT).show()
                    }
                }
            }
@@ -124,8 +131,6 @@ class LibraryNoteDetailFragment : BaseFragment<FragmentLibraryNoteDetailBinding>
     private fun registerComment() {
         binding.btnRegisterComment.clicks().throttleFirst(throttleTime).onEach {
             val content = binding.tvComment.text.toString()
-
-
             if(content.isNotEmpty()) {
                val comment = Comment(
                    id = "",
@@ -173,5 +178,25 @@ class LibraryNoteDetailFragment : BaseFragment<FragmentLibraryNoteDetailBinding>
            tvContent.text = note.content
 
        }
+    }
+
+   private fun showBottomSheet(comment: CommentWithUser, isCommentUser: Boolean) {
+       CommentModalBottomSheet(
+           context = viewLifecycleOwner.lifecycleScope,
+           isCommentUser = isCommentUser,
+           onEditClick = {
+               val action = LibraryNoteDetailFragmentDirections.actionFragmentNoteDetailToFragmentEditComment(args.noteId, preference.nickName, comment.id, comment.content)
+               findNavController().navigate(action)
+           },
+           onDeleteClick = {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    commentViewModel.deleteComment(preference.nickName, args.noteId, comment.id)
+                }
+           },
+           onReportClick = {
+               // commentViewModel.reportComment
+           }
+       ).show(childFragmentManager, CommentModalBottomSheet.TAG)
+
     }
 }
