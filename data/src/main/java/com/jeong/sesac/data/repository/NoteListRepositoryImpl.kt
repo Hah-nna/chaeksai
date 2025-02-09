@@ -69,7 +69,6 @@ class NoteListRepositoryImpl(private val fireBaseDataSource: FireBaseDataSourceI
                 is NoteFilterType.MyLikedNotes -> {
                     val likedNoteIdList = fireBaseDataSource.getMyLikedNotes(userId!!)
                     noteList.filter { it.id in likedNoteIdList }.sortedByDescending { it.createdAt }
-
                 }
             }
 
@@ -91,6 +90,14 @@ class NoteListRepositoryImpl(private val fireBaseDataSource: FireBaseDataSourceI
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    suspend fun getNote(noteId: String): Result<NoteWithUser> {
+        return fireBaseDataSource.getNote(noteId)
+    }
+
+    suspend fun getLibraryNotes(libraryName: String) : Result<List<NoteWithUser>> {
+        return fireBaseDataSource.getLibraryNotes(libraryName)
     }
 }
 
