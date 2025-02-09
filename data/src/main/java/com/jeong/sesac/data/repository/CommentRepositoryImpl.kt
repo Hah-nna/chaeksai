@@ -21,7 +21,15 @@ class CommentRepositoryImpl(private val commentDataSource: CommentFirebaseDataSo
         return commentDataSource.createComment(nickname, noteId, userComment)
     }
 
-    override suspend fun getComments(nickname: String, noteId: String): List<CommentWithUser> {
+    override suspend fun getComments(nickname: String, noteId: String): Result<List<CommentWithUser>> {
         return commentDataSource.getComments(nickname, noteId)
+    }
+
+    override suspend fun updateComment(noteId: String, commentId: String, content: String): Result<Unit> {
+        return commentDataSource.updateComment(noteId, commentId, content)
+    }
+
+    override suspend fun deleteComment(noteId: String, commentId: String): Result<Unit> {
+        return commentDataSource.deleteComment(noteId, commentId)
     }
 }
