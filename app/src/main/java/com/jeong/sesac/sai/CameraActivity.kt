@@ -20,7 +20,6 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.core.Preview
 import androidx.camera.core.CameraSelector
 import android.util.Log
-import android.util.Size
 import android.view.View
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.ExperimentalGetImage
@@ -125,12 +124,11 @@ class CameraActivity : AppCompatActivity() {
             val preview = Preview.Builder()
                 .apply {
                     // 보여질 해상도 비율 설정
-                    setTargetAspectRatio(AspectRatio.RATIO_16_9)
-//                setTargetResolution(Size(1920, 1080))
+                    AspectRatio.RATIO_16_9
                 }
                 .build()
                 .also {
-                    it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+                    it.surfaceProvider = binding.viewFinder.surfaceProvider
                 }
 
             // currentCameraMode에 따라서 변경
