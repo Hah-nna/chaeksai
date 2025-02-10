@@ -20,6 +20,7 @@ class NoteListRepositoryImpl(private val fireBaseDataSource: FireBaseDataSourceI
                 is NoteFilterType.MyNotes, is NoteFilterType.MyLikedNotes -> {
                     nickname?.let { fireBaseDataSource.getIdByNickname(it) }
                 }
+
                 else -> null
             }
 
@@ -92,13 +93,10 @@ class NoteListRepositoryImpl(private val fireBaseDataSource: FireBaseDataSourceI
         }
     }
 
-    suspend fun getNote(noteId: String): Result<NoteWithUser> {
-        return fireBaseDataSource.getNote(noteId)
-    }
-
-    suspend fun getLibraryNotes(libraryName: String) : Result<List<NoteWithUser>> {
+    suspend fun getLibraryNotes(libraryName: String): Result<List<NoteWithUser>> {
         return fireBaseDataSource.getLibraryNotes(libraryName)
     }
+
 }
 
 
