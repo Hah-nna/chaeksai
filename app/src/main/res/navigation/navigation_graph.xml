@@ -209,6 +209,19 @@
                 app:argType="string" />
         </action>
 
+        <action
+            android:id="@+id/action_fragmentNoteDetail_to_fragmentEditNote"
+            app:destination="@+id/fragmentLibraryEditNote">
+            <argument
+                android:name="noteId"
+                app:argType="string" />
+        </action>
+
+        <action
+            android:id="@+id/action_fragmentNoteDetail_to_fragmentHome"
+            app:destination="@+id/fragmentHome"
+            />
+
     </fragment>
 
 
@@ -216,6 +229,7 @@
     <fragment
         android:id="@+id/fragmentEditComment"
         android:name="com.jeong.sesac.sai.ui.comment.EditCommentFragment"
+        tools:layout="@layout/fragment_edit_comment"
         android:label="fragment_edit_comment">
         <argument
             android:name="noteId"
@@ -229,6 +243,23 @@
         <argument
             android:name="content"
             app:argType="string" />
+    </fragment>
+
+    <!-- 쪽지 수정 프래그먼트 -->
+    <fragment
+        android:id="@+id/fragmentLibraryEditNote"
+        android:name="com.jeong.sesac.sai.ui.libraryMap.noteList.LibraryEditNoteFragment"
+        android:label="fragment_edit_note"
+        tools:layout="@layout/fragment_library_map_write_note"
+        >
+        <argument
+            android:name="noteId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_to_fragmentEditNote_to_fragmentHome"
+            app:destination="@+id/fragmentHome"
+            />
+
     </fragment>
 
     <!-- 쪽지 search 프래그먼트(이 페이지에서 검색결과에 다른 쪽지를 리사이클러뷰로 보여줌 각 쪽지를 누르면 또 디테일 페이지로 ㄱ) -->
