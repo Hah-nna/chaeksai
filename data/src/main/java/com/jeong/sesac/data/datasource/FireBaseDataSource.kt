@@ -16,4 +16,7 @@ interface FireBaseDataSource {
       suspend fun getMyLikedNotes(userId: String): List<String>
       suspend fun getLibraryNotes(libraryName: String) : Result<List<NoteWithUser>>
       suspend fun getNote(noteId: String): Result<NoteWithUser>
+      suspend fun updateNote(noteId: String, note: Note): Result<Unit>
+      suspend fun deleteNote(noteId: String): Result<Unit>
+
 }
