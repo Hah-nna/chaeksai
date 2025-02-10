@@ -7,9 +7,7 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +26,7 @@ import com.jeong.sesac.sai.util.CommentModalBottomSheet
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
 import com.jeong.sesac.sai.viewmodel.CommentViewModel
-import com.jeong.sesac.sai.viewmodel.NoteListViewModel
+import com.jeong.sesac.sai.viewmodel.NoteViewModel
 import com.jeong.sesac.sai.viewmodel.factory.appViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
@@ -42,7 +40,7 @@ class LibraryNoteDetailFragment :
     private val args: LibraryNoteDetailFragmentArgs by navArgs()
     private lateinit var preference: AppPreferenceManager
 
-    private val viewModel: NoteListViewModel by activityViewModels<NoteListViewModel> { appViewModelFactory }
+    private val viewModel: NoteViewModel by activityViewModels<NoteViewModel> { appViewModelFactory }
     private val commentViewModel: CommentViewModel by activityViewModels<CommentViewModel> { appViewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,7 +68,7 @@ class LibraryNoteDetailFragment :
         /**
          * 툴바에서 네비게이션 아이콘 누르면 뒤로 가기
          * */
-        binding.toolbar.toolbarView.clicks().onEach {
+        binding.toolbar.clicks().onEach {
             findNavController().navigateUp()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
@@ -93,6 +91,12 @@ class LibraryNoteDetailFragment :
                         binding.progress.progressCircular.isVisible = false
                         Log.d("NoteDetail", "Received note: ${state.data}")
                         bindData(state.data)
+                        if (state.data.userInfo.nickName == preference.nickName) {
+                            with(binding) {
+                                tvDeleteNote.isVisible = true
+                                tvEditNote.isVisible = true
+                            }
+                        }
                     }
 
                     is UiState.Error -> {
@@ -103,9 +107,44 @@ class LibraryNoteDetailFragment :
             }
         }
 
+        with(binding) {
+            tvEditNote.clicks().throttleFirst(throttleTime).onEach {
+                val action =
+                    LibraryNoteDetailFragmentDirections.actionFragmentNoteDetailToFragmentEditNote(
+                        args.noteId
+                    )
+                findNavController().navigate(action)
+            }.launchIn(lifecycleScope)
+
+
+            tvDeleteNote.clicks().throttleFirst(throttleTime).onEach {
+                viewModel.deleteNote(args.noteId)
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.fetchNoteState.collectLatest { state ->
+                        when (state) {
+                            is UiState.Loading -> binding.progress.progressCircular.isVisible = true
+                            is UiState.Success -> {
+                                binding.progress.progressCircular.isVisible = true
+                                val action = LibraryNoteDetailFragmentDirections.actionFragmentNoteDetailToFragmentHome()
+                                findNavController().navigate(action)
+
+                            }
+                            is UiState.Error -> {
+                                binding.progress.progressCircular.isVisible = false
+
+                            }
+                        }
+                    }
+
+                }
+            }.launchIn(lifecycleScope)
+        }
+
+
         registerComment()
         getCommentList()
     }
+
 
     private fun getCommentList() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -205,15 +244,17 @@ class LibraryNoteDetailFragment :
                 viewLifecycleOwner.lifecycleScope.launch {
                     commentViewModel.deleteComment(preference.nickName, args.noteId, comment.id)
                     commentViewModel.commentDeleteState.collectLatest { state ->
-                        when(state) {
-                        is UiState.Loading -> binding.progress.progressCircular.isVisible = true
-                        is UiState.Success -> {
-                        binding.progress.progressCircular.isVisible = false
-                    }
-                        is UiState.Error ->  {
-                        binding.progress.progressCircular.isVisible = false
-                        Toast.makeText(requireContext(), "에러가 발생했습니다.", Toast.LENGTH_SHORT).show()
-                    }
+                        when (state) {
+                            is UiState.Loading -> binding.progress.progressCircular.isVisible = true
+                            is UiState.Success -> {
+                                binding.progress.progressCircular.isVisible = false
+                            }
+
+                            is UiState.Error -> {
+                                binding.progress.progressCircular.isVisible = false
+                                Toast.makeText(requireContext(), "에러가 발생했습니다.", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
                         }
                     }
                 }
