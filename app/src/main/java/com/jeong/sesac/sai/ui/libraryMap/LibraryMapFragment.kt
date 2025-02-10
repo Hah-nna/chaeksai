@@ -19,9 +19,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,13 +38,13 @@ import com.gun0912.tedpermission.normal.TedPermission
 import com.jeong.sesac.feature.model.PlaceInfo
 import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentLibraryMapBinding
+import com.jeong.sesac.sai.model.UiState
 import com.jeong.sesac.sai.recycler.map.MapAdapter
 import com.jeong.sesac.sai.util.AppPreferenceManager
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
 import com.jeong.sesac.sai.viewmodel.KakaoMapViewModel
-import com.jeong.sesac.sai.model.UiState
 import com.jeong.sesac.sai.viewmodel.factory.appViewModelFactory
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
@@ -57,6 +58,13 @@ import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.label.LabelTextBuilder
 import com.kakao.vectormap.label.LodLabel
+import com.kakao.vectormap.label.TrackingManager
+import com.kakao.vectormap.label.TransformMethod
+import com.kakao.vectormap.shape.DotPoints
+import com.kakao.vectormap.shape.Polygon
+import com.kakao.vectormap.shape.PolygonOptions
+import com.kakao.vectormap.shape.PolygonStyles
+import com.kakao.vectormap.shape.PolygonStylesSet
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -77,7 +85,13 @@ class LibraryMapFragment :
         appViewModelFactory
     }
 
-    private var label: Label? = null
+    private lateinit var trackingManager: TrackingManager
+
+    private var currentLocationLabel: Label? = null
+    private var headingLabel: Label? = null
+    private var isTracking = false
+
+    //    private var label: Label? = null
     private var libraryLabels = mutableListOf<LodLabel>()
     private lateinit var mapAdapter: MapAdapter
 
@@ -130,6 +144,7 @@ class LibraryMapFragment :
         mapView = binding.mapView
         // 지도 시작
         mapView.start(object : MapLifeCycleCallback() {
+
             override fun onMapDestroy() {
             }
 
@@ -143,7 +158,7 @@ class LibraryMapFragment :
     private val readyCallback = object : KakaoMapReadyCallback() {
         override fun onMapReady(map: KakaoMap) {
             kakaoMap = map
-
+            trackingManager = kakaoMap.trackingManager!!
             binding.progressBar.progressCircular.visibility = View.VISIBLE
             kakaoMap.setOnLodLabelClickListener { _, _, label ->
                 // 클릭된 라벨의 위치
@@ -202,13 +217,13 @@ class LibraryMapFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val bottomSheet = binding.bottomSheet
-        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
-        bottomSheetBehavior.apply {
-            state = BottomSheetBehavior.STATE_COLLAPSED
-            isHideable = false
-            isFitToContents = true
-        }
+//        val bottomSheet = binding.bottomSheet
+//        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+//        bottomSheetBehavior.apply {
+//            state = BottomSheetBehavior.STATE_COLLAPSED
+//            isHideable = false
+//            isFitToContents = true
+//        }
 
         mapAdapter = MapAdapter(
             onRegisterCallback = { libraryInfo ->
@@ -240,12 +255,10 @@ class LibraryMapFragment :
             }
 
             searchContainer.clicks().onEach {
-                val action = LibraryMapFragmentDirections.actionFragmentLibraryMapFragmentToFragmentMapSearch()
+                val action =
+                    LibraryMapFragmentDirections.actionFragmentLibraryMapFragmentToFragmentMapSearch()
                 findNavController().navigate(action)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
-
-
-
         }
 
         /**
@@ -275,51 +288,54 @@ class LibraryMapFragment :
 
         // 위에서 요청하고 여기서는 최신의 데이터를 뷰모델에서 받아서 라벨 생성
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.librariesInfoState.collectLatest { state ->
-                when (state) {
-                    is UiState.Loading -> {
-                        with(binding) {
-                            progressBar.progressCircular.visibility = View.VISIBLE
-                            tvLibraryInfo.setText("gps를 켜서 도서관을 찾아보세요")
-                        }
-                    }
-
-                    is UiState.Success -> {
-                        with(binding) {
-                            progressBar.progressCircular.visibility = View.GONE
-                            tvLibraryInfo.visibility = View.VISIBLE
-                        }
-                        val library = state.data
-                        if (library.isEmpty()) {
-                            binding.tvLibraryInfo.setText("gps를 켜서 도서관을 찾아보세요!")
-                        } else {
-                            binding.tvLibraryInfo.visibility = View.GONE
-                            mapAdapter.submitList(library)
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.librariesInfoState.collectLatest { state ->
+                    when (state) {
+                        is UiState.Loading -> {
+                            with(binding) {
+                                progressBar.progressCircular.visibility = View.VISIBLE
+                                tvLibraryInfo.setText("gps를 켜서 도서관을 찾아보세요")
+                            }
                         }
 
-                        label?.remove()
-                        libraryLabels.forEach { it.remove() }
-                        libraryLabels.clear()
+                        is UiState.Success -> {
+                            with(binding) {
+                                progressBar.progressCircular.visibility = View.GONE
+                                tvLibraryInfo.visibility = View.VISIBLE
+                            }
+                            val library = state.data
+                            if (library.isEmpty()) {
+                                binding.tvLibraryInfo.setText("gps를 켜서 도서관을 찾아보세요!")
+                            } else {
+                                binding.tvLibraryInfo.visibility = View.GONE
+                                mapAdapter.submitList(library)
+                            }
 
-                        currentLocationListener()
+//                        label?.remove()
+                            libraryLabels.forEach { it.remove() }
+                            libraryLabels.clear()
 
-                        library.forEach { library ->
-                            val libraryPosition = LatLng.from(
-                                library.lat.toDouble(),
-                                library.lng.toDouble()
-                            )
-                            createLocationLabel(libraryPosition, library.place)
+                            currentLocationListener()
+
+                            library.forEach { library ->
+                                val libraryPosition = LatLng.from(
+                                    library.lat.toDouble(),
+                                    library.lng.toDouble()
+                                )
+                                createLocationLabel(libraryPosition, library.place)
+                            }
                         }
-                    }
 
-                    is UiState.Error -> {
-                        with(binding) {
-                            progressBar.progressCircular.visibility = View.GONE
-                            tvLibraryInfo.setText("도서관 정보를 불러오는데 실패했습니다")
+                        is UiState.Error -> {
+                            with(binding) {
+                                progressBar.progressCircular.visibility = View.GONE
+                                tvLibraryInfo.setText("도서관 정보를 불러오는데 실패했습니다")
+                            }
                         }
                     }
                 }
             }
+
         }
     }
 
@@ -449,29 +465,35 @@ class LibraryMapFragment :
 
     // 현재 정확한 위치 받기
     private fun currentLocationListener() {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                fusedLocationClient =
+                    LocationServices.getFusedLocationProviderClient(requireContext())
 
-        locationRequest = LocationRequest.Builder(
-            Priority.PRIORITY_HIGH_ACCURACY, 5000L
-        ).run {
-            setWaitForAccurateLocation(true)
-            setMinUpdateIntervalMillis(3000L)
-            setIntervalMillis(3000L)
-            setMaxUpdateDelayMillis(5000L)
-                .build()
-        }
-        Log.d("mLocationRequest", "$locationRequest")
+                locationRequest = LocationRequest.Builder(
+                    Priority.PRIORITY_HIGH_ACCURACY, 5000L
+                ).run {
+                    setWaitForAccurateLocation(true)
+                    setMinUpdateIntervalMillis(3000L)
+                    setIntervalMillis(3000L)
+                    setMaxUpdateDelayMillis(5000L)
+                        .build()
+                }
+                Log.d("mLocationRequest", "$locationRequest")
 
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            fusedLocationClient.requestLocationUpdates(
-                locationRequest,
-                locationCallback,
-                Looper.getMainLooper()
-            )
+                if (ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    fusedLocationClient.requestLocationUpdates(
+                        locationRequest,
+                        locationCallback,
+                        Looper.getMainLooper()
+                    )
+                }
+
+            }
         }
 
     }
@@ -481,11 +503,55 @@ class LibraryMapFragment :
             locationResult.lastLocation?.let { location ->
                 val currentLatLng = LatLng.from(location.latitude, location.longitude)
 
-                Log.d("위치", "현재위치 ${location.latitude}" )
-                createCurrentLocationLabel(currentLatLng)
+                Log.d("위치", "현재위치 ${location.latitude}")
+
+                if (currentLocationLabel == null) {
+                    val locationStyle = kakaoMap.labelManager!!.addLabelStyles(
+                        LabelStyles.from(
+                            LabelStyle.from(R.drawable.ic_current_location)
+                                .setAnchorPoint(0.5f, 0.5f)
+                        )
+                    )
+
+                    val headingStyle = kakaoMap.labelManager!!.addLabelStyles(
+                        LabelStyles.from(
+                            LabelStyle.from(R.drawable.ic_red_direction_area)
+                                .setAnchorPoint(0.5f, 1.0f)
+                        )
+                    )
+
+                    val layer = kakaoMap.labelManager!!.layer
+                    // 현재 위치 마커 생성
+                    currentLocationLabel = layer!!.addLabel(
+                        LabelOptions.from(currentLatLng).setRank(10)
+                            .setStyles(locationStyle)
+                            .setTransform(TransformMethod.AbsoluteRotation_Decal)
+                    )
+
+
+                    // 방향 표시 마커 생성
+                    headingLabel = layer.addLabel(
+                        LabelOptions.from(currentLatLng).setRank(9)
+                            .setStyles(headingStyle)
+                            .setTransform(TransformMethod.AbsoluteRotation_Decal)
+                    )
+
+
+                    currentLocationLabel?.let {
+                        currentLocationLabel!!.addSharePosition(headingLabel)
+                        trackingManager.startTracking(currentLocationLabel)
+                        trackingManager.setTrackingRotation(true)
+                    }
+
+                } else {
+                    currentLocationLabel?.moveTo(currentLatLng)
+                }
+
+//                createCurrentLocationLabel(currentLatLng)
+
                 val updateCamera = CameraUpdateFactory.newCenterPosition(currentLatLng)
                 kakaoMap.moveCamera(updateCamera)
-                fusedLocationClient.removeLocationUpdates(this)
+//                fusedLocationClient.removeLocationUpdates(this)
             }
         }
     }
@@ -503,10 +569,11 @@ class LibraryMapFragment :
             .setStyles(styles)
 
         val layer = kakaoMap.labelManager!!.layer
-//        layer!!.addLabel(options)
+        layer!!.addLabel(options)
 
-        label = layer!!.addLabel(options)
+//        label = layer!!.addLabel(options)
     }
+
 
     // Lodlabel(마커들) 생성
     private fun createLocationLabel(position: LatLng, place_name: String) {
