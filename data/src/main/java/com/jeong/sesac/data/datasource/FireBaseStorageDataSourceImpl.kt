@@ -18,20 +18,20 @@ import java.util.Locale
 class FireBaseStorageDataSourceImpl(private val context: Context) : FireBaseStorageDataSource {
     private val storageRef = Firebase.storage.reference
 
-    override suspend fun createImg(uri: Uri): String {
+    override suspend fun createImg(uri: Uri, noteId: String): String {
         return runCatching {
             val tempFile = fileFromContentUri(context, uri)
 
             try {
-                val fileName = createFileName()
+                val fileName = createFileName(noteId)
                 val imgRef = storageRef.child(fileName)
 
                 imgRef.putFile(Uri.fromFile(tempFile)).await()
                 imgRef.downloadUrl.await().toString()
-            }finally {
+            } finally {
                 tempFile.delete()
             }
-        }.onFailure { e -> Log.d("error!!!","${e.message}") }.getOrThrow()
+        }.onFailure { e -> Log.d("error!!!", "${e.message}") }.getOrThrow()
     }
 
     private fun fileFromContentUri(context: Context, uri: Uri): File {
@@ -51,7 +51,7 @@ class FireBaseStorageDataSourceImpl(private val context: Context) : FireBaseStor
 
             oStream.flush()
         } catch (e: Exception) {
-            println("error!!!! ${ e.message }")
+            println("error!!!! ${e.message}")
         }
         return tempFile
     }
@@ -64,14 +64,27 @@ class FireBaseStorageDataSourceImpl(private val context: Context) : FireBaseStor
     private fun copy(source: InputStream, target: OutputStream) {
         val buf = ByteArray(8192)
         var length: Int
-        while(source.read(buf).also { length = it } > 0) {
+        while (source.read(buf).also { length = it } > 0) {
             target.write(buf, 0, length)
         }
     }
 
-    private fun createFileName(): String {
-        val timeStamp = System.currentTimeMillis()
-        val date = SimpleDateFormat("yyyy/MM/dd", Locale.KOREA).format(Date(timeStamp))
-        return "noteImg/$timeStamp.jpg"
+    private fun createFileName(noteId: String): String {
+//        val timeStamp = System.currentTimeMillis()
+//        val date = SimpleDateFormat("yyyy/MM/dd", Locale.KOREA).format(Date(timeStamp))
+        return "noteImg/${noteId}.jpg"
+    }
+
+  override suspend fun deleteImg(fileName: String): Result<Unit> {
+        return runCatching {
+            val imgRef = storageRef.child("noteImg/$fileName.jpg")
+               imgRef
+                .delete()
+                .await()
+
+        }.map { Unit }.onFailure {
+            Log.e("error", "${it.message}")
+        }
+
     }
 }
