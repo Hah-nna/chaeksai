@@ -61,19 +61,23 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
 
     override suspend fun createNote(note: Note, nickname: String): Boolean {
         try {
-            val imgUrl =
-                if (note.image.isNotEmpty()) storageDataSource.createImg(Uri.parse(note.image)) else ""
-
-            val noteWithImg = note.copy(image = imgUrl)
-            val userId = getIdByNickname(nickname)
-            val noteDocRef = noteCollectionRef.add(noteWithImg).await()
+            val noteDocRef = noteCollectionRef.add(note).await()
             val noteDocRefId = noteDocRef.id
+
+            val imgUri =
+                if (note.image.isNotEmpty()) storageDataSource.createImg(
+                    Uri.parse(note.image),
+                    noteDocRefId
+                ) else ""
+
+            val userId = getIdByNickname(nickname)
 
             noteCollectionRef.document(noteDocRefId)
                 .update(
                     mapOf(
                         "id" to noteDocRefId,
                         "userId" to userId,
+                        "image" to imgUri,
                         "createdAt" to note.createdAt
                     )
                 ).await()
@@ -144,8 +148,7 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
                 Log.d("도서관노트", "${doc.data}")
                 doc.toObject(NoteWithUser::class.java)
             }
-        }.onFailure {
-            e ->
+        }.onFailure { e ->
             Log.e("도서관별 쪽지 가져오기 error", "${e.message}")
         }
 
@@ -165,5 +168,37 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
         }.onFailure { e ->
             Log.e("쪽지 가져오기 error", "${e.message}")
         }
+    }
+
+    override suspend fun updateNote(noteId: String, note: Note): Result<Unit> {
+        return runCatching<FireBaseDataSourceImpl, Unit> {
+
+            val updates = mutableMapOf<String, Any>()
+
+            if (note.title.isNotEmpty()) updates["title"] = note.title
+            if (note.content.isNotEmpty()) updates["content"] = note.content
+            if (note.image.isNotEmpty()) updates["image"] = note.image
+
+            updates["createdAt"] = System.currentTimeMillis()
+
+            noteCollectionRef.document(noteId)
+                .update(updates)
+                .await()
+        }.onFailure { e ->
+            Log.e("note update 실패", "${e.message}")
+        }
+    }
+
+    override suspend fun deleteNote(noteId: String): Result<Unit> {
+        return runCatching {
+            storageDataSource.deleteImg(noteId).onSuccess {
+                noteCollectionRef.document(noteId)
+                    .delete()
+                    .await()
+            }
+        }.map { Unit }
+            .onFailure { e ->
+                Log.e("delete 실패", "${e.message}")
+            }
     }
 }
