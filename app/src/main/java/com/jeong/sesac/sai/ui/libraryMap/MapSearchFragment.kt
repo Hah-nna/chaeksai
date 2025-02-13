@@ -11,6 +11,7 @@ import com.jeong.sesac.sai.recycler.map.MapSearchAdapter
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.viewmodel.KakaoMapViewModel
 import com.jeong.sesac.sai.viewmodel.factory.appViewModelFactory
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -47,6 +48,7 @@ class MapSearchFragment :
         }
     }
 
+    @OptIn(FlowPreview::class)
     private fun setUI() {
         with(binding) {
             btnBack.clicks().onEach {
