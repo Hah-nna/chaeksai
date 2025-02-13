@@ -37,7 +37,7 @@ class MapSearchFragment :
         searchListAdapter = MapSearchAdapter(
             lifecycleScope = viewLifecycleOwner.lifecycleScope
         ) { placeInfo ->
-            viewModel.setSelectedPlace(placeInfo)
+//            viewModel.setSelectedPlace(placeInfo)
             findNavController().popBackStack()
 
         }
