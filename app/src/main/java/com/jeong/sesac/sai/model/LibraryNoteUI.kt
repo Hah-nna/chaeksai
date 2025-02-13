@@ -18,11 +18,10 @@ data class LibraryNoteUI(
     val userInfo: UserInfo,
     val image: String,
     val title: String,
-    val createdAt: String,
+    val createdAt: Long,
     val libraryName: String,
     val content: String,
     val likes: Int,
-//    val comments: List<CommentUI>
 ) : Parcelable
 
 @Parcelize
@@ -37,7 +36,7 @@ data class UserUI(
     val id: String,
     val profile: String,
     val nickname: String,
-    val createdAt: String,
+    val createdAt: Long,
     val providerInfo: ProviderTypeUI = ProviderTypeUI.KAKAO
 ) : Parcelable
 
@@ -45,9 +44,8 @@ data class UserUI(
 data class CommentUI(
     val id: String,
     val userInfo: UserInfo,
-    val noteId: String,
     val content: String,
-    val createdAt: String
+    val createdAt: Long
 ) : Parcelable
 
 @Parcelize

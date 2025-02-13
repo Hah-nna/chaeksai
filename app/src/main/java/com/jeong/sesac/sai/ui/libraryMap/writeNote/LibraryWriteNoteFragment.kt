@@ -1,7 +1,5 @@
 package com.jeong.sesac.sai.ui.libraryMap.writeNote
 
-import android.app.Activity.RESULT_OK
-import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -9,7 +7,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.addCallback
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -19,32 +16,28 @@ import androidx.navigation.fragment.navArgs
 import coil3.load
 import coil3.request.crossfade
 import coil3.size.Scale
-import com.jeong.sesac.sai.CameraActivity
 import com.jeong.sesac.sai.CameraMode
 import com.jeong.sesac.sai.databinding.FragmentLibraryMapWriteNoteBinding
 import com.jeong.sesac.sai.model.UiState
 import com.jeong.sesac.sai.util.AppPreferenceManager
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.util.ChakSaiClass
+import com.jeong.sesac.sai.util.CameraLauncher
 import com.jeong.sesac.sai.util.Dialog
 import com.jeong.sesac.sai.util.DialogInterface
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
-import com.jeong.sesac.sai.viewmodel.WriteNoteViewModel
+import com.jeong.sesac.sai.viewmodel.NoteViewModel
 import com.jeong.sesac.sai.viewmodel.factory.appViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import ru.ldralighieri.corbind.view.clicks
 
 class LibraryWriteNoteFragment :
     BaseFragment<FragmentLibraryMapWriteNoteBinding>(FragmentLibraryMapWriteNoteBinding::inflate),
     DialogInterface {
 
-    private val viewModel: WriteNoteViewModel by viewModels<WriteNoteViewModel> {
-        appViewModelFactory
-    }
+    private lateinit var preference: AppPreferenceManager
 
     // 전 페이지에서 받아온 arguments
     private val args: LibraryWriteNoteFragmentArgs by navArgs()
@@ -52,55 +45,14 @@ class LibraryWriteNoteFragment :
     // 이미지
     private var imgUri: Uri? = null
 
-    private lateinit var preference: AppPreferenceManager
+    // 카메라 헬퍼 클래스
+    private lateinit var cameraLauncher: CameraLauncher
 
-    /**
-     *
-     * cameraActivity의 onImageSaved()의 setResult()에서 온 결과가
-     * cameraLauncher의 콜백으로 전달됨
-     *
-     * 힌트이미지를 찍고나서 결과 받아오는 함수
-     * */
-    private val photoCameraLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-
-        // result.data.data : CameraActivity가 리턴한 Intent
-        if (result.resultCode == RESULT_OK) {
-            with(binding) {
-                // 받아온 이미지uri 저장
-                imgUri = result.data?.data
-                // 저장된 이미지의 uri를 이미지뷰에 표시
-                ivImg.load(imgUri) {
-                    crossfade(true)
-                    scale(Scale.FILL)
-                    listener(
-                        onSuccess = { _, result ->
-                            Log.d(
-                                "LoadedImageSize",
-                                "ImageView size: ${ivImg.width} x ${ivImg.height}"
-                            )
-                        }
-                    )
-                }
-
-//                setImageURI(imgUri)
-                Log.d("TAG", "${result.data?.data?.path}")
-                icUploadImg.visibility = View.INVISIBLE
-            }
-        }
+    private val viewModel: NoteViewModel by viewModels<NoteViewModel> {
+        appViewModelFactory
     }
 
 
-    // 힌트 이미지 찍을 때와 isbn을 스캔할 때 각각 다르게 카메라를 launch하는 함수
-    private fun startCameraLauncher(mode: CameraMode) {
-        val intent = Intent(requireContext(), CameraActivity::class.java).apply {
-            putExtra("camera_mode", mode.name)
-        }
-        if (mode == CameraMode.PHOTO_CAPTURE) {
-            photoCameraLauncher.launch(intent)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,6 +64,16 @@ class LibraryWriteNoteFragment :
         super.onViewCreated(view, savedInstanceState)
         Log.d("도서관이름:", " ${args.libraryName}")
 
+        cameraLauncher = CameraLauncher(this) { uri ->
+            imgUri = uri
+            with(binding) {
+                ivImg.load(uri) {
+                    crossfade(true)
+                    scale(Scale.FILL)
+                }
+                icUploadImg.visibility = View.INVISIBLE
+            }
+        }
 
         with(binding) {
             btnComplete.clicks().throttleFirst(throttleTime).onEach {
@@ -151,8 +113,6 @@ class LibraryWriteNoteFragment :
                         }
                     }
                 }
-
-
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
             toolbar.toolbarView.clicks().onEach {
@@ -161,9 +121,7 @@ class LibraryWriteNoteFragment :
 
             //  사진을 찍을 때
             ivImg.clicks().throttleFirst(throttleTime).onEach {
-
-
-                startCameraLauncher(CameraMode.PHOTO_CAPTURE)
+                cameraLauncher.startCameraLauncher(requireActivity(), CameraMode.PHOTO_CAPTURE)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {

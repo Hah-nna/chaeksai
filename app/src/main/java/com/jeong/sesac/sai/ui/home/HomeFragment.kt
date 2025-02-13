@@ -8,9 +8,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeong.sesac.domain.model.NoteFilterType
@@ -26,7 +24,6 @@ import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
 import com.jeong.sesac.sai.viewmodel.NoteListViewModel
-import com.jeong.sesac.sai.viewmodel.WriteNoteViewModel
 import com.jeong.sesac.sai.viewmodel.factory.appViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
@@ -118,41 +115,42 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         viewModel.getNoteList(NoteFilterType.ByLikes(false))
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.noteListState.collectLatest { state ->
-                    when(state) {
-                        is UiState.Loading -> binding.progressCircle.progressCircular.isVisible = true
+                    when (state) {
+                        is UiState.Loading -> binding.progressCircle.progressCircular.isVisible =
+                            true
+
                         is UiState.Success -> {
                             binding.progressCircle.progressCircular.isVisible = false
                             weeklyNoteAdapter.submitList(state.data)
                         }
+
                         is UiState.Error -> {
                             binding.progressCircle.progressCircular.isVisible = false
                             Toast.makeText(requireContext(), state.error, Toast.LENGTH_SHORT)
                         }
                     }
+                }
+            }
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.noteListState.collectLatest { state ->
+                        when (state) {
+                            is UiState.Loading -> binding.progressCircle.progressCircular.isVisible =
+                                true
+
+                            is UiState.Success -> {
+                                binding.progressCircle.progressCircular.isVisible = false
+                                recentlyNewAdapter.submitList(state.data)
+                            }
+
+                            is UiState.Error -> {
+                                binding.progressCircle.progressCircular.isVisible = false
+                                Toast.makeText(requireContext(), state.error, Toast.LENGTH_SHORT)
+                            }
+                        }
 
                 }
             }
         }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.noteListState.collectLatest { state ->
-                    when(state) {
-                        is UiState.Loading -> binding.progressCircle.progressCircular.isVisible = true
-                        is UiState.Success -> {
-                            binding.progressCircle.progressCircular.isVisible = false
-                            recentlyNewAdapter.submitList(state.data)
-                        }
-                        is UiState.Error -> {
-                            binding.progressCircle.progressCircular.isVisible = false
-                            Toast.makeText(requireContext(), state.error, Toast.LENGTH_SHORT)
-                        }
-                    }
-
-                }
-            }
-        }
-    }
 }

@@ -20,7 +20,6 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.core.Preview
 import androidx.camera.core.CameraSelector
 import android.util.Log
-import android.util.Size
 import android.view.View
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.ExperimentalGetImage
@@ -125,12 +124,11 @@ class CameraActivity : AppCompatActivity() {
             val preview = Preview.Builder()
                 .apply {
                     // 보여질 해상도 비율 설정
-                    setTargetAspectRatio(AspectRatio.RATIO_16_9)
-//                setTargetResolution(Size(1920, 1080))
+                    AspectRatio.RATIO_16_9
                 }
                 .build()
                 .also {
-                    it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+                    it.surfaceProvider = binding.viewFinder.surfaceProvider
                 }
 
             // currentCameraMode에 따라서 변경
@@ -138,9 +136,7 @@ class CameraActivity : AppCompatActivity() {
                 CameraMode.PHOTO_CAPTURE -> {
                     imgCapture = ImageCapture.Builder().apply {
                         // 이미지 캡쳐시 반응속도 관련 설정. 지금 설정은 반응속도 우선으로 선택한 것임
-//                        setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
-                        // 캡쳐할 이미지의 헤상도 설정
-                        setTargetResolution(Size(1920, 1080))
+                        setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
                     }.build()
                     bindPhotoCapture(cameraProvider, preview)
                     binding.imageCaptureButton.clicks().onEach { takePhoto() }
@@ -314,7 +310,7 @@ class CameraActivity : AppCompatActivity() {
         preview: Preview
     ) {
         // 후면 카메라를 기본으로 셋팅
-        val cameraSelector = androidx.camera.core.CameraSelector.DEFAULT_BACK_CAMERA
+        val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
 //        takePhoto()
         /**

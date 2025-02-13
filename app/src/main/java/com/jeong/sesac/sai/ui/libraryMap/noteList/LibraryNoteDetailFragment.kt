@@ -3,23 +3,30 @@ package com.jeong.sesac.sai.ui.libraryMap.noteList
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil3.load
 import coil3.request.crossfade
 import coil3.size.Scale
+import com.jeong.sesac.feature.model.Comment
+import com.jeong.sesac.feature.model.CommentWithUser
 import com.jeong.sesac.feature.model.NoteWithUser
 import com.jeong.sesac.sai.databinding.FragmentLibraryNoteDetailBinding
+import com.jeong.sesac.sai.model.UiState
 import com.jeong.sesac.sai.recycler.comment.CommentAdapter
+import com.jeong.sesac.sai.util.AppPreferenceManager
 import com.jeong.sesac.sai.util.BaseFragment
-import com.jeong.sesac.sai.viewmodel.NoteListViewModel
+import com.jeong.sesac.sai.util.CommentModalBottomSheet
+import com.jeong.sesac.sai.util.throttleFirst
+import com.jeong.sesac.sai.util.throttleTime
+import com.jeong.sesac.sai.viewmodel.CommentViewModel
+import com.jeong.sesac.sai.viewmodel.NoteViewModel
 import com.jeong.sesac.sai.viewmodel.factory.appViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
@@ -27,10 +34,19 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.ldralighieri.corbind.view.clicks
 
-class LibraryNoteDetailFragment : BaseFragment<FragmentLibraryNoteDetailBinding>(FragmentLibraryNoteDetailBinding::inflate){
-    private lateinit var commentAdapter : CommentAdapter
+class LibraryNoteDetailFragment :
+    BaseFragment<FragmentLibraryNoteDetailBinding>(FragmentLibraryNoteDetailBinding::inflate) {
+    private lateinit var commentAdapter: CommentAdapter
     private val args: LibraryNoteDetailFragmentArgs by navArgs()
-    private val viewModel: NoteListViewModel by activityViewModels<NoteListViewModel> { appViewModelFactory }
+    private lateinit var preference: AppPreferenceManager
+
+    private val viewModel: NoteViewModel by activityViewModels<NoteViewModel> { appViewModelFactory }
+    private val commentViewModel: CommentViewModel by activityViewModels<CommentViewModel> { appViewModelFactory }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        preference = AppPreferenceManager.getInstance(requireContext())
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,52 +54,216 @@ class LibraryNoteDetailFragment : BaseFragment<FragmentLibraryNoteDetailBinding>
         viewModel.selectNote(args.noteId)
         Log.d("noteId", "${args.noteId}")
 
-        commentAdapter = CommentAdapter { comment ->
-            // 꾹 누르면 menu (신고) 나오게 하기
+        commentAdapter = CommentAdapter(
+            preference.nickName,
+            viewLifecycleOwner.lifecycleScope
+        ) { comment, isMyComment ->
+            showBottomSheet(comment, isMyComment)
         }
         binding.rvComments.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = commentAdapter
         }
 
-        binding.toolbar.toolbarView.setNavigationOnClickListener {
+        /**
+         * 툴바에서 네비게이션 아이콘 누르면 뒤로 가기
+         * */
+        binding.toolbar.clicks().onEach {
             findNavController().navigateUp()
-        }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
 
+
+        /**
+         * 물리키 뒤로 가기
+         * */
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             findNavController().navigateUp()
         }
 
-        binding.toolbar.toolbarView.clicks().onEach {
-            findNavController().navigateUp()
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewLifecycleOwner.lifecycleScope.launch {
-           viewModel.selectedNoteState.collectLatest { note ->
-               note?.let { bindData(it) }
-           }
+            viewModel.selectedNoteState.collectLatest { state ->
+                when (state) {
+                    is UiState.Loading -> binding.progress.progressCircular.isVisible =
+                        true
+
+                    is UiState.Success -> {
+                        binding.progress.progressCircular.isVisible = false
+                        Log.d("NoteDetail", "Received note: ${state.data}")
+                        bindData(state.data)
+                        if (state.data.userInfo.nickName == preference.nickName) {
+                            with(binding) {
+                                tvDeleteNote.isVisible = true
+                                tvEditNote.isVisible = true
+                            }
+                        }
+                    }
+
+                    is UiState.Error -> {
+                        binding.progress.progressCircular.isVisible = false
+                        Toast.makeText(requireContext(), state.error, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+        with(binding) {
+            tvEditNote.clicks().throttleFirst(throttleTime).onEach {
+                val action =
+                    LibraryNoteDetailFragmentDirections.actionFragmentNoteDetailToFragmentEditNote(
+                        args.noteId
+                    )
+                findNavController().navigate(action)
+            }.launchIn(lifecycleScope)
+
+
+            tvDeleteNote.clicks().throttleFirst(throttleTime).onEach {
+                viewModel.deleteNote(args.noteId)
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.fetchNoteState.collectLatest { state ->
+                        when (state) {
+                            is UiState.Loading -> binding.progress.progressCircular.isVisible = true
+                            is UiState.Success -> {
+                                binding.progress.progressCircular.isVisible = true
+                                val action = LibraryNoteDetailFragmentDirections.actionFragmentNoteDetailToFragmentHome()
+                                findNavController().navigate(action)
+
+                            }
+                            is UiState.Error -> {
+                                binding.progress.progressCircular.isVisible = false
+
+                            }
+                        }
+                    }
+
+                }
+            }.launchIn(lifecycleScope)
+        }
+
+
+        registerComment()
+        getCommentList()
+    }
+
+
+    private fun getCommentList() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            commentViewModel.getComments(preference.nickName, args.noteId)
+
+            commentViewModel.commentListState.collectLatest { state ->
+                when (state) {
+                    is UiState.Loading -> {
+                        binding.progress.progressCircular.isVisible = true
+                        binding.tvNoComment.isVisible = false
+                    }
+
+                    is UiState.Success -> {
+                        binding.progress.progressCircular.isVisible = false
+                        commentAdapter.submitList(state.data)
+
+                        binding.tvNoComment.isVisible = state.data.isEmpty()
+                        binding.tvCommentCount.text = "댓글 : ${state.data.size}개"
+                    }
+
+                    is UiState.Error -> {
+                        binding.progress.progressCircular.isVisible = false
+                        binding.tvNoComment.isVisible = true
+                    }
+                }
+            }
         }
     }
 
+    private fun registerComment() {
+        binding.btnRegisterComment.clicks().throttleFirst(throttleTime).onEach {
+            val content = binding.tvComment.text.toString()
+            if (content.isNotEmpty()) {
+                val comment = Comment(
+                    id = "",
+                    userId = "",
+                    noteId = args.noteId,
+                    content = content,
+                    createdAt = System.currentTimeMillis()
+                )
+
+                commentViewModel.createComment(preference.nickName, args.noteId, comment)
+                binding.tvComment.text?.clear()
+            }
+
+            commentViewModel.commentState.collectLatest { state ->
+                when (state) {
+                    is UiState.Loading -> binding.progress.progressCircular.isVisible = true
+                    is UiState.Success -> {
+                        binding.progress.progressCircular.isVisible = false
+                    }
+
+                    is UiState.Error -> {
+                        binding.progress.progressCircular.isVisible = false
+                        Toast.makeText(requireContext(), "에러가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+
     private fun bindData(note: NoteWithUser) {
-       with(binding) {
-           ivNote.load(note.image) {
-               crossfade(true)
-               scale(Scale.FILL)
-           }
-           ivProfile.load(note.userInfo.profile) {
-               crossfade(true)
-               scale(Scale.FILL)
-           }
-           tvNickname.text = note.userInfo.nickName
-           tvTitle.text = note.title
-           tvLibraryName.text = note.libraryName
-           tvTime.text = note.createdAt.toString()
-           tvContent.text = note.content
-//           tvCommentCount.text = "댓글 : ${args.libraryNote.comments.size}개"
+        with(binding) {
+            ivNote.load(note.image) {
+                crossfade(true)
+                scale(Scale.FILL)
+            }
+            ivProfile.load(note.userInfo.profile) {
+                crossfade(true)
+                scale(Scale.FILL)
+            }
+            tvNickname.text = note.userInfo.nickName
+            tvTitle.text = note.title
+            tvLibraryName.text = note.libraryName
+            tvTime.text = note.createdAt.toString()
+            tvContent.text = note.content
 
+        }
+    }
 
-//       commentAdapter.submitList(args.libraryNote.comments)
-       }
+    private fun showBottomSheet(comment: CommentWithUser, isCommentUser: Boolean) {
+        CommentModalBottomSheet(
+            context = viewLifecycleOwner.lifecycleScope,
+            isCommentUser = isCommentUser,
+            onEditClick = {
+                val action =
+                    LibraryNoteDetailFragmentDirections.actionFragmentNoteDetailToFragmentEditComment(
+                        args.noteId,
+                        preference.nickName,
+                        comment.id,
+                        comment.content
+                    )
+                findNavController().navigate(action)
+            },
+            onDeleteClick = {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    commentViewModel.deleteComment(preference.nickName, args.noteId, comment.id)
+                    commentViewModel.commentDeleteState.collectLatest { state ->
+                        when (state) {
+                            is UiState.Loading -> binding.progress.progressCircular.isVisible = true
+                            is UiState.Success -> {
+                                binding.progress.progressCircular.isVisible = false
+                            }
+
+                            is UiState.Error -> {
+                                binding.progress.progressCircular.isVisible = false
+                                Toast.makeText(requireContext(), "에러가 발생했습니다.", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+                    }
+                }
+
+            },
+            onReportClick = {
+                // commentViewModel.reportComment
+            }
+        ).show(childFragmentManager, CommentModalBottomSheet.TAG)
+
     }
 }

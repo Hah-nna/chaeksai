@@ -38,6 +38,20 @@
         app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
         />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_menu"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_menu"
+        android:background="@null"
+        android:tint="@color/quantum_grey"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_time"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_time"
+        />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
@@ -47,5 +61,6 @@
         android:layout_marginTop="8dp"
         android:text="엥 갑자기 오리가 어디서 나온 거래요??? 머선일"
         />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

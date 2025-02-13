@@ -6,21 +6,28 @@ import com.jeong.sesac.data.dto.toMap
 import com.jeong.sesac.feature.model.PlaceInfo
 
 class KakaoMapDataSourceImpl(private val kakaoService: KakaoMapService) : KakaoMapDataSource {
-    override suspend fun getLibraryInfo(lng: Double, lat: Double): List<PlaceInfo> {
-        return try {
-            val response = kakaoService.getLibraryInfo(x = lng, y = lat, radius = 5000)
-            Log.d("DataSource", "API Response: ${response.raw().body()}")  // API 요청 URL 확인
-            Log.d("DataSource", "Response Code: ${response.code()}")
-            if (response.isSuccessful && response.body() !== null) {
-                Log.d("DataSource", "Response Body: ${response.body()}")
+    override suspend fun getLibraryInfo(lng: Double, lat: Double): Result<List<PlaceInfo>> {
+        var currentRadius = 0
+        return runCatching {
+            var response = kakaoService.getLibraryInfo(x = lng, y = lat, radius = currentRadius + 100)
+
+            Log.d("DataSource", "Response Code: ${response.code()}, response body : ${response.body()}")
+
+            while(response.isSuccessful && response.body()!!.documents.isEmpty()) {
+                currentRadius += 500
+                Log.d("datasource", "currentRadius: ${currentRadius}")
+
+                response = kakaoService.getLibraryInfo(x = lng, y = lat, radius = currentRadius)
+            }
+
+
+            if (response.isSuccessful && response.body() != null) {
+                Log.d("DataSource", "Success: ${response.body()}")
+                currentRadius = 0
                 response.body()!!.documents.map { it.toMap() }
             } else {
-                Log.e("DataSource", "Error Body: ${response.errorBody()?.string()}")
-                emptyList()
+                throw Exception("도서관정보 가져오기 실패: ${response.errorBody()?.string()}")
             }
-        } catch (e: Exception) {
-            Log.e("DataSource", "Exception: ${e.message}", e)
-            throw Error(e.message)
         }
     }
 }
