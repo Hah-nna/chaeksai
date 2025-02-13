@@ -19,7 +19,8 @@ data class Place(
     val place_name: String,
     val place_url: String,
     val x: String,
-    val y: String
+    val y: String,
+    val distance: String
 )
 
 fun Place.toMap(): PlaceInfo {
@@ -30,6 +31,7 @@ fun Place.toMap(): PlaceInfo {
             phone = phone,
             lat = y,
             lng = x,
-            placeURL = place_url
+            placeURL = place_url,
+            distance = distance
         )
     }
