@@ -6,7 +6,6 @@
     app:startDestination="@id/fragmentHome">
 
     <!-- Home 시작-->
-
     <!-- 홈 프래그먼트 -->
     <fragment
         android:id="@+id/fragmentHome"
