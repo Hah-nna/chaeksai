@@ -18,7 +18,8 @@ data class PlaceInfo(
     val place: String,
     val placeURL: String,
     val lat: String,
-    val lng: String
+    val lng: String,
+    val distance: String
 )
 
 data class Note(
