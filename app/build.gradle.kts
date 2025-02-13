@@ -97,17 +97,23 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.ru.ldralighieri.corbind.material)
-    implementation(libs.kakao.maps)
-    implementation(libs.kakao.sdk)
-    implementation(libs.moshi.kotlin)
-    implementation(libs.moshi)
-    implementation(libs.converter.moshi)
-    implementation(libs.retrofit)
-    implementation(libs.datastore.preference)
     implementation(project(":data"))
     implementation(project(":feature"))
     implementation(libs.corbind.appcompat)
     implementation(libs.corbind.activity)
+
+    // preference
+    implementation(libs.datastore.preference)
+
+    // retrofit + moshi
+    implementation(libs.moshi.kotlin)
+    implementation(libs.moshi)
+    implementation(libs.converter.moshi)
+    implementation(libs.retrofit)
+
+    // kakao
+    implementation(libs.kakao.maps)
+    implementation(libs.kakao.sdk)
 
     // shared preference
     implementation("androidx.preference:preference-ktx:1.2.1")
@@ -128,6 +134,7 @@ dependencies {
 
     // Coil 관련 dependencies
     implementation("io.coil-kt.coil3:coil:3.0.4")
+    implementation("io.coil-kt.coil3:coil-gif:3.1.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
 
     // MLKit barcode
