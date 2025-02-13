@@ -9,6 +9,7 @@ import com.jeong.sesac.data.datasource.FireBaseStorageDataSourceImpl
 import com.jeong.sesac.data.datasource.KakaoMapDataSourceImpl
 import com.jeong.sesac.data.repository.CommentRepositoryImpl
 import com.jeong.sesac.data.repository.KakaoMapRepositoryImpl
+import com.jeong.sesac.data.repository.LBSRepositoryImpl
 import com.jeong.sesac.data.repository.LoginRepositoryImpl
 import com.jeong.sesac.data.repository.NoteListRepositoryImpl
 import com.jeong.sesac.data.repository.NoteRepositoryImpl
@@ -28,7 +29,7 @@ val appViewModelFactory = object : ViewModelProvider.Factory {
                     LoginViewModel(LoginRepositoryImpl(FireBaseDataSourceImpl(FireBaseStorageDataSourceImpl(ChakSaiClass.getContext()))))
                 isAssignableFrom(KakaoMapViewModel::class.java) -> {
                     val kakaoService = KakaoMapManager.getInstance()
-                    KakaoMapViewModel(KakaoMapRepositoryImpl(KakaoMapDataSourceImpl(kakaoService)))
+                    KakaoMapViewModel(KakaoMapRepositoryImpl(KakaoMapDataSourceImpl(kakaoService)), LBSRepositoryImpl(ChakSaiClass.getContext()))
                 }
                 isAssignableFrom(NoteViewModel::class.java) -> {
                     NoteViewModel(NoteRepositoryImpl(FireBaseDataSourceImpl(FireBaseStorageDataSourceImpl(ChakSaiClass.getContext()))))
