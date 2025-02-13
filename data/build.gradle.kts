@@ -59,4 +59,5 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.datastore.preference)
     implementation(libs.firebase.storage.ktx)
+    implementation(libs.play.services.location)
 }
