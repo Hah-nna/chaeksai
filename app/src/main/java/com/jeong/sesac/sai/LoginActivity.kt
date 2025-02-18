@@ -152,27 +152,44 @@ class LoginActivity : AppCompatActivity() {
 
 
         lifecycleScope.launch {
-            viewModel.duplicateState.collectLatest {
-                when (it) {
+            viewModel.duplicateState.collectLatest { state ->
+                when (state) {
                     is UiState.Loading -> {
                         binding.progressBar.progressCircular.visibility = View.VISIBLE
                     }
 
                     is UiState.Success -> {
                         binding.progressBar.progressCircular.visibility = View.GONE
-                        binding.tvNicknameCheck.setHint("사용할 수 있는 닉네임입니다")
-                        binding.tvNicknameCheck.setHintTextColor(
-                            ContextCompat.getColor(
-                                this@LoginActivity,
-                                R.color.valid
+                        if (state.data) {
+                            binding.tvNicknameCheck.setHint("이미 존재하는 닉네임입니다")
+                            binding.etvNickname.backgroundTintList =
+                                ContextCompat.getColorStateList(applicationContext, R.color.inValid)
+                            binding.tvNicknameCheck.setHintTextColor(
+                                ContextCompat.getColor(
+                                    this@LoginActivity,
+                                    R.color.inValid
+                                )
                             )
-                        )
-                        binding.btnSetUser.isEnabled = true
+                            binding.btnSetUser.isEnabled = false
+                        } else {
+                            binding.tvNicknameCheck.setHint("사용할 수 있는 닉네임입니다")
+                            binding.etvNickname.backgroundTintList =
+                                ContextCompat.getColorStateList(applicationContext, R.color.valid)
+                            binding.tvNicknameCheck.setHintTextColor(
+                                ContextCompat.getColor(
+                                    this@LoginActivity,
+                                    R.color.valid
+                                )
+                            )
+                            binding.btnSetUser.isEnabled = true
+                        }
                     }
 
                     is UiState.Error -> {
                         binding.progressBar.progressCircular.visibility = View.GONE
-                        binding.tvNicknameCheck.setHint("이미 존재하는 닉네임입니다")
+                        binding.tvNicknameCheck.setHint("오류가 발생했습니다 다시 시도해주세요")
+                        binding.etvNickname.backgroundTintList =
+                            ContextCompat.getColorStateList(applicationContext, R.color.inValid)
                         binding.tvNicknameCheck.setHintTextColor(
                             ContextCompat.getColor(
                                 this@LoginActivity,
@@ -186,7 +203,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-
     private fun isValidNickname(nickname: String): Boolean {
         val onlyNumber = "[0-9]".toRegex()
         val validCharsRegex = "^[a-zA-Z가-힣0-9]+$".toRegex()
@@ -198,7 +214,6 @@ class LoginActivity : AppCompatActivity() {
             else -> true
         }
     }
-
 
     // 포커스됨에 따라서 edit text view 색깔 변경
     private fun setETBackground() {
@@ -217,15 +232,20 @@ class LoginActivity : AppCompatActivity() {
     // 유저 생성
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setUser(nickname: String) {
-        viewModel.serUserInfo(nickname)
+        viewModel.setUserInfo(nickname)
         lifecycleScope.launch {
-            viewModel.userCreateState.collectLatest {
-                when(it) {
+            viewModel.userCreateState.collectLatest { state ->
+                when (state) {
                     is UiState.Loading -> {
                         binding.progressBar.progressCircular.visibility = View.VISIBLE
                     }
+
                     is UiState.Success -> {
-                        preference.nickName = nickname
+                        preference.apply {
+                            nickName = nickname
+                            userId = state.data
+                        }
+                        Log.d("userId", state.data)
                         Intent(this@LoginActivity, MainActivity::class.java).run {
                             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                             Log.d("intent to mainActivity", "INTENT")
