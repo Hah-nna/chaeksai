@@ -24,47 +24,41 @@ class CommentViewModel(private val commentRepo: CommentRepositoryImpl) : ViewMod
     private var _commentDeleteState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
     val commentDeleteState = _commentDeleteState.asStateFlow()
 
-    fun createComment(nickname: String, noteId: String, comment: Comment) {
+    fun createComment(userId: String, noteId: String, comment: Comment) {
         viewModelScope.launch {
             _commentState.value = UiState.Loading
 
-            val isSuccess = commentRepo.createComment(nickname, noteId, comment)
+            val isSuccess = commentRepo.createComment(userId, noteId, comment)
             _commentState.value =
                 if (isSuccess) {
-                    getComments(nickname, noteId)
+                    getComments(userId, noteId)
                     UiState.Success(true)
                 } else UiState.Error("다시 시도해주세요")
         }
     }
 
-    fun getComments(nickname: String, noteId: String) {
+    fun getComments(userId: String, noteId: String) {
         viewModelScope.launch {
             _commentListState.value = UiState.Loading
-
-
-            viewModelScope.launch {
-                _commentListState.value = UiState.Loading
-
-                commentRepo.getComments(nickname, noteId)
-                    .onSuccess {
-                        _commentListState.value = UiState.Success(it.reversed())
-                    }.onFailure {
-                        _commentListState.value = UiState.Error("다시 시도해주세요")
-                    }
-            }
+            commentRepo.getComments(userId, noteId)
+                .onSuccess {
+                    _commentListState.value = UiState.Success(it.reversed())
+                }.onFailure {
+                    _commentListState.value = UiState.Error("다시 시도해주세요")
+                }
 
         }
     }
 
 
-    fun updateComment(nickname: String, noteId: String, commentId: String, content: String) {
+    fun updateComment(userId: String, noteId: String, commentId: String, content: String) {
         viewModelScope.launch {
             _commentUpdateState.value = UiState.Loading
 
             commentRepo.updateComment(noteId, commentId, content)
                 .onSuccess {
                     _commentUpdateState.value = UiState.Success(Unit)
-                    getComments(nickname, noteId)
+                    getComments(userId, noteId)
                 }.onFailure {
                     _commentUpdateState.value = UiState.Error("댓글 수정에 실패했습니다")
                 }
