@@ -4,4 +4,5 @@ import com.jeong.sesac.feature.model.PlaceInfo
 
 interface IKakaoMapRepository {
     suspend fun getLibraryInfo(lng: Double, lat: Double) : Result<List<PlaceInfo>>
+    fun getCurrentSearchLocation(): Int
 }
