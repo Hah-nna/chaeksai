@@ -7,11 +7,7 @@ import com.jeong.sesac.feature.repository.ILoginRepository
 
 class LoginRepositoryImpl(private val fireStoreImpl: FireBaseDataSourceImpl) : ILoginRepository {
 
-    override suspend fun getUser(id: String) {
-        TODO("파베에서 id받아서 가져오기")
-    }
-
-    override suspend fun setUser(nickname: String) : Boolean {
+    override suspend fun setUser(nickname: String): Result<String> {
 
         val userInfo = User(
             id = "",
@@ -25,7 +21,7 @@ class LoginRepositoryImpl(private val fireStoreImpl: FireBaseDataSourceImpl) : I
     }
 
 
-    override suspend fun checkDuplicateNickname(nickname: String): Boolean {
+    override suspend fun checkDuplicateNickname(nickname: String): Result<Boolean> {
         return fireStoreImpl.getDuplicateNickname(nickname)
     }
 }
