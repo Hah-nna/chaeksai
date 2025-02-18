@@ -75,7 +75,7 @@ class RecordListFragment : BaseFragment<ItemTabRecyclerBinding>(ItemTabRecyclerB
                     0 -> NoteFilterType.MyNotes
                     else -> NoteFilterType.MyLikedNotes
                 }
-                viewModel.getNoteList(filteredList, preference.nickName)
+                viewModel.getNoteList(filteredList, preference.userId)
 
                 viewModel.noteListState.collectLatest { state ->
                     when (state) {
