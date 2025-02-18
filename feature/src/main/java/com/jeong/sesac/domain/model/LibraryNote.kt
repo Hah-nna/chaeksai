@@ -19,7 +19,8 @@ data class PlaceInfo(
     val placeURL: String,
     val lat: String,
     val lng: String,
-    val distance: String
+    val distance: String,
+    val searchRadius: Int
 )
 
 data class Note(
@@ -51,10 +52,10 @@ data class UserInfo (
 )
 
 data class Comment(
-    val id: String,
-    val userId: String,
-    val noteId: String,
-    val content: String,
+    val id: String = "",
+    val userId: String = "",
+    val noteId: String = "",
+    val content: String ="",
     val createdAt: Long = System.currentTimeMillis()
 )
 
