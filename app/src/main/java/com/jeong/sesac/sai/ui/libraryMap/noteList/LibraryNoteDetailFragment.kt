@@ -13,10 +13,14 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil3.load
 import coil3.request.crossfade
+import coil3.request.error
+import coil3.request.fallback
+import coil3.request.placeholder
 import coil3.size.Scale
 import com.jeong.sesac.feature.model.Comment
 import com.jeong.sesac.feature.model.CommentWithUser
 import com.jeong.sesac.feature.model.NoteWithUser
+import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.FragmentLibraryNoteDetailBinding
 import com.jeong.sesac.sai.model.UiState
 import com.jeong.sesac.sai.recycler.comment.CommentAdapter
@@ -25,6 +29,7 @@ import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.CommentModalBottomSheet
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
+import com.jeong.sesac.sai.util.toTimeConverter
 import com.jeong.sesac.sai.viewmodel.CommentViewModel
 import com.jeong.sesac.sai.viewmodel.NoteViewModel
 import com.jeong.sesac.sai.viewmodel.factory.appViewModelFactory
@@ -51,11 +56,11 @@ class LibraryNoteDetailFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.selectNote(args.noteId)
+
         Log.d("noteId", "${args.noteId}")
 
         commentAdapter = CommentAdapter(
-            preference.nickName,
+            preference.userId,
             viewLifecycleOwner.lifecycleScope
         ) { comment, isMyComment ->
             showBottomSheet(comment, isMyComment)
@@ -80,22 +85,22 @@ class LibraryNoteDetailFragment :
             findNavController().navigateUp()
         }
 
-
         viewLifecycleOwner.lifecycleScope.launch {
+        viewModel.selectNote(args.noteId)
             viewModel.selectedNoteState.collectLatest { state ->
                 when (state) {
-                    is UiState.Loading -> binding.progress.progressCircular.isVisible =
-                        true
-
+                    is UiState.Loading -> binding.progress.progressCircular.isVisible = true
                     is UiState.Success -> {
                         binding.progress.progressCircular.isVisible = false
-                        Log.d("NoteDetail", "Received note: ${state.data}")
+                        Log.d("NoteDetail", "note 데이터: ${state.data}")
                         bindData(state.data)
-                        if (state.data.userInfo.nickName == preference.nickName) {
-                            with(binding) {
-                                tvDeleteNote.isVisible = true
-                                tvEditNote.isVisible = true
-                            }
+                        val isAuthorizedUser = preference.userId.isNotEmpty() &&
+                                state.data.userInfo.id.isNotEmpty() &&
+                                preference.userId == state.data.userInfo.id
+
+                        with(binding) {
+                            tvDeleteNote.isVisible = isAuthorizedUser
+                            tvEditNote.isVisible = isAuthorizedUser
                         }
                     }
 
@@ -109,12 +114,22 @@ class LibraryNoteDetailFragment :
 
         with(binding) {
             tvEditNote.clicks().throttleFirst(throttleTime).onEach {
-                val action =
-                    LibraryNoteDetailFragmentDirections.actionFragmentNoteDetailToFragmentEditNote(
-                        args.noteId
-                    )
-                findNavController().navigate(action)
-            }.launchIn(lifecycleScope)
+                viewModel.selectedNoteState.collectLatest { state ->
+                    when(state) {
+                        is UiState.Success -> {
+                            if(state.data.userInfo.id == preference.userId) {
+                                val action = LibraryNoteDetailFragmentDirections.actionFragmentNoteDetailToFragmentEditNote(args.noteId)
+                                findNavController().navigate(action)
+                            } else {
+                                Toast.makeText(requireContext(), "수정권한이 없습니다", Toast.LENGTH_SHORT).show()
+                            }
+                        } else -> {
+                        Toast.makeText(requireContext(), "다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
 
 
             tvDeleteNote.clicks().throttleFirst(throttleTime).onEach {
@@ -148,7 +163,7 @@ class LibraryNoteDetailFragment :
 
     private fun getCommentList() {
         viewLifecycleOwner.lifecycleScope.launch {
-            commentViewModel.getComments(preference.nickName, args.noteId)
+            commentViewModel.getComments(preference.userId, args.noteId)
 
             commentViewModel.commentListState.collectLatest { state ->
                 when (state) {
@@ -180,13 +195,13 @@ class LibraryNoteDetailFragment :
             if (content.isNotEmpty()) {
                 val comment = Comment(
                     id = "",
-                    userId = "",
+                    userId = preference.userId,
                     noteId = args.noteId,
                     content = content,
                     createdAt = System.currentTimeMillis()
                 )
 
-                commentViewModel.createComment(preference.nickName, args.noteId, comment)
+                commentViewModel.createComment(preference.userId, args.noteId, comment)
                 binding.tvComment.text?.clear()
             }
 
@@ -216,11 +231,13 @@ class LibraryNoteDetailFragment :
             ivProfile.load(note.userInfo.profile) {
                 crossfade(true)
                 scale(Scale.FILL)
+                fallback(R.drawable.ic_default_profile)
+                error(R.drawable.ic_default_profile)
             }
             tvNickname.text = note.userInfo.nickName
             tvTitle.text = note.title
             tvLibraryName.text = note.libraryName
-            tvTime.text = note.createdAt.toString()
+            tvTime.text = note.createdAt.toTimeConverter()
             tvContent.text = note.content
 
         }
@@ -234,7 +251,7 @@ class LibraryNoteDetailFragment :
                 val action =
                     LibraryNoteDetailFragmentDirections.actionFragmentNoteDetailToFragmentEditComment(
                         args.noteId,
-                        preference.nickName,
+                        preference.userId,
                         comment.id,
                         comment.content
                     )
@@ -242,7 +259,7 @@ class LibraryNoteDetailFragment :
             },
             onDeleteClick = {
                 viewLifecycleOwner.lifecycleScope.launch {
-                    commentViewModel.deleteComment(preference.nickName, args.noteId, comment.id)
+                    commentViewModel.deleteComment(preference.userId, args.noteId, comment.id)
                     commentViewModel.commentDeleteState.collectLatest { state ->
                         when (state) {
                             is UiState.Loading -> binding.progress.progressCircular.isVisible = true
