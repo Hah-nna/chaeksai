@@ -198,7 +198,7 @@
                 android:name="noteId"
                 app:argType="string" />
             <argument
-                android:name="nickname"
+                android:name="userId"
                 app:argType="string" />
             <argument
                 android:name="commentId"
@@ -234,7 +234,7 @@
             android:name="noteId"
             app:argType="string" />
         <argument
-            android:name="nickname"
+            android:name="userId"
             app:argType="string" />
         <argument
             android:name="commentId"

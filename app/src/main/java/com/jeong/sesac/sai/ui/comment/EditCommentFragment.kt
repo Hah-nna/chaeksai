@@ -42,7 +42,7 @@ class EditCommentFragment :
                 if (newContent.isNotEmpty()) {
                     viewLifecycleOwner.lifecycleScope.launch {
                         commentViewModel.updateComment(
-                            args.nickname,
+                            args.userId,
                             args.noteId,
                             args.commentId,
                             newContent

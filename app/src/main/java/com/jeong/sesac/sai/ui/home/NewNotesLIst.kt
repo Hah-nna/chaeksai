@@ -17,6 +17,7 @@ import com.jeong.sesac.sai.databinding.ItemTabRecyclerBinding
 import com.jeong.sesac.sai.model.UiState
 import com.jeong.sesac.sai.recycler.GridDecoration
 import com.jeong.sesac.sai.recycler.newNote.NewNoteAdapter
+import com.jeong.sesac.sai.util.AppPreferenceManager
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.viewmodel.NoteListViewModel
 import com.jeong.sesac.sai.viewmodel.factory.appViewModelFactory
@@ -27,6 +28,7 @@ class NewNotesLIst : BaseFragment<ItemTabRecyclerBinding>(ItemTabRecyclerBinding
 
     private lateinit var recentlyCreatedAdapter : NewNoteAdapter
     private val viewModel: NoteListViewModel by activityViewModels<NoteListViewModel> { appViewModelFactory }
+    private lateinit var preference: AppPreferenceManager
 
     companion object {
         fun getInstance(position: Int) =
@@ -35,6 +37,11 @@ class NewNotesLIst : BaseFragment<ItemTabRecyclerBinding>(ItemTabRecyclerBinding
                     putInt("position", position)
                 }
             }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        preference = AppPreferenceManager.getInstance(requireContext())
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -59,7 +66,7 @@ class NewNotesLIst : BaseFragment<ItemTabRecyclerBinding>(ItemTabRecyclerBinding
             1 -> NoteFilterType.ByLikes(ascending = false)
             else -> NoteFilterType.ByLikes(ascending = true)
         }
-        viewModel.getNoteList(filteredType)
+        viewModel.getNoteList(filteredType, preference.userId)
 
         viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.noteListState.collectLatest { state ->

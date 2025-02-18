@@ -54,39 +54,54 @@ import com.kakao.vectormap.label.LabelTextBuilder
 import com.kakao.vectormap.label.LodLabel
 import com.kakao.vectormap.label.TrackingManager
 import com.kakao.vectormap.label.TransformMethod
+import com.kakao.vectormap.shape.DotPoints
+import com.kakao.vectormap.shape.Polygon
+import com.kakao.vectormap.shape.PolygonOptions
+import com.kakao.vectormap.shape.PolygonStyles
+import com.kakao.vectormap.shape.PolygonStylesSet
+import com.kakao.vectormap.shape.ShapeManager
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.ldralighieri.corbind.view.clicks
+
+
+const val INTERACTION_DISTANCE = 100
 
 class LibraryMapFragment :
     BaseFragment<FragmentLibraryMapBinding>(FragmentLibraryMapBinding::inflate) {
     private lateinit var mapView: MapView
     private lateinit var kakaoMap: KakaoMap
     private lateinit var preference: AppPreferenceManager
-    private lateinit var startLocation: LatLng
+    private lateinit var mapAdapter: MapAdapter
     private var startZoomLevel = 15
+
+    private lateinit var defaultLocation: LatLng
+    private var lastLocation: LatLng? = null
+    private var isFirstLocationUpdate = false
+
+    private lateinit var trackingManager: TrackingManager
+    private lateinit var shapeManager: ShapeManager
+
+    private var currentLocationLabel: Label? = null
+    private var headingLabel: Label? = null
+    private var libraryLabels = mutableMapOf<String, LodLabel>()
+    private var libraryPolygons = mutableMapOf<String, Polygon>()
+    private var libraryStates = mutableMapOf<String, Boolean>()
 
     private val viewModel: KakaoMapViewModel by viewModels {
         appViewModelFactory
     }
-
-    private lateinit var trackingManager: TrackingManager
-
-    private var currentLocationLabel: Label? = null
-    private var headingLabel: Label? = null
-
-    private var libraryLabels = mutableSetOf<LodLabel>()
-    private lateinit var mapAdapter: MapAdapter
-
-    private val interaction_distance = 5.0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // preference 초기화
         preference = AppPreferenceManager.getInstance(requireContext())
+        // 기본 위치(서울시청)
+        defaultLocation = LatLng.from(preference.lastLat, preference.lastLng)
     }
 
     override fun onCreateView(
@@ -96,18 +111,9 @@ class LibraryMapFragment :
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        /**
-         * preference에 있는 값(위도, 경도)로 초기화(처음에는 서울시청)
-         * */
-        startLocation = LatLng.from(
-            preference.lastLat,
-            preference.lastLng
-        )
-
         setRecyclerView()
 
         mapView = binding.mapView
-        // 지도 시작
         mapView.start(object : MapLifeCycleCallback() {
             override fun onMapDestroy() {}
             override fun onMapError(err: Exception?) {}
@@ -122,78 +128,90 @@ class LibraryMapFragment :
         override fun onMapReady(map: KakaoMap) {
             kakaoMap = map
             trackingManager = kakaoMap.trackingManager!!
+            shapeManager = kakaoMap.shapeManager!!
             binding.progressBar.progressCircular.isVisible = true
 
             kakaoMap.setOnLodLabelClickListener { _, _, label ->
-                // 클릭된 라벨의 위치와 이름
-                val clickedPosition = label.position
                 val libraryName = label.texts[0]
 
-                // viewModel에서 현재 위치를 가져와서 거리 계산
-                viewModel.currentLocationState.value?.let { currentLocation ->
-                    val distance = calculateDistance(
-                        currentLocation.latitude, currentLocation.longitude,
-                        clickedPosition.latitude, clickedPosition.longitude
-                    )
-
-                    // 디버깅을 위한 로그 추가
-                    Log.d("Distance", "Distance to $libraryName: $distance meters")
-
-                    if (distance <= interaction_distance) {
-                        // 해당 라벨로 이동(줌레벨 16)
-                        val cameraUpdate = CameraUpdateFactory.newCenterPosition(clickedPosition, 16)
-                        kakaoMap.moveCamera(cameraUpdate)
-
-                        viewLifecycleOwner.lifecycleScope.launch {
-                            val currentState = viewModel.librariesInfoState.value
-                            when (currentState) {
-                                is UiState.Loading -> {
-                                    binding.progressBar.progressCircular.visibility = View.VISIBLE
-                                }
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.currentLocationState
+                        .combine(viewModel.librariesInfoState) { location, librariesState ->
+                            Pair(location, librariesState)
+                        }
+                        .collectLatest { (currentLocation, librariesState) ->
+                            when (librariesState) {
                                 is UiState.Success -> {
-                                    binding.progressBar.progressCircular.visibility = View.GONE
-                                    currentState.data.find { it.place == libraryName }?.let { library ->
-                                        showLibraryInfo(library)
-                                    }
+                                    // 도서관 정보를 가져오기 성공했을 때
+                                    librariesState.data.find { it.place == libraryName }
+                                        ?.let { library ->
+                                            currentLocation?.let { location ->
+                                                // 현재 위치에서 실시간으로 거리 계산
+                                                val realTimeDistance = calculateDistance(
+                                                    location.latitude, location.longitude,
+                                                    library.lat.toDouble(), library.lng.toDouble()
+                                                )
+
+                                                if (realTimeDistance <= INTERACTION_DISTANCE) {
+                                                    // 상호작용 가능거리(100m) 내에 있을 때
+                                                    showLibraryInfo(
+                                                        library.copy(
+                                                            distance = realTimeDistance.toString()
+                                                        )
+                                                    )
+                                                } else {
+                                                    // 상호작용 가능 거리(100m)보다 멀때
+                                                    showLibraryInfo(
+                                                        "도서관에 더 가까이 가야 열람할 수 있습니다\n" +
+                                                                "${realTimeDistance.toInt()}m 남았습니다"
+                                                    )
+                                                }
+                                            } ?: showLibraryInfo("현재 위치를 확인할 수 없습니다\n위치 권한을 확인해주세요")
+                                        } ?: showLibraryInfo("도서관 정보를 찾을 수 없습니다")
                                 }
+
+                                is UiState.Loading -> {
+                                    binding.progressBar.progressCircular.isVisible = true
+                                    showLibraryInfo("도서관 정보를 불러오는 중입니다")
+                                }
+
                                 is UiState.Error -> {
-                                    binding.progressBar.progressCircular.visibility = View.GONE
-                                    throw Error("에러입니다")
+                                    binding.progressBar.progressCircular.isVisible = false
+                                    val errorMessage = when {
+                                        librariesState.error.contains("network") ->
+                                            "네트워크 연결을 확인해주세요"
+
+                                        librariesState.error.contains("permission") ->
+                                            "위치 권한이 필요합니다"
+
+                                        else -> "도서관 정보를 불러오는데 실패했습니다\n${librariesState.error}"
+                                    }
+                                    showLibraryInfo(errorMessage)
                                 }
                             }
                         }
-                    } else {
-                        showLibraryInfo("도서관에 더 가까이 가야 열람할 수 있습니다 (${distance.toInt()}m 남았습니다)")
-                    }
-                } ?: run {
-                    // 현재 위치를 가져올 수 없는 경우
-                    showLibraryInfo("현재 위치를 확인할 수 없습니다")
                 }
                 true
             }
-
-            val cameraUpdate = CameraUpdateFactory.newCenterPosition(startLocation)
-            kakaoMap.moveCamera(cameraUpdate)
         }
 
-        override fun getPosition(): LatLng = startLocation
+        override fun getPosition(): LatLng = defaultLocation
         override fun getZoomLevel(): Int = startZoomLevel
     }
 
 
-    private fun calculateDistance(
-        currentLat: Double, currentLng: Double,
-        clickedLat: Double, clickedLng: Double
-    ): Float {
-        val result = FloatArray(1)
-        Location.distanceBetween(currentLat, currentLng, clickedLat, clickedLng, result)
-        return result[0]
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // view가 started 상태일 때마다 권한 체크 실행
+        // Bottom Sheet 설정
+        val bottomSheet = binding.bottomSheet
+        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+        bottomSheet.visibility = View.GONE
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        /**
+         * view가 started 상태일 때마다 권한 체크 실행
+         *  */
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 if (isNetworkAvailable()) {
@@ -218,16 +236,11 @@ class LibraryMapFragment :
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-
-        // preference에 저장된 위치에서 5km내의 도서관 목록 get요청
-//        binding.btnReSearchPlaces.clicks()
-//            .throttleFirst(throttleTime)
-//            .onEach {
-//                getLibraries()
-//            }.launchIn(lifecycleScope)
-
     }
 
+    /**
+     * 리사이클러뷰 셋팅
+     * */
     private fun setRecyclerView() {
         // 도서관 리사이클러뷰 콜백 설정
         mapAdapter = MapAdapter(
@@ -237,7 +250,7 @@ class LibraryMapFragment :
                         .actionFragmentLibraryMapFragmentToFragmentLibraryWriteNote(libraryInfo.place)
                     findNavController().navigate(action)
                 } catch (e: Exception) {
-                    Log.e("Navigation", "Navigation failed", e)
+                    Log.e("Navigation", "Navigation 에러: ${e.message}")
                 }
             },
             onLibraryNotesCallback = { libraryInfo ->
@@ -261,7 +274,9 @@ class LibraryMapFragment :
         }
     }
 
-    // 네크워크를 사용할 수 있는지 확인
+    /**
+     * 네크워크를 사용할 수 있는지 확인
+     */
     private fun isNetworkAvailable(): Boolean {
         val cm =
             requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -317,14 +332,11 @@ class LibraryMapFragment :
         // 로케이션 권한 승인 되었을 때
         override fun onPermissionGranted() {
             Toast.makeText(requireActivity(), "퍼미션 승인되어있음", Toast.LENGTH_SHORT).show()
-            // 승인되었으면 gps 켜져있는지 확인하고
-            // 켜져있으면 할 일 적기(따로 함수로 빼서)
+            // 승인되었으면 gps 켜져있는지 확인
             if (isGPSAvailable()) {
                 Toast.makeText(requireActivity(), "gps 켜져있어유", Toast.LENGTH_SHORT).show()
-                // 현재 위치 받아서 이동하고 마커 띄우는 함수
 
                 updateLocationAndPoi()
-//                getLibraries()
             } else {
                 // gps 안 켜져 있으면 gps 설정
                 showGPSSettingDialog()
@@ -337,27 +349,32 @@ class LibraryMapFragment :
         }
     }
 
+    /**
+     * 위치와 정보를 업데이트 함
+     */
     private fun updateLocationAndPoi() {
+        viewModel.updateLocations()
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getCurrentLocation()
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-
                 viewModel.currentLocationState.collectLatest { location ->
                     location?.let {
-                        updateCurrentLocationLabel(
-                            LatLng.from(
-                                location.latitude,
-                                location.longitude
-                            )
-                        )
+                        val currentLocation = LatLng.from(location.latitude, location.longitude)
+                        if (!isFirstLocationUpdate) {
+                            val cameraUpdate =
+                                CameraUpdateFactory.newCenterPosition(currentLocation)
+                            kakaoMap.moveCamera(cameraUpdate)
+                            isFirstLocationUpdate = true
+                        }
+                        updateCurrentLocationLabel(currentLocation)
+                        lastLocation = currentLocation
                     }
                 }
             }
         }
-
         observeLibraryInfo()
     }
 
+    private var isStart = false
     private fun observeLibraryInfo() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.librariesInfoState.collectLatest { state ->
@@ -368,30 +385,38 @@ class LibraryMapFragment :
 
                     is UiState.Success -> {
                         binding.progressBar.progressCircular.isVisible = false
-                        UiState.Success(state.data)
                         val libraries = state.data
+
+                        showLibraryInfo("도서관의 원 안으로 들어가면\n쪽지와 서평을 열람할 수 있습니다!\n원으로 이동해보세요")
+
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            viewModel.currentLocationState.collectLatest { location ->
+                                if (!isStart) {
+                                    createLabels(libraries, location!!)
+                                    isStart = true
+                                }
+                                updateCurrentLocationLabel(
+                                    LatLng.from(
+                                        location!!.latitude,
+                                        location.longitude
+                                    )
+                                )
+                                updateLabelStyle(libraries, location)
+                            }
+                        }
 
                         if (libraries.isEmpty()) {
                             showLibraryInfo("주변 도서관이 없어 다시 찾는 중입니다")
                         } else {
-                            val firstLibraryDistance = libraries[0].distance.toInt()
-                            showLibraryInfo(if (firstLibraryDistance <= 100) "주변 도서관이 없어 다시 찾는 중입니다" else "100m 이내에 도서관이 없어 더 넓은 범위를 검색합니다\n가장 가까운 도서관은 ${libraries[0].place}이고, ${libraries[0].distance}m 거리에 있습니다")
+                            val closestLibrary = libraries.minByOrNull { it.distance.toDouble() }
+                            showLibraryInfo(
+                                if (closestLibrary!!.distance.toDouble() <= 100.0) "${closestLibrary.place}의 쪽지와 서평을 열람할 수 있습니다!\n버튼을 눌러주세요" else "가장 가까운 도서관은 ${closestLibrary.place}이고,\n${closestLibrary.distance}m 거리에 있습니다\n" +
+                                        "원 안으로 들어가면 쪽지와 서평을 열람할 수 있습니다!"
+                            )
                         }
-
-                        // 기존 도서관 마커들 제거
-                        libraryLabels.forEach { it.remove() }
-                        libraryLabels.clear()
-
 
                         binding.tvLibraryInfo.isVisible = true
-                        // 새로운 도서관 마커들 생성
-                        libraries.forEach { library ->
-                            val libraryPosition = LatLng.from(
-                                library.lat.toDouble(),
-                                library.lng.toDouble()
-                            )
-                            createLocationLabel(libraryPosition, library.place)
-                        }
+
                         // 리사이클러뷰 업데이트
                         mapAdapter.submitList(libraries)
 
@@ -406,6 +431,116 @@ class LibraryMapFragment :
         }
     }
 
+    // createLabels
+    private fun createLabels(data: List<PlaceInfo>, location: Location) {
+
+        libraryLabels.forEach { (_, label) -> label.remove() }
+        libraryPolygons.forEach { (_, polygon) -> polygon.remove() }
+        libraryLabels.clear()
+        libraryPolygons.clear()
+        libraryStates.clear()
+
+        data.forEach { library ->
+            val position = LatLng.from(library.lat.toDouble(), library.lng.toDouble())
+            val distance = calculateDistance(
+                location.latitude, location.longitude,
+                position.latitude, position.longitude
+            )
+
+            val isInRange = distance <= INTERACTION_DISTANCE
+            libraryStates[library.id] = isInRange
+
+            val styles = kakaoMap.labelManager!!.addLabelStyles(
+                LabelStyles.from(
+                    LabelStyle.from(
+                        if (isInRange) R.drawable.ic_active_marker
+                        else R.drawable.ic_inactive_marker
+                    ).setTextStyles(24, Color.BLACK, 2, Color.WHITE)
+                )
+            )
+
+            val options = LabelOptions.from(position)
+                .setStyles(styles).setTexts(LabelTextBuilder().setTexts(library.place))
+
+            val layer = kakaoMap.labelManager!!.lodLayer
+            val newLabel = layer!!.addLodLabel(options)
+            libraryLabels[library.id] = newLabel
+
+            // 폴리곤 스타일 변경(반경 100m)
+            val circleOptions: PolygonOptions =
+                PolygonOptions.from(DotPoints.fromCircle(position, 100f))
+                    .setStylesSet(
+                        if (isInRange) PolygonStylesSet.from(PolygonStyles.from(Color.parseColor("#99078c03")))
+                        else PolygonStylesSet.from(PolygonStyles.from(Color.parseColor("#99E2E2E2")))
+                    )
+            val newPolygon = shapeManager.getLayer().addPolygon(circleOptions)
+            libraryPolygons[library.id] = newPolygon
+        }
+    }
+
+
+    // 도서관 라벨 및 폴리곤이 도서관과 현재 위치의 거리에 따라 스타일 업데이트
+    private fun updateLabelStyle(data: List<PlaceInfo>, location: Location) {
+        data.forEach { library ->
+            val position = LatLng.from(library.lat.toDouble(), library.lng.toDouble())
+            val distance = calculateDistance(
+                location.latitude, location.longitude,
+                position.latitude, position.longitude
+            )
+
+            val isInRange = distance <= INTERACTION_DISTANCE
+            val prevState = libraryStates[library.id] ?: false
+
+            if (prevState != isInRange) {
+                libraryStates[library.id] = isInRange
+                libraryLabels[library.id]?.remove()
+                libraryPolygons[library.id]?.remove()
+            }
+
+            libraryLabels[library.id]?.let { prevLabel ->
+                prevLabel.remove()
+
+                val styles = kakaoMap.labelManager!!.addLabelStyles(
+                    LabelStyles.from(
+                        LabelStyle.from(
+                            if (isInRange) R.drawable.ic_active_marker
+                            else R.drawable.ic_inactive_marker
+                        ).setTextStyles(24, Color.BLACK, 2, Color.WHITE)
+                    )
+                )
+                val options = LabelOptions.from(position)
+                    .setStyles(styles).setTexts(LabelTextBuilder().setTexts(library.place))
+
+                val layer = kakaoMap.labelManager!!.lodLayer
+                val newLabel = layer!!.addLodLabel(options)
+                libraryLabels[library.id] = newLabel
+
+
+                libraryPolygons[library.id]?.let { prevPolygon ->
+                    prevPolygon.remove()
+
+                    // 폴리곤 스타일 변경(반경 100m)
+                    val circleOptions: PolygonOptions =
+                        PolygonOptions.from(DotPoints.fromCircle(position, 100f))
+                            .setStylesSet(
+                                if (isInRange) PolygonStylesSet.from(
+                                    PolygonStyles.from(
+                                        Color.parseColor(
+                                            "#99078c03"
+                                        )
+                                    )
+                                )
+                                else PolygonStylesSet.from(PolygonStyles.from(Color.parseColor("#99E2E2E2")))
+                            )
+                    val newPolygon = shapeManager.getLayer().addPolygon(circleOptions)
+                    libraryPolygons[library.id] = newPolygon
+
+                }
+            }
+        }
+    }
+
+
     // gps on 설정하는 함수
     private fun showGPSSettingDialog() {
         AlertDialog.Builder(requireContext())
@@ -416,13 +551,12 @@ class LibraryMapFragment :
                 dialog.dismiss()
             }
             .setPositiveButton("설정") { dialog, _ ->
-                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(intent)
+                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
             }
             .show()
     }
 
-
+    // 현재 사용자 위치 라벨을 만드는 함수
     private fun updateCurrentLocationLabel(currentLocation: LatLng) {
         if (currentLocationLabel == null) {
             val locationStyle = kakaoMap.labelManager!!.addLabelStyles(
@@ -456,30 +590,29 @@ class LibraryMapFragment :
 
             currentLocationLabel?.let {
                 currentLocationLabel!!.addSharePosition(headingLabel)
-                trackingManager.startTracking(currentLocationLabel)
+//                trackingManager.startTracking(currentLocationLabel)
                 trackingManager.setTrackingRotation(true)
             }
         } else {
             currentLocationLabel?.moveTo(currentLocation)
         }
-        val updateCamera = CameraUpdateFactory.newCenterPosition(currentLocation)
-        kakaoMap.moveCamera(updateCamera)
     }
 
-    // Lodlabel(마커들) 생성
-    private fun createLocationLabel(position: LatLng, place_name: String) {
-        viewModel.currentLocationState.value?.let { currentLocation ->
+    // 지도 Lodlabel(마커들) 생성
+    private fun updateLabels(data: List<PlaceInfo>, currentLocation: Location) {
+        data.forEach { library ->
+            val position = LatLng.from(library.lat.toDouble(), library.lng.toDouble())
             val distance = calculateDistance(
                 currentLocation.latitude, currentLocation.longitude,
                 position.latitude, position.longitude
             )
 
-            Log.d("라벨", "라벨 $place_name, distance: $distance meters")
+            libraryLabels[library.id]?.remove()
 
             val styles = kakaoMap.labelManager!!.addLabelStyles(
                 LabelStyles.from(
                     LabelStyle.from(
-                        if(distance <= interaction_distance) {
+                        if (distance <= INTERACTION_DISTANCE) {
                             R.drawable.ic_active_marker
                         } else {
                             R.drawable.ic_inactive_marker
@@ -489,12 +622,21 @@ class LibraryMapFragment :
             )
 
             val options = LabelOptions.from(position)
-                .setStyles(styles).setTexts(LabelTextBuilder().setTexts(place_name))
+                .setStyles(styles).setTexts(LabelTextBuilder().setTexts(library.place))
 
             val layer = kakaoMap.labelManager!!.lodLayer
-            val label = layer!!.addLodLabel(options)
+            val newLabel = layer!!.addLodLabel(options)
+            libraryLabels[library.id] = newLabel
 
-            libraryLabels.add(label)
+            // 폴리곤 스타일 변경(반경 100m)
+            libraryPolygons[library.id]?.remove()
+            val circleOptions: PolygonOptions =
+                PolygonOptions.from(DotPoints.fromCircle(position, 100f))
+                    .setStylesSet(
+                        PolygonStylesSet.from(PolygonStyles.from(Color.parseColor("#99E2E2E2")))
+                    )
+            val polygon = shapeManager.getLayer().addPolygon(circleOptions)
+            libraryPolygons[library.id] = polygon
         }
     }
 
@@ -502,6 +644,8 @@ class LibraryMapFragment :
     private fun showLibraryInfo(lib: PlaceInfo) {
         val bottomSheet = binding.bottomSheet
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+
+        bottomSheet.visibility = View.VISIBLE
 
         bottomSheetBehavior.apply {
             state = BottomSheetBehavior.STATE_HALF_EXPANDED
@@ -511,6 +655,7 @@ class LibraryMapFragment :
         mapAdapter.submitList(listOf(lib))
     }
 
+    // 사용자에게 보여줄 메세지 텍스트 뷰
     private fun showLibraryInfo(message: String) {
         binding.tvProgressState.apply {
             text = message
@@ -528,22 +673,26 @@ class LibraryMapFragment :
         }
     }
 
+    /**
+     * 현재 위치와 클릭한 도서관의 라벨까지 얼만큼 거리가 차이나는지를 리턴함
+     * */
+    private fun calculateDistance(
+        currentLat: Double, currentLng: Double,
+        clickedLat: Double, clickedLng: Double
+    ): Float {
+        val result = FloatArray(1)
+        Location.distanceBetween(currentLat, currentLng, clickedLat, clickedLng, result)
+        return result[0]
+    }
+
     override fun onResume() {
         super.onResume()
         mapView.resume()
 
-        if (::kakaoMap.isInitialized) {
-            val currentPosition = LatLng.from(
-                preference.lastLat,
-                preference.lastLng
-            )
-
-            // 현재 카메라 위치와 preference에 저장된 위치가 다른 경우에만 이동
-            if (startLocation != currentPosition) {
-                val cameraUpdate = CameraUpdateFactory.newCenterPosition(currentPosition)
-                kakaoMap.moveCamera(cameraUpdate)
-                startLocation = currentPosition
-                binding.btnReSearchPlaces.visibility = View.VISIBLE
+        if (::kakaoMap.isInitialized && !isFirstLocationUpdate) {
+            lastLocation?.let { location ->
+                updateCurrentLocationLabel(location)
+//                isFirstLocationUpdate = true
             }
         }
     }

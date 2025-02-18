@@ -12,6 +12,7 @@ class AppPreferenceManager {
         private lateinit var spEditor : SharedPreferences.Editor
 
         private const val NICKNAME = "nickname"
+        private const val USER_ID = "userId"
         private const val LAST_LAT = "last_lat"
         private const val LAST_LNG = "last_lng"
 
@@ -38,6 +39,16 @@ class AppPreferenceManager {
                Log.d("닉네임 set", nickName)
                apply()
            }
+        }
+
+    var userId: String
+        get() = sp.getString(USER_ID, "").toString()
+        set(value) {
+            with(spEditor) {
+                putString(USER_ID, value)
+                Log.d("닉네임 set", nickName)
+                 apply()
+            }
         }
 
     var lastLat : Double

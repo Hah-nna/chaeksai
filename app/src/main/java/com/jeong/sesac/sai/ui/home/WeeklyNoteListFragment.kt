@@ -18,6 +18,7 @@ import com.jeong.sesac.sai.databinding.ItemTabRecyclerBinding
 import com.jeong.sesac.sai.model.UiState
 import com.jeong.sesac.sai.recycler.GridDecoration
 import com.jeong.sesac.sai.recycler.weeklyNote.WeeklyNoteAdapter
+import com.jeong.sesac.sai.util.AppPreferenceManager
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.viewmodel.NoteListViewModel
 import com.jeong.sesac.sai.viewmodel.factory.appViewModelFactory
@@ -28,6 +29,7 @@ class WeeklyNoteListFragment :
     BaseFragment<ItemTabRecyclerBinding>(ItemTabRecyclerBinding::inflate) {
     private lateinit var weeklyNoteAdapter: WeeklyNoteAdapter
     private val viewModel: NoteListViewModel by activityViewModels<NoteListViewModel> { appViewModelFactory }
+    private lateinit var preference: AppPreferenceManager
 
     companion object {
         fun getInstance(position: Int) =
@@ -36,6 +38,11 @@ class WeeklyNoteListFragment :
                     putInt("position", position)
                 }
             }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        preference = AppPreferenceManager.getInstance(requireContext())
     }
 
 
@@ -64,7 +71,7 @@ class WeeklyNoteListFragment :
             1 -> NoteFilterType.ThisWeek(SortOrder.LIKES_DESC)
             else -> NoteFilterType.ThisWeek(SortOrder.LIKES_ASC)
         }
-        viewModel.getNoteList(filteredType)
+        viewModel.getNoteList(filteredType, preference.userId)
 
         viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.noteListState.collectLatest { state ->

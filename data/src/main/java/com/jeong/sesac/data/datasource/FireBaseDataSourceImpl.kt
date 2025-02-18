@@ -2,7 +2,6 @@ package com.jeong.sesac.data.datasource
 
 import android.net.Uri
 import android.util.Log
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -12,7 +11,6 @@ import com.jeong.sesac.feature.model.NoteWithUser
 import com.jeong.sesac.feature.model.User
 import com.jeong.sesac.feature.model.UserInfo
 import kotlinx.coroutines.tasks.await
-import java.util.Date
 
 
 class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataSource) :
@@ -21,18 +19,18 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
     private val noteCollectionRef = Firebase.firestore.collection("notes")
     private val likeCollectionRef = Firebase.firestore.collection("likes")
 
-    override suspend fun createUser(userInfo: User): Boolean {
-        try {
+    override suspend fun createUser(userInfo: User): Result<String> {
+        return runCatching {
             val docRef = userCollectionRef.add(userInfo.toMap()).await()
             val docRefId = docRef.id
 
             userCollectionRef.document(docRefId)
                 .update("id", docRefId)
                 .await()
-
-            return true
-        } catch (e: Exception) {
-            return false
+            docRefId
+        }.onFailure { e ->
+            Log.d("login error!", "${e.message}, ${e.cause}")
+            throw Error(e.message, e.cause)
         }
     }
 
@@ -46,69 +44,61 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
     }
 
 
-    override suspend fun getDuplicateNickname(nickname: String): Boolean {
-        try {
+    override suspend fun getDuplicateNickname(nickname: String): Result<Boolean> {
+        return runCatching {
             val result = userCollectionRef
                 .whereEqualTo("nickname", nickname)
                 .get()
                 .await()
-
-            return result.size() > 0
-        } catch (e: Exception) {
-            return false
+            result.size() > 0
+        }.onFailure { e ->
+            Log.d("login error!", "${e.message}, ${e.cause}")
+            throw Error(e.message, e.cause)
         }
     }
 
-    override suspend fun createNote(note: Note, nickname: String): Boolean {
-        try {
+    override suspend fun createNote(note: Note): Result<Boolean> {
+        return runCatching {
             val noteDocRef = noteCollectionRef.add(note).await()
             val noteDocRefId = noteDocRef.id
-
-            val imgUri =
-                if (note.image.isNotEmpty()) storageDataSource.createImg(
+            val imgUri = if (note.image.isNotEmpty()) storageDataSource.createImg(
                     Uri.parse(note.image),
                     noteDocRefId
                 ) else ""
-
-            val userId = getIdByNickname(nickname)
-
             noteCollectionRef.document(noteDocRefId)
                 .update(
                     mapOf(
                         "id" to noteDocRefId,
-                        "userId" to userId,
+                        "userId" to note.userId,
                         "image" to imgUri,
                         "createdAt" to note.createdAt
                     )
                 ).await()
-
-            return true
-        } catch (e: Exception) {
-            Log.e(" createNote err", e.message.toString())
-            return false
+            true
+        }.onFailure { e ->
+            Log.d("create note error", "${e.message}, ${e.cause}")
         }
     }
 
-    override suspend fun getNoteList(): List<Note> {
-        return try {
+    override suspend fun getNoteList(): Result<List<Note>> {
+        return runCatching {
             noteCollectionRef
                 .orderBy("createdAt", Query.Direction.DESCENDING)
                 .get()
                 .await()
                 .documents.mapNotNull { it.toObject(Note::class.java) }
-
-        } catch (e: Exception) {
-            Log.e("getNotelist error!!!", "${e.message}")
-            emptyList()
+        }.onFailure {e ->
+                Log.e("getNotelist error!!!", "${e.message}")
         }
     }
 
     override suspend fun getUserInfo(userId: String): UserInfo {
         return try {
+            Log.d("getUserInfo userId", "${userId}")
             val userDoc = userCollectionRef.document(userId).get().await()
             Log.d("DEBUG", "Document data: ${userDoc.data}")
             UserInfo(
-                id = userDoc.id,
+                id = userId,
                 nickName = userDoc["nickname"].toString(),
                 profile = userDoc["profile"].toString()
             )
@@ -145,8 +135,10 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
                 .get()
                 .await()
             libraryNote.documents.mapNotNull { doc ->
-                Log.d("도서관노트", "${doc.data}")
+                Log.d("도서관별 노트 데이터", "${doc.data}")
                 doc.toObject(NoteWithUser::class.java)
+
+
             }
         }.onFailure { e ->
             Log.e("도서관별 쪽지 가져오기 error", "${e.message}")
@@ -163,7 +155,30 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
             Log.d("selectedNote", "${selectedNote}")
 
             selectedNote.documents.mapNotNull { doc ->
-                doc.toObject(NoteWithUser::class.java)
+                val noteData = doc.toObject(NoteWithUser::class.java)
+                Log.d("Firebase Debug", "문서 데이터: ${doc.data}")
+                Log.d("Firebase Debug", "변환된 노트 데이터: $noteData")
+               val note = doc.toObject(Note::class.java)
+
+                note?.let {
+
+                    val userInfo = try {
+                        getUserInfo(note.userId)
+                    } catch (e: Exception) {
+                       Log.d("error", "${e.message}")
+                    }
+
+                    NoteWithUser(
+                        id = it.id,
+                        userInfo = userInfo as UserInfo,
+                        image = it.image,
+                        title = it.title,
+                        content = it.content,
+                        createdAt = it.createdAt,
+                        libraryName = it.libraryName,
+                        likes = it.likes
+                    )
+                }
             }.single()
         }.onFailure { e ->
             Log.e("쪽지 가져오기 error", "${e.message}")

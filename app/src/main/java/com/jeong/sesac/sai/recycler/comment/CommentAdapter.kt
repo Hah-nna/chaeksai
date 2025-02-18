@@ -12,12 +12,13 @@ import coil3.size.Scale
 import com.jeong.sesac.feature.model.CommentWithUser
 import com.jeong.sesac.sai.R
 import com.jeong.sesac.sai.databinding.ItemCommentBinding
+import com.jeong.sesac.sai.util.toTimeConverter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 
 class CommentAdapter(
-    val nickname: String,
+    val userId: String,
     val lifecycleScope: LifecycleCoroutineScope ,
     val callback : (CommentWithUser, Boolean) -> Unit
 ) : ListAdapter<CommentWithUser, CommentViewHolder>(DiffComment()) {
@@ -40,10 +41,10 @@ class CommentAdapter(
             }
             tvNickname.text = comment.userInfo.nickName
             tvContent.text = comment.content
-            tvTime.text = comment.createdAt.toString()
+            tvTime.text = comment.createdAt.toTimeConverter()
 
             ivMenu.clicks().onEach {
-                val isCommentUser = comment.userInfo.nickName == nickname
+                val isCommentUser = comment.userInfo.id == userId
                 callback(comment, isCommentUser)
             }.launchIn(lifecycleScope)
         }

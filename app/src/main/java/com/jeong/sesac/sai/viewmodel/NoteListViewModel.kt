@@ -1,6 +1,5 @@
 package com.jeong.sesac.sai.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jeong.sesac.data.repository.NoteListRepositoryImpl
@@ -28,10 +27,10 @@ class NoteListViewModel(private val noteListRepo: NoteListRepositoryImpl) : View
     /**
      * 노트 리스트를 가져오기(전체)
      */
-    fun getNoteList(filterType: NoteFilterType, nickname: String? = null) = viewModelScope.launch {
+    fun getNoteList(filterType: NoteFilterType, userId: String) = viewModelScope.launch {
         _noteListState.value = UiState.Loading
 
-        noteListRepo.getNoteList(filterType, nickname)
+        noteListRepo.getNoteList(filterType, userId)
             .onSuccess { notes ->
                 _noteListState.value = UiState.Success(notes)
             }.onFailure { error ->

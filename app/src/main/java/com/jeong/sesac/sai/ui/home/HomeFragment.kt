@@ -34,14 +34,14 @@ import ru.ldralighieri.corbind.view.clicks
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
     private lateinit var weeklyNoteAdapter: WeeklyNoteAdapter
     private lateinit var recentlyNewAdapter : NewNoteAdapter
-    private lateinit var preferenceManger: AppPreferenceManager
+    private lateinit var preference: AppPreferenceManager
     private val viewModel: NoteListViewModel by viewModels<NoteListViewModel> {
         appViewModelFactory
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        preferenceManger = AppPreferenceManager.getInstance(requireContext())
+        preference = AppPreferenceManager.getInstance(requireContext())
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -101,7 +101,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             // 닉네임 set하는 부분
         try {
-            val nickname = preferenceManger.nickName
+            val nickname = preference.nickName
             binding.tvTitle.text = when(nickname.isEmpty()) {
                 true -> getString(R.string.login_required)
                 else -> getString(R.string.welcome_message, nickname)
@@ -111,8 +111,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             throw Error(e.message)
         }
 
-        viewModel.getNoteList(NoteFilterType.ThisWeek(SortOrder.LATEST))
-        viewModel.getNoteList(NoteFilterType.ByLikes(false))
+        viewModel.getNoteList(NoteFilterType.ThisWeek(SortOrder.LATEST), preference.userId)
+        viewModel.getNoteList(NoteFilterType.ByLikes(false), preference.userId)
 
         viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.noteListState.collectLatest { state ->

@@ -7,4 +7,7 @@ import com.jeong.sesac.feature.repository.IKakaoMapRepository
 
 class KakaoMapRepositoryImpl(private val kakakoMapDatasource : KakaoMapDataSourceImpl) : IKakaoMapRepository {
     override suspend fun getLibraryInfo(lng: Double, lat: Double): Result<List<PlaceInfo>> = kakakoMapDatasource.getLibraryInfo(lng, lat)
+    override fun getCurrentSearchLocation(): Int {
+        return kakakoMapDatasource.getCurrentSearchRadius()
+    }
 }

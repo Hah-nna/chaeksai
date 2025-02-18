@@ -90,10 +90,10 @@ class LibraryWriteNoteFragment :
                 }
 
                 if (isValid) {
-                    viewModel.createNote(
+                    viewModel.createNote(preference.userId,
                         imgUri?.toString() ?: "",
                         etvTitle.text.toString(), tvNoteContent.text.toString(),
-                        args.libraryName, preference.nickName
+                        args.libraryName
                     )
 
                     viewModel.uiState.collectLatest { state ->

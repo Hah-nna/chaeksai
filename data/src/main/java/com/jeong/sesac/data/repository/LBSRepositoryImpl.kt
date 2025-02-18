@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Looper
+import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -21,12 +22,12 @@ class LBSRepositoryImpl(private val context: Context) {
      * */
     fun findLocation() = callbackFlow {
         val locationRequest = LocationRequest.Builder(
-            Priority.PRIORITY_HIGH_ACCURACY, 6000L
+            Priority.PRIORITY_HIGH_ACCURACY, 10000L
         ).run {
-            setMinUpdateDistanceMeters(2F)
+            setMinUpdateDistanceMeters(10F)
             setWaitForAccurateLocation(true)
-//            setMinUpdateIntervalMillis(6000L)
-//            setMaxUpdateDelayMillis(6000L)
+//            setMinUpdateIntervalMillis(10000L)
+//            setMaxUpdateDelayMillis(12000L)
                 .build()
         }
 
@@ -34,6 +35,7 @@ class LBSRepositoryImpl(private val context: Context) {
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult.lastLocation?.let { location ->
+                    Log.d("현재 경도위도", "현재경도위도: lat=${location.latitude}, lng=${location.longitude}")
                     trySend(location)
                 }
             }
@@ -50,17 +52,8 @@ class LBSRepositoryImpl(private val context: Context) {
                 Looper.getMainLooper()
             )
         }
-        currentFusedLocationClient.requestLocationUpdates(
-            locationRequest,
-            locationCallback,
-            Looper.getMainLooper()
-        )
-
         awaitClose {
             currentFusedLocationClient.removeLocationUpdates(locationCallback)
         }
     }
-
-
-
 }

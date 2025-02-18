@@ -6,7 +6,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.jeong.sesac.feature.model.Comment
 import com.jeong.sesac.feature.model.CommentWithUser
-import com.jeong.sesac.feature.model.Note
 import kotlinx.coroutines.tasks.await
 
 class CommentFirebaseDataSourceImpl(private val firebaseDataSource: FireBaseDataSourceImpl) :
@@ -15,7 +14,7 @@ class CommentFirebaseDataSourceImpl(private val firebaseDataSource: FireBaseData
 
 
     override suspend fun createComment(
-        nickname: String,
+        userId: String,
         noteId: String,
         comment: Comment
     ): Boolean {
@@ -23,7 +22,7 @@ class CommentFirebaseDataSourceImpl(private val firebaseDataSource: FireBaseData
             val commentRef = noteCollectionRef
                 .document(noteId)
                 .collection("comments")
-                .add(comment)
+                .add(comment.copy(userId = userId))
                 .await()
 
             noteCollectionRef
@@ -33,14 +32,6 @@ class CommentFirebaseDataSourceImpl(private val firebaseDataSource: FireBaseData
                 .update("id", commentRef.id)
                 .await()
 
-            val userId = firebaseDataSource.getIdByNickname(nickname)
-
-            noteCollectionRef
-                .document(noteId)
-                .collection("comments")
-                .document(commentRef.id)
-                .update("userId", userId)
-                .await()
             true
         }.getOrElse { e ->
             Log.e("코멘트생성에러", "코멘트생성에러: ${e.message}")
@@ -48,7 +39,7 @@ class CommentFirebaseDataSourceImpl(private val firebaseDataSource: FireBaseData
         }
     }
 
-    override suspend fun getComments(nickname: String, noteId: String): Result<List<CommentWithUser>> {
+    override suspend fun getComments(userId: String, noteId: String): Result<List<CommentWithUser>> {
         return runCatching {
             noteCollectionRef
                 .document(noteId)
@@ -57,11 +48,12 @@ class CommentFirebaseDataSourceImpl(private val firebaseDataSource: FireBaseData
                 .get()
                 .await()
                 .documents.mapNotNull { it ->
-                    val userId = firebaseDataSource.getIdByNickname(nickname)
 
-                    val comment = it.toObject(CommentWithUser::class.java)
+                    val comment = it.toObject(Comment::class.java)
                     comment?.let {
-                        val userInfo = firebaseDataSource.getUserInfo(userId!!)
+                        val userInfo = firebaseDataSource.getUserInfo(it.userId)
+                        Log.d("겟코멘트", "문서 데이터: ${it}")
+                        Log.d("겟코멘트", "변환된 코멘트 데이터: $comment")
 
                         CommentWithUser(
                             id = it.id,

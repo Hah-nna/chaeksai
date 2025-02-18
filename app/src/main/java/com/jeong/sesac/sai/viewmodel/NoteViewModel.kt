@@ -32,10 +32,16 @@ class NoteViewModel(
     val fetchNoteState = _fetchNoteState.asStateFlow()
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun createNote(imgUri: String, title: String, content: String, libraryName: String, nickname: String) {
+    fun createNote(
+        userId: String,
+        imgUri: String,
+        title: String,
+        content: String,
+        libraryName: String
+    ) {
         val note = Note(
             id = "",
-            userId = "",
+            userId = userId,
             image = imgUri,
             title = title,
             content = content,
@@ -47,10 +53,12 @@ class NoteViewModel(
         viewModelScope.launch {
             _uiState.value = UiState.Loading
 
-            val isSuccess = noteRepo.createNote(note, nickname)
-            _uiState.value =
-                if (isSuccess) UiState.Success(isSuccess) else UiState.Error("다시 시도해주세요")
-
+            noteRepo.createNote(note)
+                .onSuccess {
+                    _uiState.value = UiState.Success(it)
+                }.onFailure {
+                    _uiState.value = UiState.Error("다시시도해주세요")
+                }
         }
     }
 
@@ -71,11 +79,10 @@ class NoteViewModel(
      * 쪽지 업데이트
      * */
     fun updateNote(noteId: String, note: Note) = viewModelScope.launch {
-
         _fetchNoteState.value = UiState.Loading
 
         noteRepo.updateNote(noteId, note)
-            .onSuccess {
+            .onSuccess { note ->
                 _fetchNoteState.value = UiState.Success(Unit)
             }.onFailure {
                 _fetchNoteState.value = UiState.Error("쪽지 업데이트 실패")

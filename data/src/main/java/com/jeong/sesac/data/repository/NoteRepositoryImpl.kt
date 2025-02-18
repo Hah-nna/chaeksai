@@ -7,10 +7,10 @@ import com.jeong.sesac.feature.model.NoteWithUser
 
 class NoteRepositoryImpl(private val fireBaseDataSource: FireBaseDataSource) : INoteRepository {
 
-    override suspend fun createNote(note: Note, nickname: String): Boolean {
+    override suspend fun createNote(note: Note): Result<Boolean>{
         val noteInfo = Note(
             id = "",
-            userId = "",
+            userId = note.userId,
             image = note.image,
             title = note.title,
             content = note.content,
@@ -19,7 +19,7 @@ class NoteRepositoryImpl(private val fireBaseDataSource: FireBaseDataSource) : I
             likes = 0,
             )
 
-        return fireBaseDataSource.createNote(noteInfo, nickname)
+        return fireBaseDataSource.createNote(noteInfo)
     }
 
     suspend fun updateNote(noteId: String, note: Note): Result<Unit> {

@@ -7,10 +7,10 @@ import com.jeong.sesac.feature.model.UserInfo
 
 
 interface FireBaseDataSource {
-      suspend fun createUser(userInfo: User) : Boolean
-      suspend fun getDuplicateNickname(nickname : String) : Boolean
-      suspend fun createNote(note : Note, nickname: String) : Boolean
-      suspend fun getNoteList(): List<Note>
+      suspend fun createUser(userInfo: User) : Result<String>
+      suspend fun getDuplicateNickname(nickname : String): Result<Boolean>
+      suspend fun createNote(note : Note): Result<Boolean>
+      suspend fun getNoteList(): Result<List<Note>>
       suspend fun getUserInfo(userId: String): UserInfo?
       suspend fun getIdByNickname(nickname: String): String?
       suspend fun getMyLikedNotes(userId: String): List<String>

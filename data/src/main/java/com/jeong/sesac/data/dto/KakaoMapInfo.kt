@@ -20,10 +20,10 @@ data class Place(
     val place_url: String,
     val x: String,
     val y: String,
-    val distance: String
+    val distance: String,
 )
 
-fun Place.toMap(): PlaceInfo {
+fun Place.toMap(searchRadius: Int): PlaceInfo {
         return PlaceInfo(
             id = id,
             place = place_name,
@@ -32,6 +32,7 @@ fun Place.toMap(): PlaceInfo {
             lat = y,
             lng = x,
             placeURL = place_url,
-            distance = distance
+            distance = distance,
+            searchRadius = searchRadius
         )
     }
