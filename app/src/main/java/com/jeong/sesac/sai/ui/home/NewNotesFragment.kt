@@ -21,7 +21,7 @@ class NewNotesFragment : BaseFragment<FragmentRecentlyFoundNotesBinding>(Fragmen
         super.onViewCreated(view, savedInstanceState)
 
         with(binding.toolbar.toolbarView) {
-            setTitle("최근 등록된 쪽지")
+            setTitle("최근 등록된 포스트")
             // 툴바를 클릭했을 때 뒤로가기
             navigationClicks().throttleFirst(throttleTime).onEach {
             findNavController().navigateUp()
