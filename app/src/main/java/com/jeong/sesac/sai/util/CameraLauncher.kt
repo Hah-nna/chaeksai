@@ -9,10 +9,11 @@ import androidx.fragment.app.Fragment
 import com.jeong.sesac.sai.CameraActivity
 import com.jeong.sesac.sai.CameraMode
 
-
-class CameraLauncher(private val fragment: Fragment,
-                     private val onTakePhoto: (Uri?) -> Unit) {
-
+class CameraLauncher(
+    fragment: Fragment,
+    private val onTakePhoto: ((Uri?) -> Unit)? = null,
+    private val onBarcodeScan: ((String) -> Unit)? = null
+) {
     /**
      *
      * cameraActivity의 onImageSaved()의 setResult()에서 온 결과가
@@ -25,9 +26,22 @@ class CameraLauncher(private val fragment: Fragment,
     ) { result ->
         // result.data.data : CameraActivity가 리턴한 Intent
         if (result.resultCode == RESULT_OK) {
-            onTakePhoto(result.data?.data)
+            result.data?.data?.let { onTakePhoto?.let { it1 -> it1(it) } }
         }
     }
+
+    private val barcodeScanLauncher = fragment.registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        result ->
+          result.data?.getStringExtra("barcode_value").let {
+              if (it != null) {
+                  onBarcodeScan?.let { it1 -> it1(it) }
+              }
+          }
+    }
+
+
 
     // 힌트 이미지 찍을 때와 isbn을 스캔할 때 각각 다르게 카메라를 launch하는 함수
     fun startCameraLauncher(context: Context, mode: CameraMode) {
@@ -36,6 +50,8 @@ class CameraLauncher(private val fragment: Fragment,
         }
         if (mode == CameraMode.PHOTO_CAPTURE) {
             photoCameraLauncher.launch(intent)
+        } else if(mode == CameraMode.BARCODE_SCAN) {
+            barcodeScanLauncher.launch(intent)
         }
     }
 
