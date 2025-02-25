@@ -5,9 +5,7 @@ import android.util.Log
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.jeong.sesac.feature.model.Like
 import com.jeong.sesac.feature.model.Note
-import com.jeong.sesac.feature.model.NoteWithUser
 import com.jeong.sesac.feature.model.User
 import com.jeong.sesac.feature.model.UserInfo
 import kotlinx.coroutines.tasks.await
@@ -17,7 +15,6 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
     FireBaseDataSource {
     private val userCollectionRef = Firebase.firestore.collection("users")
     private val noteCollectionRef = Firebase.firestore.collection("notes")
-    private val likeCollectionRef = Firebase.firestore.collection("likes")
 
     override suspend fun createUser(userInfo: User): Result<String> {
         return runCatching {
@@ -30,7 +27,7 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
             docRefId
         }.onFailure { e ->
             Log.d("login error!", "${e.message}, ${e.cause}")
-            throw Error(e.message, e.cause)
+            throw Exception(e.message, e.cause)
         }
     }
 
@@ -53,7 +50,7 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
             result.size() > 0
         }.onFailure { e ->
             Log.d("login error!", "${e.message}, ${e.cause}")
-            throw Error(e.message, e.cause)
+            throw Exception(e.message, e.cause)
         }
     }
 
@@ -62,9 +59,9 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
             val noteDocRef = noteCollectionRef.add(note).await()
             val noteDocRefId = noteDocRef.id
             val imgUri = if (note.image.isNotEmpty()) storageDataSource.createImg(
-                    Uri.parse(note.image),
-                    noteDocRefId
-                ) else ""
+                Uri.parse(note.image),
+                noteDocRefId
+            ) else ""
             noteCollectionRef.document(noteDocRefId)
                 .update(
                     mapOf(
@@ -87,8 +84,9 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
                 .get()
                 .await()
                 .documents.mapNotNull { it.toObject(Note::class.java) }
-        }.onFailure {e ->
-                Log.e("getNotelist error!!!", "${e.message}")
+        }.onFailure { e ->
+            Log.e("getNotelist error!!!", "${e.message}")
+            throw Exception("쪽지를 가져오는데 실패했습니다 ${e.message}")
         }
     }
 
@@ -110,34 +108,16 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
         }
     }
 
-    override suspend fun getMyLikedNotes(userId: String): List<String> {
-        return try {
-            val likedNotes = likeCollectionRef.whereEqualTo("userId", userId)
-                .whereEqualTo("isLiked", true)
-                .orderBy("createdAt", Query.Direction.DESCENDING)
-                .get()
-                .await()
-
-            likedNotes.documents.mapNotNull { doc ->
-                doc.toObject(Like::class.java)?.noteId
-            }
-
-        } catch (e: Exception) {
-            Log.e("likedNote error", "${e.message}")
-            emptyList()
-        }
-    }
-
-    override suspend fun getLibraryNotes(libraryName: String): Result<List<NoteWithUser>> {
+    override suspend fun getLibraryNotes(libraryName: String): Result<List<Note>> {
         return runCatching {
             val libraryNote = noteCollectionRef.whereEqualTo("libraryName", libraryName)
                 .orderBy("createdAt", Query.Direction.DESCENDING)
                 .get()
                 .await()
-            libraryNote.documents.mapNotNull { doc ->
-                Log.d("도서관별 노트 데이터", "${doc.data}")
-                doc.toObject(NoteWithUser::class.java)
 
+            libraryNote.documents.mapNotNull {
+                Log.d("도서관별 노트 데이터", "${it.data}")
+                it.toObject(Note::class.java)
 
             }
         }.onFailure { e ->
@@ -146,44 +126,24 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
 
     }
 
-    override suspend fun getNote(noteId: String): Result<NoteWithUser> {
+    override suspend fun getNote(noteId: String): Result<Note> {
         return runCatching {
             val selectedNote = noteCollectionRef.whereEqualTo("id", noteId)
                 .get()
                 .await()
 
-            Log.d("selectedNote", "${selectedNote}")
+            Log.d("selectedNote", "$selectedNote")
 
             selectedNote.documents.mapNotNull { doc ->
-                val noteData = doc.toObject(NoteWithUser::class.java)
                 Log.d("Firebase Debug", "문서 데이터: ${doc.data}")
-                Log.d("Firebase Debug", "변환된 노트 데이터: $noteData")
-               val note = doc.toObject(Note::class.java)
-
-                note?.let {
-
-                    val userInfo = try {
-                        getUserInfo(note.userId)
-                    } catch (e: Exception) {
-                       Log.d("error", "${e.message}")
-                    }
-
-                    NoteWithUser(
-                        id = it.id,
-                        userInfo = userInfo as UserInfo,
-                        image = it.image,
-                        title = it.title,
-                        content = it.content,
-                        createdAt = it.createdAt,
-                        libraryName = it.libraryName,
-                        likes = it.likes
-                    )
-                }
+                doc.toObject(Note::class.java)
             }.single()
         }.onFailure { e ->
             Log.e("쪽지 가져오기 error", "${e.message}")
+            throw Exception("선택한 쪽지내용 가져오기 실패 ${e.message}")
         }
     }
+
 
     override suspend fun updateNote(noteId: String, note: Note): Result<Unit> {
         return runCatching<FireBaseDataSourceImpl, Unit> {
@@ -216,4 +176,28 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
                 Log.e("delete 실패", "${e.message}")
             }
     }
+
+    override suspend fun toggleLike(noteId: String, userId: String): Result<Boolean> {
+        return runCatching {
+            val noteRef = noteCollectionRef.document(noteId)
+            Firebase.firestore.runTransaction { transaction ->
+                val noteSnapshot = transaction.get(noteRef)
+                val note = noteSnapshot.toObject(Note::class.java)
+
+                note?.let {
+                    val likeList = note.likes.toMutableList()
+                    val isLiked = likeList.contains(userId)
+
+                    if (isLiked) likeList.remove(userId) else likeList.add(userId)
+
+                    transaction.update(noteRef, "likes", likeList)
+                    !isLiked
+                } ?: throw Exception("해당 쪽지를 찾을 수 없습니다")
+            }.await()
+        }.onFailure {
+            Log.e("toggle 라이크 실패", "${it.message}, ${it.cause}")
+            throw Exception("좋아요 토글 실패")
+        }
+    }
+
 }
