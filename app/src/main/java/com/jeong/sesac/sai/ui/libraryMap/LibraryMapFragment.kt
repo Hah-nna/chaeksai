@@ -66,6 +66,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.ldralighieri.corbind.view.clicks
+import kotlin.math.roundToInt
 
 
 const val INTERACTION_DISTANCE = 100
@@ -86,7 +87,6 @@ class LibraryMapFragment :
     private lateinit var shapeManager: ShapeManager
 
     private var currentLocationLabel: Label? = null
-    private var headingLabel: Label? = null
     private var libraryLabels = mutableMapOf<String, LodLabel>()
     private var libraryPolygons = mutableMapOf<String, Polygon>()
     private var libraryStates = mutableMapOf<String, Boolean>()
@@ -153,10 +153,10 @@ class LibraryMapFragment :
                                                 )
 
                                                 if (realTimeDistance <= INTERACTION_DISTANCE) {
-                                                    // 상호작용 가능거리(100m) 내에 있을 때
+                                                    // 상호작용 가능거리(100m) 이하에 있을 때
                                                     showLibraryInfo(
                                                         library.copy(
-                                                            distance = realTimeDistance.toString()
+                                                            distance = realTimeDistance.roundToInt().toString()
                                                         )
                                                     )
                                                 } else {
@@ -204,10 +204,13 @@ class LibraryMapFragment :
         super.onViewCreated(view, savedInstanceState)
 
         // Bottom Sheet 설정
-        val bottomSheet = binding.bottomSheet
+        var bottomSheet = binding.bottomSheet
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheet.visibility = View.GONE
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomSheetBehavior.apply {
+            isHideable = true
+        }
+        binding.bottomSheet.visibility = View.GONE
 
         /**
          * view가 started 상태일 때마다 권한 체크 실행
@@ -244,21 +247,18 @@ class LibraryMapFragment :
     private fun setRecyclerView() {
         // 도서관 리사이클러뷰 콜백 설정
         mapAdapter = MapAdapter(
-            onRegisterCallback = { libraryInfo ->
+            onLibraryNotesCallback = { libraryInfo ->
                 try {
-                    val action = LibraryMapFragmentDirections
-                        .actionFragmentLibraryMapFragmentToFragmentLibraryWriteNote(libraryInfo.place)
+                    val action = LibraryMapFragmentDirections.actionFragmentLibraryMapFragmentToFragmentLibraryNoteList(libraryInfo.place)
                     findNavController().navigate(action)
                 } catch (e: Exception) {
                     Log.e("Navigation", "Navigation 에러: ${e.message}")
                 }
             },
-            onLibraryNotesCallback = { libraryInfo ->
-                val findAction =
-                    LibraryMapFragmentDirections.actionFragmentLibraryMapFragmentToFragmentLibraryNoteList(
-                        libraryInfo.place
-                    )
-                findNavController().navigate(findAction)
+            onLibraryBookReviewCallback = { libraryName ->
+                val action =
+                    LibraryMapFragmentDirections.actionFragmentLibraryMapFragmentToFragmentLibraryBookReview(libraryName)
+                findNavController().navigate(action)
             },
             viewLifecycleOwner.lifecycleScope,
         )
@@ -355,7 +355,7 @@ class LibraryMapFragment :
     private fun updateLocationAndPoi() {
         viewModel.updateLocations()
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.currentLocationState.collectLatest { location ->
                     location?.let {
                         val currentLocation = LatLng.from(location.latitude, location.longitude)
@@ -404,24 +404,26 @@ class LibraryMapFragment :
                                 updateLabelStyle(libraries, location)
                             }
                         }
-
                         if (libraries.isEmpty()) {
                             showLibraryInfo("주변 도서관이 없어 다시 찾는 중입니다")
                         } else {
-                            val closestLibrary = libraries.minByOrNull { it.distance.toDouble() }
-                            showLibraryInfo(
-                                if (closestLibrary!!.distance.toDouble() <= 100.0) "${closestLibrary.place}의 쪽지와 서평을 열람할 수 있습니다!\n버튼을 눌러주세요" else "가장 가까운 도서관은 ${closestLibrary.place}이고,\n${closestLibrary.distance}m 거리에 있습니다\n" +
-                                        "원 안으로 들어가면 쪽지와 서평을 열람할 수 있습니다!"
-                            )
+                            // 100m 이내의 도서관들만 필터링
+                            val nearbyLibraries = libraries.filter { it.distance.toDouble() <= INTERACTION_DISTANCE }
+                            if (nearbyLibraries.isEmpty()) {
+                                val closestLibrary = libraries.minByOrNull { it.distance.toDouble() }
+                                showLibraryInfo("가장 가까운 도서관은 ${closestLibrary!!.place}이고,\n${closestLibrary.distance}m 거리에 있습니다\n" +
+                                        "원 안으로 들어가면 쪽지와 서평을 열람할 수 있습니다!")
+                            } else {
+                                // 100m 이내의 도서관이 있으면 bottom sheet 표시
+                                binding.bottomSheet.visibility = View.VISIBLE
+
+                                // 100m 이내의 도서관들을 리사이클러뷰에 표시
+                                mapAdapter.submitList(nearbyLibraries)
+
+                                showLibraryInfo("${nearbyLibraries.size}개의 도서관에서 쪽지와 서평을 열람할 수 있습니다!")
+                            }
                         }
-
-                        binding.tvLibraryInfo.isVisible = true
-
-                        // 리사이클러뷰 업데이트
-                        mapAdapter.submitList(libraries)
-
                     }
-
                     is UiState.Error -> {
                         binding.progressBar.progressCircular.isVisible = false
                         binding.tvLibraryInfo.setText("도서관 정보를 불러오는데 실패했습니다")
@@ -470,8 +472,8 @@ class LibraryMapFragment :
             val circleOptions: PolygonOptions =
                 PolygonOptions.from(DotPoints.fromCircle(position, 100f))
                     .setStylesSet(
-                        if (isInRange) PolygonStylesSet.from(PolygonStyles.from(Color.parseColor("#99078c03")))
-                        else PolygonStylesSet.from(PolygonStyles.from(Color.parseColor("#99E2E2E2")))
+                        if (isInRange) PolygonStylesSet.from(PolygonStyles.from(Color.parseColor("#9983dcb7")))
+                        else PolygonStylesSet.from(PolygonStyles.from(Color.parseColor("#6683dcb7")))
                     )
             val newPolygon = shapeManager.getLayer().addPolygon(circleOptions)
             libraryPolygons[library.id] = newPolygon
@@ -515,7 +517,6 @@ class LibraryMapFragment :
                 val newLabel = layer!!.addLodLabel(options)
                 libraryLabels[library.id] = newLabel
 
-
                 libraryPolygons[library.id]?.let { prevPolygon ->
                     prevPolygon.remove()
 
@@ -526,11 +527,11 @@ class LibraryMapFragment :
                                 if (isInRange) PolygonStylesSet.from(
                                     PolygonStyles.from(
                                         Color.parseColor(
-                                            "#99078c03"
+                                            "#9983dcb7"
                                         )
                                     )
                                 )
-                                else PolygonStylesSet.from(PolygonStyles.from(Color.parseColor("#99E2E2E2")))
+                                else PolygonStylesSet.from(PolygonStyles.from(Color.parseColor("#6683dcb7")))
                             )
                     val newPolygon = shapeManager.getLayer().addPolygon(circleOptions)
                     libraryPolygons[library.id] = newPolygon
@@ -539,7 +540,6 @@ class LibraryMapFragment :
             }
         }
     }
-
 
     // gps on 설정하는 함수
     private fun showGPSSettingDialog() {
@@ -562,16 +562,16 @@ class LibraryMapFragment :
             val locationStyle = kakaoMap.labelManager!!.addLabelStyles(
                 LabelStyles.from(
                     LabelStyle.from(R.drawable.ic_current_location)
-                        .setAnchorPoint(0.5f, 0.5f)
+                        .setAnchorPoint(0.0f, 0.0f)
                 )
             )
 
-            val headingStyle = kakaoMap.labelManager!!.addLabelStyles(
-                LabelStyles.from(
-                    LabelStyle.from(R.drawable.ic_red_direction_area)
-                        .setAnchorPoint(0.5f, 1.0f)
-                )
-            )
+//            val headingStyle = kakaoMap.labelManager!!.addLabelStyles(
+//                LabelStyles.from(
+//                    LabelStyle.from(R.drawable.ic_red_direction_area)
+//                        .setAnchorPoint(0.5f, 1.0f)
+//                )
+//            )
 
             val layer = kakaoMap.labelManager!!.layer
             // 현재 위치 마커 생성
@@ -582,14 +582,14 @@ class LibraryMapFragment :
             )
 
             // 방향 표시 마커 생성
-            headingLabel = layer.addLabel(
-                LabelOptions.from(currentLocation).setRank(9)
-                    .setStyles(headingStyle)
-                    .setTransform(TransformMethod.AbsoluteRotation_Decal)
-            )
+//            headingLabel = layer.addLabel(
+//                LabelOptions.from(currentLocation).setRank(9)
+//                    .setStyles(headingStyle)
+//                    .setTransform(TransformMethod.AbsoluteRotation_Decal)
+//            )
 
             currentLocationLabel?.let {
-                currentLocationLabel!!.addSharePosition(headingLabel)
+//                currentLocationLabel!!.addSharePosition(headingLabel)
 //                trackingManager.startTracking(currentLocationLabel)
                 trackingManager.setTrackingRotation(true)
             }
@@ -628,7 +628,7 @@ class LibraryMapFragment :
             val newLabel = layer!!.addLodLabel(options)
             libraryLabels[library.id] = newLabel
 
-            // 폴리곤 스타일 변경(반경 100m)
+
             libraryPolygons[library.id]?.remove()
             val circleOptions: PolygonOptions =
                 PolygonOptions.from(DotPoints.fromCircle(position, 100f))
@@ -642,16 +642,7 @@ class LibraryMapFragment :
 
     // label 눌렀을 때 보여줄 bottom sheet와 리사이클러뷰어댑터 설정
     private fun showLibraryInfo(lib: PlaceInfo) {
-        val bottomSheet = binding.bottomSheet
-        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
-
-        bottomSheet.visibility = View.VISIBLE
-
-        bottomSheetBehavior.apply {
-            state = BottomSheetBehavior.STATE_HALF_EXPANDED
-            isFitToContents = true
-        }
-
+        binding.bottomSheet.isVisible = true
         mapAdapter.submitList(listOf(lib))
     }
 
@@ -692,8 +683,10 @@ class LibraryMapFragment :
         if (::kakaoMap.isInitialized && !isFirstLocationUpdate) {
             lastLocation?.let { location ->
                 updateCurrentLocationLabel(location)
-//                isFirstLocationUpdate = true
+                isFirstLocationUpdate = true
             }
+        } else {
+            return
         }
     }
 
