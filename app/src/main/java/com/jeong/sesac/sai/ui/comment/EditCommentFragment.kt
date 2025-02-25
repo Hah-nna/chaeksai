@@ -52,7 +52,6 @@ class EditCommentFragment :
                                 is UiState.Loading -> binding.progress.progressCircular.isVisible = true
                                 is UiState.Success -> {
                                     binding.progress.progressCircular.isVisible = false
-                                    UiState.Success(state.data)
                                     findNavController().navigateUp()
                                 }
                                 is UiState.Error -> {
