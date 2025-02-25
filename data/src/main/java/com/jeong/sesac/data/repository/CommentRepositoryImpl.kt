@@ -4,9 +4,9 @@ import com.jeong.sesac.data.datasource.CommentFirebaseDataSourceImpl
 import com.jeong.sesac.domain.repository.ICommentRepository
 import com.jeong.sesac.feature.model.Comment
 import com.jeong.sesac.feature.model.CommentWithUser
-import java.util.Date
+import com.jeong.sesac.feature.model.UserInfo
 
-class CommentRepositoryImpl(private val commentDataSource: CommentFirebaseDataSourceImpl) : ICommentRepository {
+class CommentRepositoryImpl(private val commentDataSource: CommentFirebaseDataSourceImpl, private val userRepo: UserRepositoryImpl) : ICommentRepository {
 
     override suspend fun createComment(userId: String, noteId: String, comment: Comment):
             Boolean {
@@ -22,7 +22,23 @@ class CommentRepositoryImpl(private val commentDataSource: CommentFirebaseDataSo
     }
 
     override suspend fun getComments(userId: String, noteId: String): Result<List<CommentWithUser>> {
-        return commentDataSource.getComments(userId, noteId)
+        return commentDataSource.getComments(userId, noteId).map { comments ->
+            comments.map {comment ->
+                    val userInfo = userRepo.getUserInfo(comment.userId)
+                    CommentWithUser(
+                        id = comment.id,
+                        userInfo = UserInfo(
+                            id = userInfo.id,
+                            profile = userInfo.profile,
+                            nickName = userInfo.nickName
+                        ),
+                        content = comment.content,
+                        createdAt = comment.createdAt
+                    )
+            }
+        }.onFailure {
+            throw Exception("${it.message}")
+        }
     }
 
     override suspend fun updateComment(noteId: String, commentId: String, content: String): Result<Unit> {
