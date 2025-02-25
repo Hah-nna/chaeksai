@@ -91,16 +91,6 @@
             app:argType="string"
             app:nullable="false" />
 
-        <!-- 찾기/등록(맵) -> 쪽지 등록 이동 액션 -->
-        <action
-            android:id="@+id/action_fragmentLibraryMapFragment_to_fragmentLibraryWriteNote"
-            app:destination="@+id/fragmentLibraryWriteNote">
-            <argument
-                android:name="libraryName"
-                app:argType="string"
-                app:nullable="false" />
-        </action>
-
         <!-- 찾기/등록(맵) -> 쪽지리스트 보기 이동 액션 -->
         <action
             android:id="@+id/action_fragmentLibraryMapFragment_to_fragmentLibraryNoteList"
@@ -110,35 +100,18 @@
                 app:argType="string"
                 app:nullable="false" />
         </action>
+
+        <!-- 북 등록 및 서평 보기 프래그먼트 이동 액션-->
         <action
-            android:id="@+id/action_fragmentLibraryMapFragment_to_fragmentMapSearch"
-            app:destination="@+id/fragmentMapSearch" />
-
-    </fragment>
-
-    <!-- 장소 찾는 프래그먼트-->
-    <fragment
-        android:id="@+id/fragmentMapSearch"
-        android:name="com.jeong.sesac.sai.ui.libraryMap.MapSearchFragment"
-        android:label="fragment_map_search"
-        tools:layout="@layout/fragment_library_map_search">
-
-        <action
-            android:id="@+id/action_fragmentMapSearch_to_fragmentLibraryMapFragment"
-            app:destination="@+id/fragmentLibraryMapFragment">
-
-            <argument
-                android:name="selected_place_info"
-                app:argType="com.jeong.sesac.sai.model.PlaceInfoUI"
-                app:nullable="false" />
-
+            android:id="@+id/action_fragmentLibraryMapFragment_to_fragmentLibraryBookReview"
+            app:destination="@+id/fragmentLibraryBookListFragment"
+            >
             <argument
                 android:name="libraryName"
                 app:argType="string"
                 app:nullable="false" />
         </action>
     </fragment>
-
 
     <!-- 찾기/등록(맵) 프래그먼트 ->  쪽지내용 등록  -->
     <fragment
@@ -167,6 +140,17 @@
             app:argType="string"
             app:nullable="false" />
 
+        <!-- 찾기/등록(맵) -> 쪽지 등록 이동 액션 -->
+        <action
+            android:id="@+id/action_fragmentLibraryMapFragment_to_fragmentLibraryWriteNote"
+            app:destination="@+id/fragmentLibraryWriteNote">
+            <argument
+                android:name="libraryName"
+                app:argType="string"
+                app:nullable="false" />
+        </action>
+
+        <!-- 쪽지 디테일 화면 -->
         <action
             android:id="@+id/action_fragmentLibraryNotesList_to_fragmentLibraryNoteDetail"
             app:destination="@+id/fragmentLibraryNoteDetail">
@@ -174,9 +158,6 @@
                 android:name="noteId"
                 app:argType="string" />
         </action>
-        <action
-            android:id="@+id/action_fragmentLibraryNotesList_to_fragmentLibraryNotesSearch"
-            app:destination="@+id/fragmentLibraryNotesSearch" />
 
     </fragment>
 
@@ -261,25 +242,123 @@
 
     </fragment>
 
-    <!-- 쪽지 search 프래그먼트(이 페이지에서 검색결과에 다른 쪽지를 리사이클러뷰로 보여줌 각 쪽지를 누르면 또 디테일 페이지로 ㄱ) -->
+
+    <!-- 책 리스트 프래그먼트-->
     <fragment
-        android:id="@+id/fragmentLibraryNotesSearch"
-        android:name="com.jeong.sesac.sai.ui.libraryMap.MapSearchFragment"
-        android:label="fragment_notes_search"
-        tools:layout="@layout/fragment_library_map_search">
+        android:id="@+id/fragmentLibraryBookListFragment"
+        android:name="com.jeong.sesac.sai.ui.libraryMap.bookReview.BookListFragment"
+        android:label="fragment_library_book_list"
+        tools:layout="@layout/fragment_library_book_list"
+        >
         <argument
             android:name="libraryName"
             app:argType="string"
             app:nullable="false" />
 
         <action
-            android:id="@+id/action_fragmentLibraryNotesSearch_to_fragmentLibraryNoteDetail"
-            app:destination="@+id/fragmentLibraryNoteDetail">
+            android:id="@+id/action_fragmentLibraryMapFragment_to_fragmentLibraryBookDetail"
+            app:destination="@+id/fragmentLibraryBookDetail"
+            >
+
             <argument
-                android:name="noteId"
-                app:argType="string" />
+                android:name="libraryName"
+                app:argType="string"
+                app:nullable="false" />
+
+            <argument
+                android:name="bookId"
+                app:argType="string"
+                app:nullable="false"
+                />
         </action>
+
+        <action
+            android:id="@+id/action_fragmentLibraryMapFragment_to_fragmentRegisterLibraryBook"
+            app:destination="@+id/fragmentRegisterLibraryBook"
+            >
+
+            <argument
+                android:name="libraryName"
+                app:argType="string"
+                app:nullable="false" />
+        </action>
+
     </fragment>
+
+    <!-- 책 리스트 -> 책 디테일 프래그먼트 -->
+<fragment
+    android:id="@+id/fragmentLibraryBookDetail"
+    android:name="com.jeong.sesac.sai.ui.libraryMap.bookReview.BookDetailFragment"
+    tools:layout="@layout/fragment_library_book_detail"
+    android:label="fragment_book_detail"
+    >
+    <argument
+        android:name="libraryName"
+        app:argType="string"
+        app:nullable="false" />
+    <argument
+        android:name="bookId"
+        app:argType="string"
+        app:nullable="false"
+        />
+
+    <action
+        android:id="@+id/action_fragmentLibraryBookDetail_to_fragmentLibraryBookListFragment"
+        app:destination="@+id/fragmentLibraryBookListFragment"
+        />
+
+    <action
+        android:id="@+id/action_fragmentLibraryBookDetail_to_fragmentEditLibraryBookReview"
+        app:destination="@+id/fragmentEditLibraryBookReview"
+        >
+        <argument
+            android:name="bookId"
+            app:argType="string"
+            app:nullable="false"
+            />
+    </action>
+</fragment>
+
+    <!-- 서평 수정 -->
+    <fragment
+        android:id="@+id/fragmentEditLibraryBookReview"
+        android:name="com.jeong.sesac.sai.ui.libraryMap.bookReview.BookReviewEditFragment"
+        tools:layout="@layout/fragment_edit_book_review"
+        android:label="fragment_edit_book_review"
+        >
+        <argument
+            android:name="bookId"
+            app:argType="string" />
+        <argument
+            android:name="reviewId"
+            app:argType="string" />
+        <argument
+            android:name="content"
+            app:argType="string" />
+        <argument
+            android:name="score"
+            app:argType="float" />
+    </fragment>
+
+    <!-- 책 리스트 -> 책 등록 프래그먼트 -->
+
+    <fragment
+        android:id="@+id/fragmentRegisterLibraryBook"
+        android:name="com.jeong.sesac.sai.ui.libraryMap.bookReview.RegisterBookFragment"
+        tools:layout="@layout/fragment_register_book"
+        android:label="fragment_register_book"
+        >
+        <argument
+            android:name="libraryName"
+            app:argType="string"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/fragmentRegisterLibraryBook_to_fragmentLibraryBookListFragment"
+            app:destination="@+id/fragmentLibraryBookListFragment"
+            />
+    </fragment>
+
 
     <!-- record 프래그먼트 -->
     <fragment
@@ -311,14 +390,6 @@
                 android:name="noteId"
                 app:argType="string" />
         </action>
-    </fragment>
-
-    <!-- chat 프래그먼트 -->
-    <fragment
-        android:id="@+id/fragment_chatting"
-        android:name="com.jeong.sesac.sai.ui.chat.ChatMainFragment"
-        android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat_main">
     </fragment>
 
     <!-- myPage-->
