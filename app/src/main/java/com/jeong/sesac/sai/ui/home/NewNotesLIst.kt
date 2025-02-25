@@ -3,13 +3,10 @@ package com.jeong.sesac.sai.ui.home
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.jeong.sesac.domain.model.NoteFilterType
@@ -19,6 +16,7 @@ import com.jeong.sesac.sai.recycler.GridDecoration
 import com.jeong.sesac.sai.recycler.newNote.NewNoteAdapter
 import com.jeong.sesac.sai.util.AppPreferenceManager
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.CustomSnackBar.Companion.snackBar
 import com.jeong.sesac.sai.viewmodel.NoteListViewModel
 import com.jeong.sesac.sai.viewmodel.factory.appViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
@@ -80,11 +78,7 @@ class NewNotesLIst : BaseFragment<ItemTabRecyclerBinding>(ItemTabRecyclerBinding
                         }
                         is UiState.Error -> {
                             binding.progress.progressCircular.isVisible = false
-                            Toast.makeText(
-                                requireContext(),
-                                state.error,
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            snackBar(binding.root, requireContext(), state.error)
                         }
                 }
             }
