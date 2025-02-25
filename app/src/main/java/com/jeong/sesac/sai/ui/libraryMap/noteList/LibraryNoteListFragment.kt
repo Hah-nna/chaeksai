@@ -4,27 +4,23 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.ListPopupWindow
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
-import com.jeong.sesac.domain.model.NoteFilterType
 import com.jeong.sesac.sai.databinding.FragmentLibraryNotesBinding
 import com.jeong.sesac.sai.model.UiState
 import com.jeong.sesac.sai.recycler.libraryNote.LibraryNotesAdapter
+import com.jeong.sesac.sai.util.AppPreferenceManager
 import com.jeong.sesac.sai.util.BaseFragment
+import com.jeong.sesac.sai.util.throttleFirst
+import com.jeong.sesac.sai.util.throttleTime
 import com.jeong.sesac.sai.viewmodel.NoteListViewModel
 import com.jeong.sesac.sai.viewmodel.factory.appViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
@@ -37,24 +33,30 @@ class LibraryNoteListFragment() :
     BaseFragment<FragmentLibraryNotesBinding>(FragmentLibraryNotesBinding::inflate) {
     private lateinit var libraryNotesAdapter: LibraryNotesAdapter
     private val args: LibraryNoteListFragmentArgs by navArgs()
-//    private lateinit var listPopupWindow : ListPopupWindow
+    private lateinit var preference: AppPreferenceManager
 
     private val viewModel: NoteListViewModel by viewModels<NoteListViewModel> { appViewModelFactory }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        preference = AppPreferenceManager.getInstance(requireContext())
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("도서관이름", "${args.libraryName}")
 
-
-
-        libraryNotesAdapter = LibraryNotesAdapter(lifecycleScope) { libraryNote ->
-            val action =
-                LibraryNoteListFragmentDirections.actionFragmentLibraryNotesListToFragmentLibraryNoteDetail(
-                    libraryNote.id
-                )
-            findNavController().navigate(action)
-        }
+        libraryNotesAdapter = LibraryNotesAdapter(
+            preference.userId,
+            viewLifecycleOwner.lifecycleScope,
+            callBack = { libraryNote ->
+                val action =
+                    LibraryNoteListFragmentDirections.actionFragmentLibraryNotesListToFragmentLibraryNoteDetail(
+                        libraryNote.id
+                    )
+                findNavController().navigate(action)
+            })
 
         binding.rvContainer.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -99,5 +101,20 @@ class LibraryNoteListFragment() :
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             findNavController().navigateUp()
         }
+
+        binding.fabRegisterNote.clicks().throttleFirst(throttleTime).onEach {
+            val action = LibraryNoteListFragmentDirections.actionFragmentLibraryMapFragmentToFragmentLibraryWriteNote(args.libraryName)
+            findNavController().navigate(action)
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val totalLikes = libraryNotesAdapter.getTotalLikes()
+        totalLikes.forEach { (noteId, liked) ->
+            viewModel.toggleLikes(noteId, preference.userId)
+            Log.d("라이크 업뎃", "${totalLikes}")
+        }
+        libraryNotesAdapter.clearTotalLikes()
     }
 }
