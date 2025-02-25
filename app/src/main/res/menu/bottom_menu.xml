@@ -17,11 +17,6 @@
             />
 
         <item
-            android:id="@+id/fragment_chatting"
-            android:title="@string/bottom_item_chatting"
-            android:icon="@drawable/ic_chat"
-            />
-        <item
             android:id="@+id/fragment_myPage"
             android:title="@string/myPage"
             android:icon="@drawable/icon_setting"
