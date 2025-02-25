@@ -13,10 +13,10 @@ interface FireBaseDataSource {
       suspend fun getNoteList(): Result<List<Note>>
       suspend fun getUserInfo(userId: String): UserInfo?
       suspend fun getIdByNickname(nickname: String): String?
-      suspend fun getMyLikedNotes(userId: String): List<String>
-      suspend fun getLibraryNotes(libraryName: String) : Result<List<NoteWithUser>>
-      suspend fun getNote(noteId: String): Result<NoteWithUser>
+//      suspend fun getMyLikedNotes(userId: String): Result<List<NoteWithUser>>
+      suspend fun getLibraryNotes(libraryName: String) : Result<List<Note>>
+      suspend fun getNote(noteId: String): Result<Note>
       suspend fun updateNote(noteId: String, note: Note): Result<Unit>
       suspend fun deleteNote(noteId: String): Result<Unit>
-
+      suspend fun toggleLike(noteId: String, userId:String): Result<Boolean>
 }
