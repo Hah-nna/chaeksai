@@ -46,7 +46,7 @@ class NoteViewModel(
             title = title,
             content = content,
             libraryName = libraryName,
-            likes = 0,
+            likes = emptyList(),
             createdAt = System.currentTimeMillis(),
         )
 
@@ -65,13 +65,13 @@ class NoteViewModel(
     /**
      * 노트 선택
      */
-    fun selectNote(noteId: String) = viewModelScope.launch {
+    fun selectNote(noteId: String, userId: String) = viewModelScope.launch {
         _selectedNoteState.value = UiState.Loading
-        noteRepo.getNote(noteId)
+        noteRepo.getNote(noteId, userId)
             .onSuccess { note ->
                 _selectedNoteState.value = UiState.Success(note)
             }.onFailure { error ->
-                _selectedNoteState.value = UiState.Error("노트를 불러오는데 실패했습니다")
+                _selectedNoteState.value = UiState.Error("${error.message}")
             }
     }
 
