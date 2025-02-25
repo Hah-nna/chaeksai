@@ -1,16 +1,5 @@
 package com.jeong.sesac.feature.model
 
-import java.util.Date
-
-
-data class Like (
-    val id: String,
-    val userId: String,
-    val noteId: String,
-    val isLiked: Boolean,
-    val createdAt: Long
-)
-
 data class PlaceInfo(
     val id: String,
     val address: String,
@@ -31,7 +20,7 @@ data class Note(
     val createdAt: Long = System.currentTimeMillis(),
     val libraryName: String = "",
     val content: String = "",
-    val likes: Int = 0,
+    val likes: List<String> = emptyList(),
 )
 
 data class NoteWithUser(
@@ -42,7 +31,7 @@ data class NoteWithUser(
     val createdAt: Long = 0L,
     val libraryName: String = "",
     val content: String = "",
-    val likes: Int = 0,
+    val likes: List<String> = emptyList(),
 )
 
 data class UserInfo (
