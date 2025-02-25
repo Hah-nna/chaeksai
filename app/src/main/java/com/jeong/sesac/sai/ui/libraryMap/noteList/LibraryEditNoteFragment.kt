@@ -61,7 +61,7 @@ class LibraryEditNoteFragment : BaseFragment<FragmentLibraryMapWriteNoteBinding>
                 content = binding.tvNoteContent.text.toString(),
                 userId = "",
                 libraryName = "",
-                likes = 0
+                likes = emptyList()
             )
             viewModel.updateNote(args.noteId, updateNote)
 
