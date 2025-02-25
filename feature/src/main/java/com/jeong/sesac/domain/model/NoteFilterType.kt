@@ -2,13 +2,12 @@ package com.jeong.sesac.domain.model
 
 
 sealed class NoteFilterType {
-    data class ByLibrary(val libraryName: String) : NoteFilterType()
-    data class AllLibrary(val sortBy : SortOrder = SortOrder.LATEST) : NoteFilterType()
-    data class ThisWeek(val sortOrder: SortOrder) : NoteFilterType()
-    data class ByLikes(val ascending: Boolean) : NoteFilterType()
-    data class ByCreatedAt(val ascending: Boolean) : NoteFilterType()
-    data object MyNotes : NoteFilterType()
-    data object MyLikedNotes : NoteFilterType()
+    data class ByLibrary(val libraryName: String): NoteFilterType()
+    data class ThisWeek(val sortOrder: SortOrder): NoteFilterType()
+    data class ByLikes(val ascending: Boolean): NoteFilterType()
+    data class ByCreatedAt(val ascending: Boolean): NoteFilterType()
+    data object MyNotes: NoteFilterType()
+    data object MyLikedNotes: NoteFilterType()
 }
 
 enum class SortOrder {
