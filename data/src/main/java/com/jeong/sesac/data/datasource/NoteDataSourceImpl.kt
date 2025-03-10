@@ -6,53 +6,11 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.jeong.sesac.feature.model.Note
-import com.jeong.sesac.feature.model.User
-import com.jeong.sesac.feature.model.UserInfo
 import kotlinx.coroutines.tasks.await
 
-
-class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataSource) :
-    FireBaseDataSource {
-    private val userCollectionRef = Firebase.firestore.collection("users")
+class NoteDataSourceImpl(private val storageDataSource: FireBaseStorageDataSource) : NoteDataSource {
     private val noteCollectionRef = Firebase.firestore.collection("notes")
 
-    override suspend fun createUser(userInfo: User): Result<String> {
-        return runCatching {
-            val docRef = userCollectionRef.add(userInfo.toMap()).await()
-            val docRefId = docRef.id
-
-            userCollectionRef.document(docRefId)
-                .update("id", docRefId)
-                .await()
-            docRefId
-        }.onFailure { e ->
-            Log.d("login error!", "${e.message}, ${e.cause}")
-            throw Exception(e.message, e.cause)
-        }
-    }
-
-    override suspend fun getIdByNickname(nickname: String): String? {
-        return try {
-            val result = userCollectionRef.whereEqualTo("nickname", nickname).get().await()
-            result.documents.firstOrNull()?.id
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-
-    override suspend fun getDuplicateNickname(nickname: String): Result<Boolean> {
-        return runCatching {
-            val result = userCollectionRef
-                .whereEqualTo("nickname", nickname)
-                .get()
-                .await()
-            result.size() > 0
-        }.onFailure { e ->
-            Log.d("login error!", "${e.message}, ${e.cause}")
-            throw Exception(e.message, e.cause)
-        }
-    }
 
     override suspend fun createNote(note: Note): Result<Boolean> {
         return runCatching {
@@ -90,23 +48,6 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
         }
     }
 
-    override suspend fun getUserInfo(userId: String): UserInfo {
-        return try {
-            Log.d("getUserInfo userId", "${userId}")
-            val userDoc = userCollectionRef.document(userId).get().await()
-            Log.d("DEBUG", "Document data: ${userDoc.data}")
-            UserInfo(
-                id = userId,
-                nickName = userDoc["nickname"].toString(),
-                profile = userDoc["profile"].toString()
-            )
-
-
-        } catch (e: Exception) {
-            Log.d("error!!!!!!", "${e.message}")
-            throw e
-        }
-    }
 
     override suspend fun getLibraryNotes(libraryName: String): Result<List<Note>> {
         return runCatching {
@@ -144,10 +85,8 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
         }
     }
 
-
     override suspend fun updateNote(noteId: String, note: Note): Result<Unit> {
-        return runCatching<FireBaseDataSourceImpl, Unit> {
-
+        return runCatching {
             val updates = mutableMapOf<String, Any>()
 
             if (note.title.isNotEmpty()) updates["title"] = note.title
@@ -159,9 +98,10 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
             noteCollectionRef.document(noteId)
                 .update(updates)
                 .await()
-        }.onFailure { e ->
-            Log.e("note update 실패", "${e.message}")
-        }
+        }.map { Unit }
+            .onFailure { e ->
+                Log.e("note update 실패", "${e.message}")
+            }
     }
 
     override suspend fun deleteNote(noteId: String): Result<Unit> {
@@ -199,5 +139,6 @@ class FireBaseDataSourceImpl(private val storageDataSource: FireBaseStorageDataS
             throw Exception("좋아요 토글 실패")
         }
     }
+
 
 }

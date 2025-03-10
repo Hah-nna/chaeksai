@@ -1,20 +1,20 @@
 package com.jeong.sesac.data.repository
 
 import android.util.Log
-import com.jeong.sesac.data.datasource.FireBaseDataSourceImpl
+import com.jeong.sesac.data.datasource.NoteDataSourceImpl
 import com.jeong.sesac.domain.model.NoteFilterType
 import com.jeong.sesac.domain.model.SortOrder
 import com.jeong.sesac.domain.repository.INoteListRepository
 import com.jeong.sesac.feature.model.NoteWithUser
 import com.jeong.sesac.feature.model.UserInfo
 
-class NoteListRepositoryImpl(private val fireBaseDataSource: FireBaseDataSourceImpl, private val UserRepo: UserRepositoryImpl) :
+class NoteListRepositoryImpl(private val noteDataSourceImpl: NoteDataSourceImpl, private val UserRepo: UserRepositoryImpl) :
     INoteListRepository {
     override suspend fun getNoteList(
         filterType: NoteFilterType,
         userId: String
     ): Result<List<NoteWithUser>> {
-        return fireBaseDataSource.getNoteList().fold(
+        return noteDataSourceImpl.getNoteList().fold(
             onSuccess = { noteList ->
                 // 필터 타입에 따라 노트 리스트 필터링 및 정렬
                 val filteredNoteList = when (filterType) {
@@ -90,7 +90,7 @@ class NoteListRepositoryImpl(private val fireBaseDataSource: FireBaseDataSourceI
     }
 
    override suspend fun getLibraryNotes(libraryName: String): Result<List<NoteWithUser>> {
-      return fireBaseDataSource.getLibraryNotes(libraryName).map {notes ->
+      return noteDataSourceImpl.getLibraryNotes(libraryName).map {notes ->
            notes.map { note ->
            val userInfo = UserRepo.getUserInfo(note.userId)
                NoteWithUser(
@@ -115,7 +115,7 @@ class NoteListRepositoryImpl(private val fireBaseDataSource: FireBaseDataSourceI
 
 
     override suspend fun toggleLike(noteId: String, userId: String): Result<Boolean> {
-        return fireBaseDataSource.toggleLike(noteId, userId)
+        return noteDataSourceImpl.toggleLike(noteId, userId)
     }
 }
 

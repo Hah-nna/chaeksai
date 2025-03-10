@@ -1,13 +1,13 @@
 package com.jeong.sesac.data.repository
 
-import com.jeong.sesac.data.datasource.FireBaseDataSource
+import com.jeong.sesac.data.datasource.NoteDataSourceImpl
 import com.jeong.sesac.domain.repository.INoteRepository
 import com.jeong.sesac.feature.model.Note
 import com.jeong.sesac.feature.model.NoteWithUser
 import com.jeong.sesac.feature.model.UserInfo
 
 class NoteRepositoryImpl(
-    private val fireBaseDataSource: FireBaseDataSource,
+    private val noteDataSourceImpl: NoteDataSourceImpl,
     private val UserRepo: UserRepositoryImpl
 ) : INoteRepository {
 
@@ -23,16 +23,16 @@ class NoteRepositoryImpl(
             likes = emptyList(),
         )
 
-        return fireBaseDataSource.createNote(noteInfo)
+        return noteDataSourceImpl.createNote(noteInfo)
     }
 
     suspend fun updateNote(noteId: String, note: Note): Result<Unit> {
-        return fireBaseDataSource.updateNote(noteId, note)
+        return noteDataSourceImpl.updateNote(noteId, note)
     }
 
     suspend fun getNote(noteId: String, userId: String): Result<NoteWithUser> {
-        return fireBaseDataSource.getNote(noteId).map { note ->
-            val userInfo = UserRepo.getUserInfo(userId)
+        return noteDataSourceImpl.getNote(noteId).map { note ->
+            val userInfo = UserRepo.getUserInfo(note.userId)
             NoteWithUser(
                 id = note.id,
                 userInfo = UserInfo(
@@ -53,6 +53,6 @@ class NoteRepositoryImpl(
     }
 
     suspend fun deleteNote(noteId: String): Result<Unit> {
-        return fireBaseDataSource.deleteNote(noteId)
+        return noteDataSourceImpl.deleteNote(noteId)
     }
 }
