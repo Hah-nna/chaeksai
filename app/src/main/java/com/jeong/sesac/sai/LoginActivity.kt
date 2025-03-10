@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.activity.viewModels
@@ -17,7 +16,7 @@ import com.jeong.sesac.sai.databinding.ActivityLoginBinding
 import com.jeong.sesac.sai.util.AppPreferenceManager
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
-import com.jeong.sesac.sai.viewmodel.LoginViewModel
+import com.jeong.sesac.sai.viewmodel.UserViewModel
 import com.jeong.sesac.sai.model.UiState
 import com.jeong.sesac.sai.viewmodel.factory.appViewModelFactory
 import kotlinx.coroutines.FlowPreview
@@ -32,7 +31,7 @@ import ru.ldralighieri.corbind.widget.textChanges
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private val preference by lazy { AppPreferenceManager.getInstance(this) }
-    private val viewModel: LoginViewModel by viewModels<LoginViewModel> {
+    private val viewModel: UserViewModel by viewModels<UserViewModel> {
         appViewModelFactory
     }
 
