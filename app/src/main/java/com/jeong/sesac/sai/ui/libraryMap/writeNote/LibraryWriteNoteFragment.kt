@@ -22,6 +22,8 @@ import com.jeong.sesac.sai.model.UiState
 import com.jeong.sesac.sai.util.AppPreferenceManager
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.CameraLauncher
+import com.jeong.sesac.sai.util.CustomSnackBar
+import com.jeong.sesac.sai.util.CustomSnackBar.Companion.snackBar
 import com.jeong.sesac.sai.util.Dialog
 import com.jeong.sesac.sai.util.DialogInterface
 import com.jeong.sesac.sai.util.throttleFirst
@@ -51,9 +53,6 @@ class LibraryWriteNoteFragment :
     private val viewModel: NoteViewModel by viewModels<NoteViewModel> {
         appViewModelFactory
     }
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         preference = AppPreferenceManager.getInstance(requireContext())
@@ -64,7 +63,7 @@ class LibraryWriteNoteFragment :
         super.onViewCreated(view, savedInstanceState)
         Log.d("도서관이름:", " ${args.libraryName}")
 
-        cameraLauncher = CameraLauncher(this) { uri ->
+        cameraLauncher = CameraLauncher(this, onTakePhoto = { uri ->
             imgUri = uri
             with(binding) {
                 ivImg.load(uri) {
@@ -73,8 +72,7 @@ class LibraryWriteNoteFragment :
                 }
                 icUploadImg.visibility = View.INVISIBLE
             }
-        }
-
+        })
         with(binding) {
             btnComplete.clicks().throttleFirst(throttleTime).onEach {
                 val isValid = when {
@@ -88,9 +86,9 @@ class LibraryWriteNoteFragment :
                     }
                     else -> true
                 }
-
                 if (isValid) {
-                    viewModel.createNote(preference.userId,
+                    viewModel.createNote(
+                        preference.userId,
                         imgUri?.toString() ?: "",
                         etvTitle.text.toString(), tvNoteContent.text.toString(),
                         args.libraryName
@@ -108,7 +106,7 @@ class LibraryWriteNoteFragment :
 
                             is UiState.Error -> {
                                 binding.progress.progressCircular.isVisible = false
-                                Toast.makeText(requireContext(), "다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                                snackBar(binding.root, requireContext(), "다시 시도해주세요")
                             }
                         }
                     }
@@ -146,7 +144,6 @@ class LibraryWriteNoteFragment :
 
     override fun onClickLeftBtn() {
     }
-
     override fun onClickRightBtn() {
     }
 

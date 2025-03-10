@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_profile"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:src="@drawable/bg_04"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="정정정"
+        app:layout_constraintStart_toEndOf="@+id/iv_profile"
+        app:layout_constraintTop_toTopOf="@+id/iv_profile"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10분전"
+        android:layout_marginStart="8dp"
+        android:textSize="10sp"
+        android:maxLines="10"
+        app:layout_constraintStart_toEndOf="@+id/tv_nickname"
+        app:layout_constraintTop_toTopOf="@+id/tv_nickname"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
+        app:layout_constraintEnd_toEndOf="@+id/rating"
+        />
+
+    <androidx.appcompat.widget.AppCompatRatingBar
+        android:id="@+id/rating"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:isIndicator="false"
+        android:numStars="5"
+        android:rating="3.5"
+        android:stepSize="0.5"
+        android:layout_marginStart="4dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nickname"
+        app:layout_constraintStart_toStartOf="@+id/tv_nickname"
+        app:layout_constraintEnd_toEndOf="@+id/tv_time"
+        />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_menu"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_menu"
+        android:background="@null"
+        android:tint="@color/quantum_grey"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_time"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_time"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/iv_profile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="8dp"
+        android:text="엥 갑자기 오리가 어디서 나온 거래요??? 머선일"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

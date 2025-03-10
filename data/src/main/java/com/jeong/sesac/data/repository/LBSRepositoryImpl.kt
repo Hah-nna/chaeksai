@@ -22,7 +22,7 @@ class LBSRepositoryImpl(private val context: Context) {
      * */
     fun findLocation() = callbackFlow {
         val locationRequest = LocationRequest.Builder(
-            Priority.PRIORITY_HIGH_ACCURACY, 10000L
+            Priority.PRIORITY_HIGH_ACCURACY, 5000L
         ).run {
             setMinUpdateDistanceMeters(10F)
             setWaitForAccurateLocation(true)

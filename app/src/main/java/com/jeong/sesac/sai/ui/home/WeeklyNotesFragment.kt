@@ -31,7 +31,7 @@ class WeeklyNotesFragment :
         }.attach()
 
         with(binding.toolbar.toolbarView) {
-            setTitle("이번주 인기 쪽지")
+            setTitle("이번주 인기 포스트")
             /**
              * https://github.com/LDRAlighieri/Corbind/blob/master/corbind/src/main/kotlin/ru/ldralighieri/corbind/widget/ToolbarNavigationClicks.kt
              * 여기를 참조해서 toolbar 이벤트 설정함

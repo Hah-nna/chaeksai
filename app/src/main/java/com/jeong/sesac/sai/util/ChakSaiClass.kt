@@ -12,11 +12,9 @@ class ChakSaiClass : Application() {
         appInstance = this
         KakaoMapSdk.init(this, BuildConfig.KAKAO_API_KEY)
         KakaoSdk.init(this, BuildConfig.KAKAO_API_KEY )
-
     }
     companion object{
         private lateinit var appInstance : ChakSaiClass
         fun getContext() = appInstance
-
     }
 }

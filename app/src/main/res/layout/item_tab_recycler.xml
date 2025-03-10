@@ -13,7 +13,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_record_card"
         android:clipToPadding="false"
-        android:paddingVertical="12dp"
         />
 
     <include

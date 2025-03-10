@@ -4,19 +4,19 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.jeong.sesac.sai.databinding.ActivityLoginBinding
 import com.jeong.sesac.sai.util.AppPreferenceManager
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
-import com.jeong.sesac.sai.viewmodel.LoginViewModel
+import com.jeong.sesac.sai.viewmodel.UserViewModel
 import com.jeong.sesac.sai.model.UiState
 import com.jeong.sesac.sai.viewmodel.factory.appViewModelFactory
 import kotlinx.coroutines.FlowPreview
@@ -31,7 +31,7 @@ import ru.ldralighieri.corbind.widget.textChanges
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private val preference by lazy { AppPreferenceManager.getInstance(this) }
-    private val viewModel: LoginViewModel by viewModels<LoginViewModel> {
+    private val viewModel: UserViewModel by viewModels<UserViewModel> {
         appViewModelFactory
     }
 
@@ -155,11 +155,11 @@ class LoginActivity : AppCompatActivity() {
             viewModel.duplicateState.collectLatest { state ->
                 when (state) {
                     is UiState.Loading -> {
-                        binding.progressBar.progressCircular.visibility = View.VISIBLE
+                        binding.progressBar.progressCircular.isVisible = true
                     }
 
                     is UiState.Success -> {
-                        binding.progressBar.progressCircular.visibility = View.GONE
+                        binding.progressBar.progressCircular.isVisible = false
                         if (state.data) {
                             binding.tvNicknameCheck.setHint("이미 존재하는 닉네임입니다")
                             binding.etvNickname.backgroundTintList =
@@ -186,7 +186,7 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     is UiState.Error -> {
-                        binding.progressBar.progressCircular.visibility = View.GONE
+                        binding.progressBar.progressCircular.isVisible = false
                         binding.tvNicknameCheck.setHint("오류가 발생했습니다 다시 시도해주세요")
                         binding.etvNickname.backgroundTintList =
                             ContextCompat.getColorStateList(applicationContext, R.color.inValid)
@@ -237,7 +237,7 @@ class LoginActivity : AppCompatActivity() {
             viewModel.userCreateState.collectLatest { state ->
                 when (state) {
                     is UiState.Loading -> {
-                        binding.progressBar.progressCircular.visibility = View.VISIBLE
+                        binding.progressBar.progressCircular.isVisible = false
                     }
 
                     is UiState.Success -> {

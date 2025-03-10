@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".ui.home.HomeFragment">
 
     <include
@@ -12,94 +13,87 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/main_head_title"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0"
-        android:textStyle="bold"
-        android:textSize="@dimen/main_title_text"
         android:layout_marginTop="18dp"
-        />
+        android:text="@string/main_head_title"
+        android:textSize="@dimen/main_title_text"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_weeklyNotes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="이번주 인기 쪽지"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="18dp"
+        android:text="이번주 인기 포스트"
         android:textSize="@dimen/main_second_title_text"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_weeklyNotes_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_more"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_weeklyNotes"
         android:layout_marginTop="18dp"
+        android:text="@string/text_more"
         android:textSize="@dimen/main_second_title_text"
-        />
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_weeklyNotes"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_weekly_notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginTop="14dp"
         android:clipToPadding="false"
+        android:orientation="horizontal"
         android:paddingVertical="12dp"
-        tools:listitem="@layout/item_weekly_notes"
-        app:layout_constraintTop_toBottomOf="@+id/tv_weeklyNotes"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="18dp"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_weeklyNotes"
+        tools:listitem="@layout/item_weekly_notes" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_recentlyFoundNotes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="최근 등록된 쪽지"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_weekly_notes"
         android:layout_marginTop="18dp"
+        android:text="최근 등록된 포스트"
         android:textSize="@dimen/main_second_title_text"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_weekly_notes" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_recentlyFoundNotes_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_more"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_recentlyFoundNotes"
         android:layout_marginTop="18dp"
+        android:text="@string/text_more"
         android:textSize="@dimen/main_small_title_text"
-        />
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_recentlyFoundNotes"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_recently_found_notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        tools:listitem="@layout/item_new_note"
         android:layout_marginTop="18dp"
-        android:paddingVertical="12dp"
         android:clipToPadding="false"
-        app:layout_constraintTop_toBottomOf="@+id/tv_recentlyFoundNotes"
-        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="horizontal"
+        android:paddingVertical="12dp"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_recentlyFoundNotes"
+        tools:listitem="@layout/item_new_note" />
 </androidx.constraintlayout.widget.ConstraintLayout>

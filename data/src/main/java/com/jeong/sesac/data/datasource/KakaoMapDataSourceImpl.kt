@@ -40,5 +40,5 @@ class KakaoMapDataSourceImpl(private val kakaoService: KakaoMapService) : KakaoM
         }
     }
 
-    fun getCurrentSearchRadius() = lastSearchRadius
+   override fun getCurrentSearchRadius() = lastSearchRadius
 }

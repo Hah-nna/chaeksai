@@ -19,7 +19,7 @@ import ru.ldralighieri.corbind.view.clicks
 
 class CommentAdapter(
     val userId: String,
-    val lifecycleScope: LifecycleCoroutineScope ,
+    val lifecycleScope: LifecycleCoroutineScope,
     val callback : (CommentWithUser, Boolean) -> Unit
 ) : ListAdapter<CommentWithUser, CommentViewHolder>(DiffComment()) {
 
@@ -27,7 +27,6 @@ class CommentAdapter(
         return CommentViewHolder(ItemCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     }
-
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         val comment = currentList[position]
         holder.binding.apply {
@@ -37,7 +36,6 @@ class CommentAdapter(
                 scale(Scale.FILL)
                 fallback(R.drawable.ic_default_profile)
                 error(R.drawable.ic_default_profile)
-
             }
             tvNickname.text = comment.userInfo.nickName
             tvContent.text = comment.content

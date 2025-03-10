@@ -3,13 +3,13 @@ package com.jeong.sesac.sai.viewmodel
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jeong.sesac.data.repository.LoginRepositoryImpl
+import com.jeong.sesac.data.repository.UserRepositoryImpl
 import com.jeong.sesac.sai.model.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val loginRepo: LoginRepositoryImpl) : ViewModel() {
+class UserViewModel(private val userRepo: UserRepositoryImpl) : ViewModel() {
     private var _duplicateState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
     val duplicateState get() = _duplicateState.asStateFlow()
 
@@ -19,7 +19,7 @@ class LoginViewModel(private val loginRepo: LoginRepositoryImpl) : ViewModel() {
     @SuppressLint("NewApi")
     fun setUserInfo(nickname: String) = viewModelScope.launch {
         _userCreateState.value = UiState.Loading
-        loginRepo.setUser(nickname)
+        userRepo.setUser(nickname)
             .onSuccess {
                 _userCreateState.value = UiState.Success(it)
             }.onFailure {
@@ -29,7 +29,7 @@ class LoginViewModel(private val loginRepo: LoginRepositoryImpl) : ViewModel() {
 
     fun checkDuplicatedNickname(nickname: String) = viewModelScope.launch {
         _duplicateState.value = UiState.Loading
-        loginRepo.checkDuplicateNickname(nickname)
+        userRepo.checkDuplicateNickname(nickname)
             .onSuccess {
                 _duplicateState.value = UiState.Success(it)
             }.onFailure {

@@ -15,7 +15,6 @@ import coil3.load
 import coil3.request.crossfade
 import coil3.request.error
 import coil3.request.fallback
-import coil3.request.placeholder
 import coil3.size.Scale
 import com.jeong.sesac.feature.model.Comment
 import com.jeong.sesac.feature.model.CommentWithUser
@@ -27,6 +26,7 @@ import com.jeong.sesac.sai.recycler.comment.CommentAdapter
 import com.jeong.sesac.sai.util.AppPreferenceManager
 import com.jeong.sesac.sai.util.BaseFragment
 import com.jeong.sesac.sai.util.CommentModalBottomSheet
+import com.jeong.sesac.sai.util.CustomSnackBar
 import com.jeong.sesac.sai.util.throttleFirst
 import com.jeong.sesac.sai.util.throttleTime
 import com.jeong.sesac.sai.util.toTimeConverter
@@ -56,8 +56,9 @@ class LibraryNoteDetailFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        Log.d("noteId", "${args.noteId}")
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().navigateUp()
+        }
 
         commentAdapter = CommentAdapter(
             preference.userId,
@@ -86,7 +87,7 @@ class LibraryNoteDetailFragment :
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-        viewModel.selectNote(args.noteId)
+        viewModel.selectNote(args.noteId, preference.userId)
             viewModel.selectedNoteState.collectLatest { state ->
                 when (state) {
                     is UiState.Loading -> binding.progress.progressCircular.isVisible = true
@@ -103,10 +104,9 @@ class LibraryNoteDetailFragment :
                             tvEditNote.isVisible = isAuthorizedUser
                         }
                     }
-
                     is UiState.Error -> {
                         binding.progress.progressCircular.isVisible = false
-                        Toast.makeText(requireContext(), state.error, Toast.LENGTH_SHORT).show()
+                        CustomSnackBar.snackBar(binding.root, requireContext(), state.error)
                     }
                 }
             }
@@ -127,7 +127,6 @@ class LibraryNoteDetailFragment :
                         Toast.makeText(requireContext(), "다시 시도해주세요", Toast.LENGTH_SHORT).show()
                         }
                     }
-
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
@@ -146,40 +145,31 @@ class LibraryNoteDetailFragment :
                             }
                             is UiState.Error -> {
                                 binding.progress.progressCircular.isVisible = false
-
                             }
                         }
                     }
-
                 }
             }.launchIn(lifecycleScope)
         }
-
-
         registerComment()
         getCommentList()
     }
 
-
     private fun getCommentList() {
         viewLifecycleOwner.lifecycleScope.launch {
             commentViewModel.getComments(preference.userId, args.noteId)
-
             commentViewModel.commentListState.collectLatest { state ->
                 when (state) {
                     is UiState.Loading -> {
                         binding.progress.progressCircular.isVisible = true
                         binding.tvNoComment.isVisible = false
                     }
-
                     is UiState.Success -> {
                         binding.progress.progressCircular.isVisible = false
                         commentAdapter.submitList(state.data)
-
                         binding.tvNoComment.isVisible = state.data.isEmpty()
                         binding.tvCommentCount.text = "댓글 : ${state.data.size}개"
                     }
-
                     is UiState.Error -> {
                         binding.progress.progressCircular.isVisible = false
                         binding.tvNoComment.isVisible = true
@@ -200,9 +190,7 @@ class LibraryNoteDetailFragment :
                     content = content,
                     createdAt = System.currentTimeMillis()
                 )
-
                 commentViewModel.createComment(preference.userId, args.noteId, comment)
-                binding.tvComment.text?.clear()
             }
 
             commentViewModel.commentState.collectLatest { state ->
@@ -210,8 +198,8 @@ class LibraryNoteDetailFragment :
                     is UiState.Loading -> binding.progress.progressCircular.isVisible = true
                     is UiState.Success -> {
                         binding.progress.progressCircular.isVisible = false
+                        binding.tvComment.text?.clear()
                     }
-
                     is UiState.Error -> {
                         binding.progress.progressCircular.isVisible = false
                         Toast.makeText(requireContext(), "에러가 발생했습니다.", Toast.LENGTH_SHORT).show()
@@ -220,7 +208,6 @@ class LibraryNoteDetailFragment :
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
-
 
     private fun bindData(note: NoteWithUser) {
         with(binding) {
@@ -239,7 +226,6 @@ class LibraryNoteDetailFragment :
             tvLibraryName.text = note.libraryName
             tvTime.text = note.createdAt.toTimeConverter()
             tvContent.text = note.content
-
         }
     }
 
@@ -266,7 +252,6 @@ class LibraryNoteDetailFragment :
                             is UiState.Success -> {
                                 binding.progress.progressCircular.isVisible = false
                             }
-
                             is UiState.Error -> {
                                 binding.progress.progressCircular.isVisible = false
                                 Toast.makeText(requireContext(), "에러가 발생했습니다.", Toast.LENGTH_SHORT)
@@ -275,12 +260,10 @@ class LibraryNoteDetailFragment :
                         }
                     }
                 }
-
             },
             onReportClick = {
                 // commentViewModel.reportComment
             }
         ).show(childFragmentManager, CommentModalBottomSheet.TAG)
-
     }
 }

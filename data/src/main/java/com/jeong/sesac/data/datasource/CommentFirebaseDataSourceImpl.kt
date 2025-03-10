@@ -5,13 +5,10 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.jeong.sesac.feature.model.Comment
-import com.jeong.sesac.feature.model.CommentWithUser
 import kotlinx.coroutines.tasks.await
 
-class CommentFirebaseDataSourceImpl(private val firebaseDataSource: FireBaseDataSourceImpl) :
-    CommentFirebaseDataSource {
+class CommentFirebaseDataSourceImpl : CommentFirebaseDataSource {
     private val noteCollectionRef = Firebase.firestore.collection("notes")
-
 
     override suspend fun createComment(
         userId: String,
@@ -39,7 +36,7 @@ class CommentFirebaseDataSourceImpl(private val firebaseDataSource: FireBaseData
         }
     }
 
-    override suspend fun getComments(userId: String, noteId: String): Result<List<CommentWithUser>> {
+    override suspend fun getComments(userId: String, noteId: String): Result<List<Comment>> {
         return runCatching {
             noteCollectionRef
                 .document(noteId)
@@ -47,22 +44,7 @@ class CommentFirebaseDataSourceImpl(private val firebaseDataSource: FireBaseData
                 .orderBy("createdAt", Query.Direction.DESCENDING)
                 .get()
                 .await()
-                .documents.mapNotNull { it ->
-
-                    val comment = it.toObject(Comment::class.java)
-                    comment?.let {
-                        val userInfo = firebaseDataSource.getUserInfo(it.userId)
-                        Log.d("겟코멘트", "문서 데이터: ${it}")
-                        Log.d("겟코멘트", "변환된 코멘트 데이터: $comment")
-
-                        CommentWithUser(
-                            id = it.id,
-                            userInfo = userInfo,
-                            content = it.content,
-                            createdAt = it.createdAt
-                        )
-                    }
-                }
+                .documents.mapNotNull {  it.toObject(Comment::class.java) }
 
         }.onFailure { e ->
             Log.e("코멘트가져오기실패", "코멘트가져오기실패: ${e.message}")

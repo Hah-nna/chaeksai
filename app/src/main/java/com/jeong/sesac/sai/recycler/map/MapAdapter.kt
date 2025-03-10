@@ -15,8 +15,8 @@ import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 
 class MapAdapter(
-    val onRegisterCallback: (PlaceInfo) -> Unit,
     val onLibraryNotesCallback: (PlaceInfo) -> Unit,
+    val onLibraryBookReviewCallback: (String) -> Unit,
     private val lifecycleScope: LifecycleCoroutineScope
 ) : ListAdapter<PlaceInfo, MapAdapter.MapViewHolder>(DiffMap) {
 
@@ -46,11 +46,11 @@ class MapAdapter(
             tvPhone.text = placeInfoList.phone
 
             btnRegister.clicks().throttleFirst(throttleTime).onEach {
-                onRegisterCallback(placeInfoList)
+                onLibraryNotesCallback(placeInfoList)
             }.launchIn(lifecycleScope)
 
             btnFind.clicks().throttleFirst(throttleTime).onEach {
-                onLibraryNotesCallback(placeInfoList)
+                onLibraryBookReviewCallback(placeInfoList.place)
             }.launchIn(lifecycleScope)
 
         }
