@@ -1,10 +1,9 @@
 package com.jeong.sesac.data.repository
 
-import com.jeong.sesac.data.datasource.OpenAPIDataSourceImpl
-import com.jeong.sesac.feature.model.BookInfo
+import com.jeong.sesac.data.datasource.OpenAPIDataSource
 import com.jeong.sesac.feature.repository.IOpenApiRepository
 
-class OpenApiRepositoryImpl(private val openApiDataSource : OpenAPIDataSourceImpl) :
+class OpenApiRepositoryImpl(private val openApiDataSource : OpenAPIDataSource) :
     IOpenApiRepository {
 
     override suspend fun getBookInfo(isbn: String): Result<String> {

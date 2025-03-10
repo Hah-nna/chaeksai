@@ -7,10 +7,8 @@ import com.google.firebase.ktx.Firebase
 import com.jeong.sesac.feature.model.Comment
 import kotlinx.coroutines.tasks.await
 
-class CommentFirebaseDataSourceImpl(private val firebaseDataSource: FireBaseDataSourceImpl) :
-    CommentFirebaseDataSource {
+class CommentFirebaseDataSourceImpl : CommentFirebaseDataSource {
     private val noteCollectionRef = Firebase.firestore.collection("notes")
-
 
     override suspend fun createComment(
         userId: String,

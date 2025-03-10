@@ -2,7 +2,7 @@ package com.jeong.sesac.sai.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jeong.sesac.data.repository.CommentRepositoryImpl
+import com.jeong.sesac.domain.repository.ICommentRepository
 import com.jeong.sesac.feature.model.Comment
 import com.jeong.sesac.feature.model.CommentWithUser
 import com.jeong.sesac.sai.model.UiState
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class CommentViewModel(private val commentRepo: CommentRepositoryImpl) : ViewModel() {
+class CommentViewModel(private val commentRepo: ICommentRepository) : ViewModel() {
     private var _commentState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
     val commentState = _commentState.asStateFlow()
 

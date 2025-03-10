@@ -1,14 +1,15 @@
 package com.jeong.sesac.data.repository
 
-import com.jeong.sesac.data.datasource.NoteDataSourceImpl
+import com.jeong.sesac.data.datasource.NoteDataSource
 import com.jeong.sesac.domain.repository.INoteRepository
 import com.jeong.sesac.feature.model.Note
 import com.jeong.sesac.feature.model.NoteWithUser
 import com.jeong.sesac.feature.model.UserInfo
+import com.jeong.sesac.feature.repository.IUserRepository
 
 class NoteRepositoryImpl(
-    private val noteDataSourceImpl: NoteDataSourceImpl,
-    private val UserRepo: UserRepositoryImpl
+    private val noteDataSourceImpl: NoteDataSource,
+    private val UserRepo: IUserRepository
 ) : INoteRepository {
 
     override suspend fun createNote(note: Note): Result<Boolean> {
@@ -26,11 +27,11 @@ class NoteRepositoryImpl(
         return noteDataSourceImpl.createNote(noteInfo)
     }
 
-    suspend fun updateNote(noteId: String, note: Note): Result<Unit> {
+    override suspend fun updateNote(noteId: String, note: Note): Result<Unit> {
         return noteDataSourceImpl.updateNote(noteId, note)
     }
 
-    suspend fun getNote(noteId: String, userId: String): Result<NoteWithUser> {
+    override suspend fun getNote(noteId: String, userId: String): Result<NoteWithUser> {
         return noteDataSourceImpl.getNote(noteId).map { note ->
             val userInfo = UserRepo.getUserInfo(note.userId)
             NoteWithUser(
@@ -52,7 +53,7 @@ class NoteRepositoryImpl(
         }
     }
 
-    suspend fun deleteNote(noteId: String): Result<Unit> {
+    override suspend fun deleteNote(noteId: String): Result<Unit> {
         return noteDataSourceImpl.deleteNote(noteId)
     }
 }

@@ -4,7 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jeong.sesac.data.repository.NoteRepositoryImpl
+import com.jeong.sesac.domain.repository.INoteRepository
 import com.jeong.sesac.feature.model.Note
 import com.jeong.sesac.feature.model.NoteWithUser
 import com.jeong.sesac.sai.model.UiState
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class NoteViewModel(
-    private val noteRepo: NoteRepositoryImpl
+    private val noteRepo: INoteRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<Boolean?>>(UiState.Loading)

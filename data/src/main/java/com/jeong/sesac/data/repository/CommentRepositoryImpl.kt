@@ -1,12 +1,13 @@
 package com.jeong.sesac.data.repository
 
-import com.jeong.sesac.data.datasource.CommentFirebaseDataSourceImpl
+import com.jeong.sesac.data.datasource.CommentFirebaseDataSource
 import com.jeong.sesac.domain.repository.ICommentRepository
 import com.jeong.sesac.feature.model.Comment
 import com.jeong.sesac.feature.model.CommentWithUser
 import com.jeong.sesac.feature.model.UserInfo
+import com.jeong.sesac.feature.repository.IUserRepository
 
-class CommentRepositoryImpl(private val commentDataSource: CommentFirebaseDataSourceImpl, private val userRepo: UserRepositoryImpl) : ICommentRepository {
+class CommentRepositoryImpl(private val commentDataSource: CommentFirebaseDataSource, private val userRepo: IUserRepository) : ICommentRepository {
 
     override suspend fun createComment(userId: String, noteId: String, comment: Comment):
             Boolean {

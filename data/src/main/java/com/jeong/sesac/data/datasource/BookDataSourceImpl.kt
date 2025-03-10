@@ -65,7 +65,7 @@ class BookDataSourceImpl(private val openApiService: OpenAPIService) : BookDataS
         }
     }
 
-     suspend fun createBookReview(bookReview: BookReview, bookId: String): Result<Boolean> {
+    override suspend fun createBookReview(bookReview: BookReview, bookId: String): Result<Boolean> {
         return runCatching {
             val bookReviewDocRef = bookRef
                 .document(bookId)
@@ -84,7 +84,7 @@ class BookDataSourceImpl(private val openApiService: OpenAPIService) : BookDataS
         }
     }
 
-    suspend fun getBookReviews(bookId: String): Result<MutableList<BookReview>> {
+    override suspend fun getBookReviews(bookId: String): Result<MutableList<BookReview>> {
        return runCatching {
         val reviews = bookRef.document(bookId)
             .collection("book_reviews")
@@ -101,7 +101,7 @@ class BookDataSourceImpl(private val openApiService: OpenAPIService) : BookDataS
        }
     }
 
-    suspend fun updateBookReview(bookId: String, reviewId: String, content: String, score: Float): Result<Boolean> {
+    override suspend fun updateBookReview(bookId: String, reviewId: String, content: String, score: Float): Result<Boolean> {
         return runCatching {
         bookRef.document(bookId)
             .collection("book_reviews")
@@ -116,7 +116,7 @@ class BookDataSourceImpl(private val openApiService: OpenAPIService) : BookDataS
 
     }
 
-    suspend fun deleteBookReview(bookId: String, reviewId: String): Result<Boolean> {
+   override suspend fun deleteBookReview(bookId: String, reviewId: String): Result<Boolean> {
         return runCatching {
             bookRef.document(bookId)
                 .collection("book_reviews")

@@ -1,13 +1,14 @@
 package com.jeong.sesac.data.repository
 
-import com.jeong.sesac.data.datasource.BookDataSourceImpl
+import com.jeong.sesac.data.datasource.BookDataSource
 import com.jeong.sesac.domain.repository.IBookRepository
 import com.jeong.sesac.feature.model.BookInfo
 import com.jeong.sesac.feature.model.BookReview
 import com.jeong.sesac.feature.model.BookReviewWithUser
 import com.jeong.sesac.feature.model.UserInfo
+import com.jeong.sesac.feature.repository.IUserRepository
 
-class BookRepositoryImpl(private val bookDataSource: BookDataSourceImpl, private val userRepo: UserRepositoryImpl ) : IBookRepository {
+class BookRepositoryImpl(private val bookDataSource: BookDataSource, private val userRepo: IUserRepository) : IBookRepository {
     override suspend fun createBook(isbn: String, userId: String, library: String): Result<Unit> {
         return bookDataSource.createBook(isbn, userId, library)
     }
@@ -20,7 +21,7 @@ class BookRepositoryImpl(private val bookDataSource: BookDataSourceImpl, private
         return bookDataSource.getBook(library, bookId)
     }
 
-    suspend fun createBookReview(userId: String, content: String, bookId: String, score: Float, library: String): Result<Boolean> {
+   override suspend fun createBookReview(userId: String, content: String, bookId: String, score: Float, library: String): Result<Boolean> {
         val bookReview = BookReview(
             id = "",
             userId = userId,
@@ -36,7 +37,7 @@ class BookRepositoryImpl(private val bookDataSource: BookDataSourceImpl, private
         }
     }
 
-    suspend fun getBookReviews(bookId: String): Result<List<BookReviewWithUser>> {
+   override suspend fun getBookReviews(bookId: String): Result<List<BookReviewWithUser>> {
         return runCatching {
             val result = bookDataSource.getBookReviews(bookId).getOrThrow()
             result.map { review ->
@@ -57,11 +58,11 @@ class BookRepositoryImpl(private val bookDataSource: BookDataSourceImpl, private
         }
     }
 
-    suspend fun updateBookReview(bookId: String, reviewId: String, content: String, score: Float): Result<Boolean> {
+   override suspend fun updateBookReview(bookId: String, reviewId: String, content: String, score: Float): Result<Boolean> {
        return bookDataSource.updateBookReview(bookId, reviewId, content, score)
     }
 
-    suspend fun deleteBookReview(bookId: String, reviewId: String): Result<Boolean> {
+    override suspend fun deleteBookReview(bookId: String, reviewId: String): Result<Boolean> {
         return bookDataSource.deleteBookReview(bookId, reviewId)
 
     }

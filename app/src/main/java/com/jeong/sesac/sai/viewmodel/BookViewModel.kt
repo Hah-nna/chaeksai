@@ -2,10 +2,10 @@ package com.jeong.sesac.sai.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jeong.sesac.data.repository.BookRepositoryImpl
-import com.jeong.sesac.data.repository.OpenApiRepositoryImpl
+import com.jeong.sesac.domain.repository.IBookRepository
 import com.jeong.sesac.feature.model.BookInfo
 import com.jeong.sesac.feature.model.BookReviewWithUser
+import com.jeong.sesac.feature.repository.IOpenApiRepository
 import com.jeong.sesac.sai.model.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class BookViewModel(
-    private val bookRepo: BookRepositoryImpl,
-    private val openApiRepo: OpenApiRepositoryImpl
+    private val bookRepo: IBookRepository,
+    private val openApiRepo: IOpenApiRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<UiState<Any>>(UiState.Loading)
     val uiState = _uiState.asStateFlow()

@@ -1,14 +1,15 @@
 package com.jeong.sesac.data.repository
 
 import android.util.Log
-import com.jeong.sesac.data.datasource.NoteDataSourceImpl
+import com.jeong.sesac.data.datasource.NoteDataSource
 import com.jeong.sesac.domain.model.NoteFilterType
 import com.jeong.sesac.domain.model.SortOrder
 import com.jeong.sesac.domain.repository.INoteListRepository
 import com.jeong.sesac.feature.model.NoteWithUser
 import com.jeong.sesac.feature.model.UserInfo
+import com.jeong.sesac.feature.repository.IUserRepository
 
-class NoteListRepositoryImpl(private val noteDataSourceImpl: NoteDataSourceImpl, private val UserRepo: UserRepositoryImpl) :
+class NoteListRepositoryImpl(private val noteDataSourceImpl: NoteDataSource, private val userRepo: IUserRepository) :
     INoteListRepository {
     override suspend fun getNoteList(
         filterType: NoteFilterType,
@@ -64,7 +65,7 @@ class NoteListRepositoryImpl(private val noteDataSourceImpl: NoteDataSourceImpl,
 
                 // 필터링된 노트에 사용자 정보 추가
                 val notesWithUser = filteredNoteList.map { note ->
-                    val userInfo = UserRepo.getUserInfo(note.userId)
+                    val userInfo = userRepo.getUserInfo(note.userId)
                     NoteWithUser(
                         id = note.id,
                         userInfo = UserInfo(
@@ -92,7 +93,7 @@ class NoteListRepositoryImpl(private val noteDataSourceImpl: NoteDataSourceImpl,
    override suspend fun getLibraryNotes(libraryName: String): Result<List<NoteWithUser>> {
       return noteDataSourceImpl.getLibraryNotes(libraryName).map {notes ->
            notes.map { note ->
-           val userInfo = UserRepo.getUserInfo(note.userId)
+           val userInfo = userRepo.getUserInfo(note.userId)
                NoteWithUser(
                    id = note.id,
                    userInfo = UserInfo(

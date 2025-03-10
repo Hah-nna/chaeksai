@@ -2,9 +2,9 @@ package com.jeong.sesac.sai.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jeong.sesac.data.repository.NoteListRepositoryImpl
 import com.jeong.sesac.domain.model.NoteFilterType
 import com.jeong.sesac.domain.model.SortOrder
+import com.jeong.sesac.domain.repository.INoteListRepository
 import com.jeong.sesac.feature.model.NoteWithUser
 import com.jeong.sesac.sai.model.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
-class NoteListViewModel(private val noteListRepo: NoteListRepositoryImpl) : ViewModel() {
+class NoteListViewModel(private val noteListRepo: INoteListRepository) : ViewModel() {
     /**
      * 현재 표시 중인 노트 리스트의 상태
      */

@@ -4,9 +4,9 @@ import android.location.Location
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jeong.sesac.data.repository.KakaoMapRepositoryImpl
 import com.jeong.sesac.data.repository.LBSRepositoryImpl
 import com.jeong.sesac.feature.model.PlaceInfo
+import com.jeong.sesac.feature.repository.IKakaoMapRepository
 import com.jeong.sesac.sai.model.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 const val SEARCH_PERCENT = 0.9
 
 class KakaoMapViewModel(
-    private val kakaoMapRepo: KakaoMapRepositoryImpl,
+    private val kakaoMapRepo: IKakaoMapRepository,
     private val LBSRepo: LBSRepositoryImpl
 ) : ViewModel() {
 
